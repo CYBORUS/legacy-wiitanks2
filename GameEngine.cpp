@@ -95,6 +95,14 @@ bool GameEngine::start(EngineModule* inModule)
 bool GameEngine::onInit()
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) return false;
+
+    /*
+    *   Redirects output back to the console
+    */
+    freopen("CON", "w", stdout);
+    freopen("CON", "w", stderr);
+
+
     if (TTF_Init() == -1) return false;
     if (!mWindow.setVideoMode()) return false;
     mWindow.next = NULL;
