@@ -119,11 +119,11 @@ bool GameEngine::onInit()
     int audioChannels = 2;
     int audioBuffers = 4096;
 
-    if (Mix_OpenAudio(audioRate, audioFormat, audioChannels, audioBuffers))
-    {
-        cerr << "Unable to open audio!\n";
-        return false;
-    }
+//    if (Mix_OpenAudio(audioRate, audioFormat, audioChannels, audioBuffers))
+//    {
+//        cerr << "Unable to open audio!\n";
+//        return false;
+//    }
 
     return true;
 }
@@ -174,7 +174,7 @@ void GameEngine::onCleanup()
         mJoystick = NULL;
     }
 
-    Mix_CloseAudio();
+    //Mix_CloseAudio();
 
     TTF_Quit();
     SDL_Quit();

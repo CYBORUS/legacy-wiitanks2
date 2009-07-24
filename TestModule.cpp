@@ -1,4 +1,6 @@
+#include <iostream>
 #include "TestModule.h"
+using namespace std;
 
 TestModule::TestModule()
 {
@@ -18,54 +20,56 @@ TestModule::~TestModule()
 
 bool TestModule::onInit()
 {
-
-
+    cerr << "init 1\n";
     mTest = new StaticLayer();
-    mTest->surface = VideoLayer::getImage("black02d.png");
+    mTest->surface = VideoLayer::getImage("images/temple_fog.jpg");
     mTest->priority = PRIORITY_BACKGROUND;
 
     mMouse = new StaticLayer();
-    mMouse->surface = VideoLayer::getImage("normal.png");
+    mMouse->surface = VideoLayer::getImage("images/normal.png");
     mMouse->priority = PRIORITY_MOUSE;
     SDL_ShowCursor(SDL_DISABLE);
 
+    cerr << "init 2\n";
     mText = new TextLayer();
     mText->setColor(255, 0, 0, 0);
-    mText->loadFont("DejaVuSans.ttf", 32);
+    mText->loadFont("images/DejaVuSans.ttf", 32);
     mText->setText("MOUSE");
     mText->setLocation(50, 50);
     mText->priority = PRIORITY_TEXT;
 
+    cerr << "init 3\n";
     mFPS = new TextLayer();
     mFPS->setColor(128, 128, 128, 0);
-    mFPS->loadFont("DejaVuSans.ttf", 16);
+    mFPS->loadFont("images/DejaVuSans.ttf", 16);
     mFPS->setText("0 FPS");
     mFPS->setLocation(900, 500);
     mFPS->priority = PRIORITY_TEXT;
 
+    cerr << "init 4\n";
     mJS1 = new TextLayer();
     mJS1->setColor(0, 255, 255, 0);
-    mJS1->loadFont("DejaVuSans.ttf", 32);
+    mJS1->loadFont("images/DejaVuSans.ttf", 32);
     mJS1->setText("JOYSTICK 1");
     mJS1->setLocation(400, 50);
     mJS1->priority = PRIORITY_TEXT;
 
     mJS2 = new TextLayer();
     mJS2->setColor(0, 255, 255, 0);
-    mJS2->loadFont("DejaVuSans.ttf", 32);
+    mJS2->loadFont("images/DejaVuSans.ttf", 32);
     mJS2->setText("JOYSTICK 2");
     mJS2->setLocation(400, 100);
     mJS2->priority = PRIORITY_TEXT;
 
     mJS3 = new TextLayer();
     mJS3->setColor(0, 255, 255, 0);
-    mJS3->loadFont("DejaVuSans.ttf", 32);
+    mJS3->loadFont("images/DejaVuSans.ttf", 32);
     mJS3->setText("JOYSTICK 3");
     mJS3->setLocation(400, 150);
     mJS3->priority = PRIORITY_TEXT;
 
     mYoshi = new AnimatedLayer();
-    mYoshi->loadSheet("yoshi.png", 64, 8);
+    mYoshi->loadSheet("images/yoshi.png", 64, 8);
     mYoshi->priority = PRIORITY_GUI;
     mYoshi->location->x = 100;
     mYoshi->location->y = 100;
@@ -84,7 +88,7 @@ bool TestModule::onInit()
     //Mix_PlayMusic(mMusic, 0);
     //Mix_HookMusicFinished(onMusicEnd);
 
-    mSound = Mix_LoadWAV("buzztest.wav");
+    //mSound = Mix_LoadWAV("buzztest.wav");
 
     mNextSecond = SDL_GetTicks() + 1000;
     mNextFrame += NEXT_FRAME * 3;
@@ -149,7 +153,7 @@ void TestModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
 
 void TestModule::onLButtonDown(int inX, int inY)
 {
-    mChannel = Mix_PlayChannel(-1, mSound, 0);
+    //mChannel = Mix_PlayChannel(-1, mSound, 0);
 //    if (mChannel < 0)
 //    {
 //        mChannel = Mix_PlayChannel(-1, mSound, 0);

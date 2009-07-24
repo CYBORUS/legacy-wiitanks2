@@ -2,7 +2,7 @@
 
 ScreenLayer::ScreenLayer() : VideoLayer()
 {
-    mWidth = 1000;
+    mWidth = 800;
     mHeight = 600;
 }
 
