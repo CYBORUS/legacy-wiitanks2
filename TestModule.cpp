@@ -1,4 +1,3 @@
-#include <iostream>
 #include "TestModule.h"
 using namespace std;
 
@@ -20,7 +19,6 @@ TestModule::~TestModule()
 
 bool TestModule::onInit()
 {
-    cerr << "init 1\n";
     mTest = new StaticLayer();
     mTest->surface = VideoLayer::getImage("images/temple_fog.jpg");
     mTest->priority = PRIORITY_BACKGROUND;
@@ -30,7 +28,6 @@ bool TestModule::onInit()
     mMouse->priority = PRIORITY_MOUSE;
     SDL_ShowCursor(SDL_DISABLE);
 
-    cerr << "init 2\n";
     mText = new TextLayer();
     mText->setColor(255, 0, 0, 0);
     mText->loadFont("images/DejaVuSans.ttf", 32);
@@ -38,7 +35,6 @@ bool TestModule::onInit()
     mText->setLocation(50, 50);
     mText->priority = PRIORITY_TEXT;
 
-    cerr << "init 3\n";
     mFPS = new TextLayer();
     mFPS->setColor(128, 128, 128, 0);
     mFPS->loadFont("images/DejaVuSans.ttf", 16);
@@ -46,7 +42,6 @@ bool TestModule::onInit()
     mFPS->setLocation(900, 500);
     mFPS->priority = PRIORITY_TEXT;
 
-    cerr << "init 4\n";
     mJS1 = new TextLayer();
     mJS1->setColor(0, 255, 255, 0);
     mJS1->loadFont("images/DejaVuSans.ttf", 32);
@@ -173,7 +168,7 @@ void TestModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)
     int v = (int) inValue;
     //s << "w " << w << " a " << a << " v " << v;
     s << v;
-    if (a == 0)
+    if (a % 2 == 0)
     {
         mJS1->setText(s.str().c_str());
     }
