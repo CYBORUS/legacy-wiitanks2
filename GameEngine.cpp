@@ -1,6 +1,18 @@
 #include "GameEngine.h"
 using namespace std;
 
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    Uint32 rmask = 0xff000000;
+    Uint32 gmask = 0x00ff0000;
+    Uint32 bmask = 0x0000ff00;
+    Uint32 amask = 0x000000ff;
+#else
+    Uint32 rmask = 0x000000ff;
+    Uint32 gmask = 0x0000ff00;
+    Uint32 bmask = 0x00ff0000;
+    Uint32 amask = 0xff000000;
+#endif
+
 GameEngine::GameEngine()
 {
     mWindowIcon = NULL;
@@ -160,6 +172,9 @@ bool GameEngine::onInit()
 inline void GameEngine::onRender()
 {
     VideoLayer* iterator = mWindow.next;
+    SDL_Surface* t = NULL;
+    SDL_Surface* tempSurface = NULL;
+
     while (iterator != NULL)
     {
         //if (iterator->surface == NULL) exit(1);
@@ -167,6 +182,23 @@ inline void GameEngine::onRender()
             iterator->location);
         iterator = iterator->next;
     }
+
+    tempSurface = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_SRCALPHA, 800, 600, 32, rmask, gmask, bmask, amask);
+
+
+    t = SDL_DisplayFormat(tempSurface);
+
+    SDL_FreeSurface(tempSurface);
+
+    SDL_SetAlpha(t, SDL_SRCALPHA, 255);
+
+    SDL_Rect dest;
+    dest.x = 0;
+    dest.y = 0;
+    SDL_BlitSurface(mWindow.surface, NULL, t, &dest);
+
+
+    //SDL_SetAlpha(mWindow.surface, SDL_SRCALPHA, 0);
     SDL_Flip(mWindow.surface);
 }
 
