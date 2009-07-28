@@ -190,12 +190,20 @@ inline void GameEngine::onRender()
 
     SDL_FreeSurface(tempSurface);
 
-    SDL_SetAlpha(t, SDL_SRCALPHA, 255);
 
     SDL_Rect dest;
     dest.x = 0;
     dest.y = 0;
+
+	SDL_FillRect( t, 0, SDL_MapRGBA(t->format, 0, 0, 0, 0) );
+
     SDL_BlitSurface(mWindow.surface, NULL, t, &dest);
+    SDL_SetAlpha(t, SDL_SRCALPHA, 200);
+
+    SDL_FillRect( mWindow.surface, 0, SDL_MapRGBA(t->format, 255, 0, 0, 0) );
+
+
+    SDL_BlitSurface(t, NULL, mWindow.surface, &dest);
 
 
     //SDL_SetAlpha(mWindow.surface, SDL_SRCALPHA, 0);
