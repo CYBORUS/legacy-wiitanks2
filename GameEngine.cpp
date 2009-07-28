@@ -1,17 +1,19 @@
 #include "GameEngine.h"
 using namespace std;
 
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    Uint32 rmask = 0xff000000;
-    Uint32 gmask = 0x00ff0000;
-    Uint32 bmask = 0x0000ff00;
-    Uint32 amask = 0x000000ff;
-#else
-    Uint32 rmask = 0x000000ff;
-    Uint32 gmask = 0x0000ff00;
-    Uint32 bmask = 0x00ff0000;
-    Uint32 amask = 0xff000000;
-#endif
+//#ifndef rmask
+//#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+//    Uint32 rmask = 0xff000000;
+//    Uint32 gmask = 0x00ff0000;
+//    Uint32 bmask = 0x0000ff00;
+//    Uint32 amask = 0x000000ff;
+//#else
+//    Uint32 rmask = 0x000000ff;
+//    Uint32 gmask = 0x0000ff00;
+//    Uint32 bmask = 0x00ff0000;
+//    Uint32 amask = 0xff000000;
+//#endif
+//#endif
 
 GameEngine::GameEngine()
 {
@@ -98,7 +100,7 @@ bool GameEngine::start(EngineModule* inModule)
 
         mWindow.next = NULL;
         em->onCleanup();
-        em = em->next();
+        em = em->getNextModule();
     }
     onCleanup();
     return true;
@@ -108,11 +110,7 @@ bool GameEngine::onInit()
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) return false;
 
-    /*
-    *   Redirects output back to the console
-    */
-    freopen("CON", "w", stdout);
-    freopen("CON", "w", stderr);
+
 
 
     if (TTF_Init() == -1) return false;
@@ -172,8 +170,8 @@ bool GameEngine::onInit()
 inline void GameEngine::onRender()
 {
     VideoLayer* iterator = mWindow.next;
-    SDL_Surface* t = NULL;
-    SDL_Surface* tempSurface = NULL;
+    //SDL_Surface* t = NULL;
+    //SDL_Surface* tempSurface = NULL;
 
     while (iterator != NULL)
     {
@@ -183,28 +181,28 @@ inline void GameEngine::onRender()
         iterator = iterator->next;
     }
 
-    tempSurface = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_SRCALPHA, 800, 600, 32, rmask, gmask, bmask, amask);
-
-
-    t = SDL_DisplayFormat(tempSurface);
-
-    SDL_FreeSurface(tempSurface);
-
-
-    SDL_Rect dest;
-    dest.x = 0;
-    dest.y = 0;
-
-	SDL_FillRect( t, 0, SDL_MapRGBA(t->format, 0, 0, 0, 0) );
-
-    SDL_BlitSurface(mWindow.surface, NULL, t, &dest);
-    SDL_SetAlpha(t, SDL_SRCALPHA, 128);
-
-    SDL_FillRect( mWindow.surface, 0, SDL_MapRGBA(t->format, 255, 255, 255, 0) );
-
-
-    SDL_BlitSurface(t, NULL, mWindow.surface, &dest);
-    SDL_FreeSurface(t);
+//    tempSurface = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_SRCALPHA, 800, 600, 32, rmask, gmask, bmask, amask);
+//
+//
+//    t = SDL_DisplayFormat(tempSurface);
+//
+//    SDL_FreeSurface(tempSurface);
+//
+//
+//    SDL_Rect dest;
+//    dest.x = 0;
+//    dest.y = 0;
+//
+//	SDL_FillRect( t, 0, SDL_MapRGBA(t->format, 0, 0, 0, 0) );
+//
+//    SDL_BlitSurface(mWindow.surface, NULL, t, &dest);
+//    SDL_SetAlpha(t, SDL_SRCALPHA, 128);
+//
+//    SDL_FillRect( mWindow.surface, 0, SDL_MapRGBA(t->format, 255, 255, 255, 0) );
+//
+//
+//    SDL_BlitSurface(t, NULL, mWindow.surface, &dest);
+//    SDL_FreeSurface(t);
 
     SDL_Flip(mWindow.surface);
 }

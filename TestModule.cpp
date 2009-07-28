@@ -131,7 +131,7 @@ void TestModule::onCleanup()
     delete mYoshi;
 }
 
-EngineModule* TestModule::next()
+EngineModule* TestModule::getNextModule()
 {
     return NULL;
 }

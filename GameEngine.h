@@ -33,6 +33,9 @@ class GameEngine
         void onExpose();
         void onExit();
 
+        bool mRunning;
+        ScreenLayer mWindow;
+
     private:
         /// engine loop
         bool onInit();
@@ -40,8 +43,6 @@ class GameEngine
         void onCleanup();
         void onMusicEnd();
 
-        bool mRunning;
-        ScreenLayer mWindow;
         SDL_Surface* mWindowIcon;
         SDL_Joystick* mJoystick;
 };

@@ -10,9 +10,10 @@ class ScreenLayer : public VideoLayer
         virtual ~ScreenLayer();
 
         bool setVideoMode();
-    private:
         int mHeight;
         int mWidth;
+
+    private:
 };
 
 #endif

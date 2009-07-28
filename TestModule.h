@@ -13,7 +13,7 @@ class TestModule : public EngineModule
         bool onInit();
         void onLoop();
         void onCleanup();
-        EngineModule* next();
+        EngineModule* getNextModule();
         void setEngine(GameEngine* inEngine);
 
     private:

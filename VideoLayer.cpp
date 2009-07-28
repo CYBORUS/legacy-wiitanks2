@@ -21,7 +21,6 @@ SDL_Surface* VideoLayer::getImage(const char* inFile)
 {
     SDL_Surface* t = NULL;
     SDL_Surface* outSurface = NULL;
-    SDL_Surface* tempSurface = NULL;
 
     if((t = IMG_Load(inFile)) == NULL) return NULL;
 

@@ -1,8 +1,13 @@
 #include "GameEngine.h"
-#include "TestModule.h"
+#include "BeginModule.h"
 
 int main(int argc, char** argv)
 {
     GameEngine ge;
-    return ge.start(new TestModule()) ? 0 : 1;
+        /*
+    *   Redirects output back to the console
+    */
+    freopen("CON", "w", stdout);
+    freopen("CON", "w", stderr);
+    return ge.start(new BeginModule()) ? 0 : 1;
 }
