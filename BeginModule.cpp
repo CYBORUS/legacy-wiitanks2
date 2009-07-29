@@ -17,14 +17,8 @@ using namespace std;
 
 BeginModule::BeginModule()
 {
-    mChannel = -1;
-    mMusic = NULL;
-    mSound = NULL;
     mMouse = NULL;
     mBackground = NULL;
-    mFPS = NULL;
-    mFrames = 0;
-    mJS1 = NULL;
     mNext = NULL;
     picSurface = NULL;
     tempSurface = NULL;
@@ -94,10 +88,10 @@ void BeginModule::onLoop()
     SDL_BlitSurface(picSurface, NULL, tempSurface, &dest);
 
     SDL_SetAlpha(tempSurface, SDL_SRCALPHA, AlphaValue);
-    SDL_FillRect(mEngine->mWindow.next->surface, 0, SDL_MapRGBA(tempSurface->format, 0, 0, 0, 0));
+    SDL_FillRect(mBackground->surface, 0, SDL_MapRGBA(tempSurface->format, 0, 0, 0, 0));
 
 
-    SDL_BlitSurface(tempSurface, NULL, mEngine->mWindow.next->surface, NULL);
+    SDL_BlitSurface(tempSurface, NULL, mBackground->surface, NULL);
     SDL_FillRect(tempSurface, 0, SDL_MapRGBA(tempSurface->format, 0, 0, 0, 0));
     SDL_FreeSurface(tempSurface);
 
@@ -149,21 +143,9 @@ void BeginModule::setNextModule(EngineModule* next)
 
 void BeginModule::onCleanup()
 {
-    if (mMusic != NULL)
-    {
-        Mix_HaltMusic();
-        Mix_FreeMusic(mMusic);
-        mMusic = NULL;
-    }
 
     delete mBackground;
     delete mMouse;
-    delete mText;
-    delete mFPS;
-    delete mJS1;
-    delete mJS2;
-    delete mJS3;
-    delete mYoshi;
 }
 
 
@@ -178,25 +160,4 @@ void BeginModule::onLButtonDown(int inX, int inY)
 {
     if (mEngine == NULL) return;
     mEngine->onExit();
-}
-
-void BeginModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)
-{
-}
-
-void BeginModule::onJoyButtonDown(Uint8 inWhich, Uint8 inButton)
-{
-}
-
-void BeginModule::onJoyButtonUp(Uint8 inWhich, Uint8 inButton)
-{
-}
-
-void BeginModule::onJoyHat(Uint8 inWhich, Uint8 inHat, Uint8 inValue)
-{
-}
-
-void BeginModule::onJoyBall(Uint8 inWhich, Uint8 inBall, Sint16 inXRel,
-    Sint16 inYRel)
-{
 }
