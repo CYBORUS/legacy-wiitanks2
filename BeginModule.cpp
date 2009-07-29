@@ -136,11 +136,6 @@ EngineModule* BeginModule::getNextModule()
     return mNext;
 }
 
-void BeginModule::setNextModule(EngineModule* next)
-{
-    mNext = next;
-}
-
 void BeginModule::onCleanup()
 {
 

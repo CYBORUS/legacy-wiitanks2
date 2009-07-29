@@ -1,21 +1,21 @@
-#ifndef _BEGINMODULE_H
-#define	_BEGINMODULE_H
+#ifndef _BUILDMAPMODULE_H
+#define _BUILDMAPMODULE_H
 
 #include "EngineModule.h"
 #include "TestModule.h"
-#include <SDL.h>
 
-class BeginModule : public EngineModule
+class BuildMapModule : public EngineModule
 {
     public:
-        BeginModule();
-        virtual ~BeginModule();
+        BuildMapModule();
+        virtual ~BuildMapModule();
 
-        /// module operation
+        //module operation
         bool onInit();
         void onLoop();
         void onCleanup();
         EngineModule* getNextModule();
+
 
     private:
         void onMouseMove(int inX, int inY, int inRelX, int inRelY, bool inLeft,
@@ -28,11 +28,8 @@ class BeginModule : public EngineModule
         SDL_Rect dest;
         SDL_Surface* picSurface;
         SDL_Surface* tempSurface;
-        int AlphaValue;
-        int incDec; //whether alphaValue should be incremented or decremented
-        int mPauseTime;
-
 };
 
-#endif
 
+
+#endif

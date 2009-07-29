@@ -27,6 +27,7 @@ class TestModule : public EngineModule
         void onJoyBall(Uint8 inWhich, Uint8 inBall, Sint16 inXRel,
             Sint16 inYRel);
 
+        EngineModule* mNext;
         StaticLayer* mMouse;
         StaticLayer* mTest;
         TextLayer* mText;

@@ -3,6 +3,7 @@ using namespace std;
 
 TestModule::TestModule()
 {
+    mNext = NULL;
     mChannel = -1;
     mMusic = NULL;
     mSound = NULL;
@@ -133,7 +134,7 @@ void TestModule::onCleanup()
 
 EngineModule* TestModule::getNextModule()
 {
-    return NULL;
+    return mNext;
 }
 
 void TestModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
