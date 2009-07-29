@@ -22,6 +22,7 @@ class BuildMapModule : public EngineModule
         void onMouseMove(int inX, int inY, int inRelX, int inRelY, bool inLeft,
             bool inRight, bool inMiddle);
         void onLButtonDown(int inX, int inY);
+        void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
 
         EngineModule* mNext;
         StaticLayer* mMouse;

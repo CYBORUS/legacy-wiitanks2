@@ -2,8 +2,6 @@
 
 //included for rand(), should be removed after development
 #include <cstdlib>
-#include <iostream>
-#include <iomanip>
 using namespace std;
 
 #define MAP_SIZE 50
@@ -83,6 +81,7 @@ BuildMapModule::BuildMapModule()
         bmask = 0x00ff0000;
         amask = 0xff000000;
     }
+
 }
 
 BuildMapModule::~BuildMapModule()
@@ -91,6 +90,7 @@ BuildMapModule::~BuildMapModule()
 
 bool BuildMapModule::onInit()
 {
+    SDL_EnableKeyRepeat(5, 5); //we want key repeating for scrolling
 
 
 
@@ -132,7 +132,12 @@ bool BuildMapModule::onInit()
 
     mBackground->surface = SDL_DisplayFormat(tempSurface);
 
-    SDL_BlitSurface(picSurface, NULL, mBackground->surface, NULL);
+    src.x = 0;
+    src.y = 0;
+    src.w = 800;
+    src.h = 600;
+
+    SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
 
     mEngine->addLayer(mBackground);
     // End of development code
@@ -175,4 +180,48 @@ void BuildMapModule::onLButtonDown(int inX, int inY)
 {
     if (mEngine == NULL) return;
     mEngine->onExit();
+}
+
+void BuildMapModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+{
+    int c = inSym; //what key is this
+    int amount = 5; //number of pixels to increment/decrement by
+
+    if (c == SDLK_LEFT)
+    {
+        src.x -= amount;
+        if (src.x < 0)
+        {
+            src.x = 0;
+        }
+        SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
+    }
+    else if (c == SDLK_RIGHT)
+    {
+        src.x += amount;
+        if (src.x > 800)
+        {
+            src.x = 800;
+        }
+        SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
+    }
+    else if (c == SDLK_UP)
+    {
+        src.y -= amount;
+        if (src.y < 0)
+        {
+            src.y = 0;
+        }
+        SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
+    }
+    else if (c == SDLK_DOWN)
+    {
+        src.y += amount;
+        if (src.y > 1000)
+        {
+            src.y = 1000;
+        }
+        SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
+    }
+
 }
