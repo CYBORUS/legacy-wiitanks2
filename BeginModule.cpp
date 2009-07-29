@@ -129,7 +129,7 @@ void BeginModule::onLoop()
 
         if (SDL_GetTicks() > mPauseTime)
         {
-            mEngine->mRunning = false;
+            mEngine->onExit();
         }
     }
 
@@ -177,7 +177,7 @@ void BeginModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
 void BeginModule::onLButtonDown(int inX, int inY)
 {
     if (mEngine == NULL) return;
-    mEngine->mRunning = false;
+    mEngine->onExit();
 }
 
 void BeginModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)
