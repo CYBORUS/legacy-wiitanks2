@@ -39,7 +39,7 @@ bool TestModule::onInit()
     mFPS->setColor(128, 128, 128, 0);
     mFPS->loadFont("images/DejaVuSans.ttf", 16);
     mFPS->setText("0 FPS");
-    mFPS->setLocation(900, 500);
+    mFPS->setLocation(600, 500);
     mFPS->priority = PRIORITY_TEXT;
 
     mJS1 = new TextLayer();
