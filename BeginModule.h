@@ -3,7 +3,7 @@
 
 #include "EngineModule.h"
 #include "TestModule.h"
-#include <sdl.h>
+#include <SDL.h>
 
 class BeginModule : public EngineModule
 {

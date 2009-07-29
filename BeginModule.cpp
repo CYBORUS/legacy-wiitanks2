@@ -51,7 +51,6 @@ bool BeginModule::onInit()
                                 32, rmask, gmask, bmask, amask);
 
     mBackground->surface = SDL_DisplayFormat(t);
-    SDL_FreeSurface(t);
 
     picSurface = VideoLayer::getImage("images/presenting.jpg");
     SDL_BlitSurface(picSurface, NULL, t, &dest);
