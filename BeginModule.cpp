@@ -1,18 +1,6 @@
 #include "BeginModule.h"
 using namespace std;
 
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    Uint32 rmask = 0xff000000;
-    Uint32 gmask = 0x00ff0000;
-    Uint32 bmask = 0x0000ff00;
-    Uint32 amask = 0x000000ff;
-#else
-    Uint32 rmask = 0x000000ff;
-    Uint32 gmask = 0x0000ff00;
-    Uint32 bmask = 0x00ff0000;
-    Uint32 amask = 0xff000000;
-#endif
-
 #define PAUSE_TIME 3
 
 BeginModule::BeginModule()
@@ -24,12 +12,27 @@ BeginModule::BeginModule()
     tempSurface = NULL;
     AlphaValue = 0;
     incDec = 1;
-    mPauseTime = -1;
+    mPauseTime = 0;
 
 
 
     dest.x = 0;
     dest.y = 0;
+
+    if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+    {
+        rmask = 0xff000000;
+        gmask = 0x00ff0000;
+        bmask = 0x0000ff00;
+        amask = 0x000000ff;
+    }
+    else
+    {
+        rmask = 0x000000ff;
+        gmask = 0x0000ff00;
+        bmask = 0x00ff0000;
+        amask = 0xff000000;
+    }
 }
 
 BeginModule::~BeginModule()
@@ -38,6 +41,7 @@ BeginModule::~BeginModule()
 
 bool BeginModule::onInit()
 {
+
     mBackground = new StaticLayer();
 
     SDL_Surface* t = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_SRCALPHA,
@@ -64,7 +68,7 @@ bool BeginModule::onInit()
     mEngine->addLayer(mBackground);
     mEngine->addLayer(mMouse);
 
-    mNext = new TestModule();
+    mNext = new BuildMapModule();
     return true;
 }
 
@@ -99,7 +103,7 @@ void BeginModule::onLoop()
 
     if(AlphaValue >= 255)
     {
-        if (mPauseTime < 0)
+        if (mPauseTime <= 0)
         {
             AlphaValue = 255;
             mPauseTime = SDL_GetTicks() + (1000 * PAUSE_TIME);
@@ -108,13 +112,13 @@ void BeginModule::onLoop()
 
         if (SDL_GetTicks() > mPauseTime)
         {
-            mPauseTime = -1;
+            mPauseTime = 0;
             incDec = -1;
         }
     }
     else if (AlphaValue <= 0)
     {
-        if (mPauseTime < 0)
+        if (mPauseTime <= 0)
         {
             AlphaValue = 0;
             mPauseTime = SDL_GetTicks() + 1000;

@@ -2,7 +2,7 @@
 #define	_BEGINMODULE_H
 
 #include "EngineModule.h"
-#include "TestModule.h"
+#include "BuildMapModule.h"
 #include <SDL.h>
 
 class BeginModule : public EngineModule
@@ -30,7 +30,13 @@ class BeginModule : public EngineModule
         SDL_Surface* tempSurface;
         int AlphaValue;
         int incDec; //whether alphaValue should be incremented or decremented
-        int mPauseTime;
+        unsigned int mPauseTime;
+
+        //RGB mask values
+        Uint32 rmask;
+        Uint32 gmask;
+        Uint32 bmask;
+        Uint32 amask;
 
 };
 
