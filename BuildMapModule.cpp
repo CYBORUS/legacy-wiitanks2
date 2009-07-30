@@ -2,6 +2,7 @@
 
 //included for rand(), should be removed after development
 #include <cstdlib>
+#include <iostream>
 using namespace std;
 
 
@@ -19,6 +20,8 @@ BuildMapModule::BuildMapModule()
     picSurface = NULL;
     tempSurface = NULL;
     srand(time(NULL));
+
+    mTurretDirections = new StaticLayer[16]();
 
     dest.x = 0;
     dest.y = 0;
@@ -102,6 +105,21 @@ bool BuildMapModule::onInit()
     mTileset->surface = VideoLayer::getImage("images/tileset.png");
     mTileset->priority = PRIORITY_BACKGROUND;
 
+    for (int i = 0; i < 16; i++)
+    {
+        s << "images/turrets/turret" << i << ".png";
+        mTurretDirections[i].surface = VideoLayer::getImage(s.str().c_str());
+        mTurretDirections[i].setLocation(50, 50);
+        mTurretDirections[i].priority = PRIORITY_DEFAULT;
+        s.str("");
+    }
+
+    mTurret = new StaticLayer();
+    mTurret->surface = mTurretDirections[0].surface;
+    //SDL_SetColorKey(mTurret->surface, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(mTurret->surface->format, 0xFF, 0x0, 0xFF));
+    mTurret->priority = PRIORITY_DEFAULT;
+    mTurret->setLocation(400, 300);
+
     // The following setup code is placed here only for development purposes
     // In final release, it should be in the onLoop() function, and a different
     // Module should be used to display the map
@@ -142,7 +160,12 @@ bool BuildMapModule::onInit()
     src.w = 800;
     src.h = 600;
 
+    dest.x = 40;
+    dest.y = 30;
+
     SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
+
+    //SDL_BlitSurface(mTurret->surface, NULL, mBackground->surface, &dest);
 
     mEngine->addLayer(mBackground);
     // End of development code
@@ -152,6 +175,7 @@ bool BuildMapModule::onInit()
     mMouse->priority = PRIORITY_MOUSE;
     SDL_ShowCursor(SDL_DISABLE);
 
+    mEngine->addLayer(mTurret);
     mEngine->addLayer(mMouse);
 
     mNext = new TestModule();
@@ -200,8 +224,25 @@ EngineModule* BuildMapModule::getNextModule()
 void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY, bool inLeft,
             bool inRight, bool inMiddle)
 {
+    int turretX = mTurret->location->x + 16;
+    int turretY = mTurret->location->y + 16;
+    int which = 0;
     if (mMouse == NULL) return;
     mMouse->setLocation(inX, inY);
+
+    double x = (double)(inX - turretX);
+    double y = (double)(inY - turretY) * -1.0;
+    double angle = atan2(y, x) * 180 / 3.14159265;
+    if (angle < 0)
+    {
+        angle += 360;
+    }
+
+
+    which = (int(angle * 2.0 / 45.0 + 1)) % 16;
+
+
+    mTurret->surface = mTurretDirections[which].surface;
 }
 
 void BuildMapModule::onLButtonDown(int inX, int inY)

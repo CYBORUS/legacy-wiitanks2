@@ -1,11 +1,17 @@
 #ifndef _BUILDMAPMODULE_H
 #define _BUILDMAPMODULE_H
 
+#include <sstream>
+using namespace std;
+
 #include "EngineModule.h"
 #include "TestModule.h"
+#include "SDL_rotozoom.h"
+
+#include <cmath>
 #include <SDL.h>
 
-#define MAP_SIZE 100
+#define MAP_SIZE 200
 
 class BuildMapModule : public EngineModule
 {
@@ -31,11 +37,15 @@ class BuildMapModule : public EngineModule
         StaticLayer* mMouse;
         StaticLayer* mTileset;
         StaticLayer* mBackground;
+        StaticLayer* mTurret;
+        StaticLayer* mTurretDirections;
         SDL_Rect dest;
         SDL_Rect src;
         SDL_Surface* picSurface;
         SDL_Surface* tempSurface;
         int tileMap[MAP_SIZE][MAP_SIZE]; //Define the map
+
+        stringstream s;
 
         //to control scroll movement
         int xMove;
