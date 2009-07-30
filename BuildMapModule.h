@@ -23,6 +23,7 @@ class BuildMapModule : public EngineModule
             bool inRight, bool inMiddle);
         void onLButtonDown(int inX, int inY);
         void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+        void onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
 
         EngineModule* mNext;
         StaticLayer* mMouse;
@@ -33,6 +34,10 @@ class BuildMapModule : public EngineModule
         SDL_Surface* picSurface;
         SDL_Surface* tempSurface;
         int tileMap[50][50]; //Define the map
+
+        //to control scroll movement
+        int xMove;
+        int yMove;
 
         //RGB mask values
         Uint32 rmask;

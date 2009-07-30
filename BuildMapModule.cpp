@@ -29,6 +29,9 @@ BuildMapModule::BuildMapModule()
     src.w = 32;
     src.h = 32;
 
+    xMove = 0;
+    yMove = 0;
+
     //create a random dummy map, in actual game we would create
     // a real map
 
@@ -90,7 +93,7 @@ BuildMapModule::~BuildMapModule()
 
 bool BuildMapModule::onInit()
 {
-    SDL_EnableKeyRepeat(5, 5); //we want key repeating for scrolling
+    //SDL_EnableKeyRepeat(5, 5); //we want key repeating for scrolling
 
 
 
@@ -155,7 +158,30 @@ bool BuildMapModule::onInit()
 
 void BuildMapModule::onLoop()
 {
+    src.x += xMove;
+    src.y += yMove;
 
+    if (src.x < 0)
+    {
+        src.x = 0;
+    }
+    else if (src.x > 800)
+    {
+        src.x = 800;
+    }
+
+    if (src.y < 0)
+    {
+        src.y = 0;
+    }
+    else if (src.y > 1000)
+    {
+        src.y = 1000;
+    }
+
+    SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
+
+    SDL_Delay(5);
 }
 
 void BuildMapModule::onCleanup()
@@ -189,39 +215,42 @@ void BuildMapModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
     if (c == SDLK_LEFT)
     {
-        src.x -= amount;
-        if (src.x < 0)
-        {
-            src.x = 0;
-        }
-        SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
+        xMove -= amount;
     }
-    else if (c == SDLK_RIGHT)
+    if (c == SDLK_RIGHT)
     {
-        src.x += amount;
-        if (src.x > 800)
-        {
-            src.x = 800;
-        }
-        SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
+        xMove += amount;
     }
-    else if (c == SDLK_UP)
+    if (c == SDLK_UP)
     {
-        src.y -= amount;
-        if (src.y < 0)
-        {
-            src.y = 0;
-        }
-        SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
-    }
-    else if (c == SDLK_DOWN)
-    {
-        src.y += amount;
-        if (src.y > 1000)
-        {
-            src.y = 1000;
-        }
-        SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
-    }
+        yMove -= amount;
 
+    }
+    if (c == SDLK_DOWN)
+    {
+        yMove += amount;
+    }
+}
+
+void BuildMapModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
+{
+    int c = inSym; //what key is this
+
+    if (c == SDLK_LEFT)
+    {
+        xMove = 0;
+    }
+    if (c == SDLK_RIGHT)
+    {
+        xMove = 0;
+    }
+    if (c == SDLK_UP)
+    {
+        yMove = 0;
+
+    }
+    if (c == SDLK_DOWN)
+    {
+        yMove = 0;
+    }
 }
