@@ -5,6 +5,8 @@
 #include "TestModule.h"
 #include <SDL.h>
 
+#define MAP_SIZE 100
+
 class BuildMapModule : public EngineModule
 {
     public:
@@ -33,7 +35,7 @@ class BuildMapModule : public EngineModule
         SDL_Rect src;
         SDL_Surface* picSurface;
         SDL_Surface* tempSurface;
-        int tileMap[50][50]; //Define the map
+        int tileMap[MAP_SIZE][MAP_SIZE]; //Define the map
 
         //to control scroll movement
         int xMove;

@@ -4,9 +4,10 @@
 #include <cstdlib>
 using namespace std;
 
-#define MAP_SIZE 50
 
 
+int X = MAP_SIZE * 32;
+int Y = MAP_SIZE * 32;
 
 
 BuildMapModule::BuildMapModule()
@@ -107,7 +108,7 @@ bool BuildMapModule::onInit()
     mBackground = new StaticLayer();
 
     tempSurface = SDL_CreateRGBSurface(SDL_HWSURFACE,
-                                1600, 1600,
+                                X, Y,
                                 32, rmask, gmask, bmask, amask);
 
     picSurface = SDL_DisplayFormat(tempSurface);
@@ -130,10 +131,11 @@ bool BuildMapModule::onInit()
         }
     }
     tempSurface = SDL_CreateRGBSurface(SDL_HWSURFACE,
-                                1600, 1600,
+                                X, Y,
                                 32, rmask, gmask, bmask, amask);
 
     mBackground->surface = SDL_DisplayFormat(tempSurface);
+    SDL_FreeSurface(tempSurface);
 
     src.x = 0;
     src.y = 0;
@@ -165,18 +167,18 @@ void BuildMapModule::onLoop()
     {
         src.x = 0;
     }
-    else if (src.x > 800)
+    else if (src.x > (X - 800))
     {
-        src.x = 800;
+        src.x = X - 800;
     }
 
     if (src.y < 0)
     {
         src.y = 0;
     }
-    else if (src.y > 1000)
+    else if (src.y > (Y - 600))
     {
-        src.y = 1000;
+        src.y = Y - 600;
     }
 
     SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
@@ -215,20 +217,20 @@ void BuildMapModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
     if (c == SDLK_LEFT)
     {
-        xMove -= amount;
+        xMove = -amount;
     }
     if (c == SDLK_RIGHT)
     {
-        xMove += amount;
+        xMove = amount;
     }
     if (c == SDLK_UP)
     {
-        yMove -= amount;
+        yMove = -amount;
 
     }
     if (c == SDLK_DOWN)
     {
-        yMove += amount;
+        yMove = amount;
     }
 }
 
