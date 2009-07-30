@@ -6,7 +6,6 @@ using namespace std;
 
 #include "EngineModule.h"
 #include "TestModule.h"
-#include "SDL_rotozoom.h"
 
 #include <cmath>
 #include <SDL.h>
