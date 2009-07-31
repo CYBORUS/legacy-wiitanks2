@@ -173,7 +173,6 @@ void TestModule::onLButtonDown(int inX, int inY)
 void TestModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)
 {
     stringstream s;
-    int w = (int) inWhich;
     int a = (int) inAxis;
     int v = (int) inValue;
     //s << "w " << w << " a " << a << " v " << v;
@@ -191,7 +190,6 @@ void TestModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)
 void TestModule::onJoyButtonDown(Uint8 inWhich, Uint8 inButton)
 {
     stringstream s;
-    int w = (int) inWhich;
     int b = (int) inButton;
     s << "b " << b;
     mJS3->setText(s.str().c_str());

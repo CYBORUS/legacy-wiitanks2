@@ -39,6 +39,11 @@ class GameEngine
         SDL_Rect* moveCamera(int inX, int inY);
         SDL_Rect* getCamera();
 
+        Mix_Music* loadMusic(const char* inFile);
+        void freeMusic(Mix_Music* inMusic);
+        Mix_Chunk* loadSound(const char* inFile);
+        void freeSound(Mix_Chunk* inSound);
+
         void onMinimize();
         void onRestore();
         void onResize(int inWidth, int inHeight);
@@ -56,6 +61,7 @@ class GameEngine
         void onCleanup();
         void onMusicEnd();
 
+        bool mAudio;
         bool mRunning;
         unsigned int mNextFrame;
         SDL_Surface* mWindowIcon;

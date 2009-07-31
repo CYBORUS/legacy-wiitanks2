@@ -9,6 +9,7 @@ GameEngine::GameEngine()
     mJoystick = NULL;
     mCanvas = NULL;
     mCanvasTwo = NULL;
+    mAudio = true;
     mCamera.x = 0;
     mCamera.y = 0;
 }
@@ -156,46 +157,23 @@ bool GameEngine::onInit()
     SDL_WM_SetIcon(mWindowIcon, NULL);
     SDL_WM_SetCaption("Zero2D","");
 
-//    int audioRate = 22050;
-//    Uint16 audioFormat = AUDIO_S16;
-//    int audioChannels = 2;
-//    int audioBuffers = 4096;
+    int audioRate = 22050;
+    Uint16 audioFormat = AUDIO_S16;
+    int audioChannels = 2;
+    int audioBuffers = 4096;
 
-//    if (Mix_OpenAudio(audioRate, audioFormat, audioChannels, audioBuffers))
-//    {
-//        cerr << "Unable to open audio!\n";
-//        return false;
-//    }
+    if (mAudio && Mix_OpenAudio(audioRate, audioFormat, audioChannels, audioBuffers))
+    {
+        mAudio = false;
+        cerr << "Unable to open audio!\n";
+    }
 
     return true;
 }
 
-//void GameEngine::onLoop()
-//{
-//    stringstream s;
-//
-//    mFrames++;
-//
-//    if (SDL_GetTicks() > mNextFrame)
-//    {
-//        mNextFrame += NEXT_FRAME * 3;
-//        mYoshi->update();
-//    }
-//
-//    if (SDL_GetTicks() > mNextSecond)
-//    {
-//        s << mFrames << " FPS";
-//        mFPS->setText(s.str().c_str());
-//        mNextSecond = SDL_GetTicks() + 1000;
-//        mFrames = 0;
-//    }
-//}
-
 inline void GameEngine::onRender()
 {
     VideoLayer* iterator = mWindow.next;
-    //SDL_Surface* t = NULL;
-    //SDL_Surface* tempSurface = NULL;
 
     SDL_BlitSurface(mCanvas, NULL, mCanvasTwo, NULL);
     while (iterator != NULL && iterator->priority < PRIORITY_GUI)
@@ -214,29 +192,6 @@ inline void GameEngine::onRender()
         iterator = iterator->next;
     }
 
-//    tempSurface = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_SRCALPHA, 800, 600, 32, rmask, gmask, bmask, amask);
-//
-//
-//    t = SDL_DisplayFormat(tempSurface);
-//
-//    SDL_FreeSurface(tempSurface);
-//
-//
-//    SDL_Rect dest;
-//    dest.x = 0;
-//    dest.y = 0;
-//
-//	SDL_FillRect( t, 0, SDL_MapRGBA(t->format, 0, 0, 0, 0) );
-//
-//    SDL_BlitSurface(mWindow.surface, NULL, t, &dest);
-//    SDL_SetAlpha(t, SDL_SRCALPHA, 128);
-//
-//    SDL_FillRect( mWindow.surface, 0, SDL_MapRGBA(t->format, 255, 255, 255, 0) );
-//
-//
-//    SDL_BlitSurface(t, NULL, mWindow.surface, &dest);
-//    SDL_FreeSurface(t);
-
     SDL_Flip(mWindow.surface);
 }
 
@@ -252,7 +207,7 @@ void GameEngine::onCleanup()
         mJoystick = NULL;
     }
 
-    //Mix_CloseAudio();
+    if (mAudio) Mix_CloseAudio();
 
     TTF_Quit();
     SDL_Quit();
@@ -313,10 +268,31 @@ SDL_Rect* GameEngine::setCamera(int inX, int inY)
 SDL_Rect* GameEngine::moveCamera(int inX, int inY)
 {
     return setCamera(mCamera.x + inX, mCamera.y + inY);
-
 }
 
 SDL_Rect* GameEngine::getCamera()
 {
     return &mCamera;
+}
+
+Mix_Music* GameEngine::loadMusic(const char* inFile)
+{
+    if (!mAudio) return NULL;
+    return Mix_LoadMUS(inFile);
+}
+
+void GameEngine::freeMusic(Mix_Music* inMusic)
+{
+    if (inMusic != NULL) Mix_FreeMusic(inMusic);
+}
+
+Mix_Chunk* GameEngine::loadSound(const char* inFile)
+{
+    if (!mAudio) return NULL;
+    return Mix_LoadWAV(inFile);
+}
+
+void GameEngine::freeSound(Mix_Chunk* inSound)
+{
+    if (inSound != NULL) Mix_FreeChunk(inSound);
 }
