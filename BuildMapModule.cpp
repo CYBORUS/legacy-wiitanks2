@@ -22,6 +22,7 @@ BuildMapModule::BuildMapModule()
     srand(time(NULL));
     mAngle = 0;
     mBullet = NULL;
+    mShot = NULL;
 
     temp = new VideoLayer[NUM_STEPS]();
 
@@ -107,7 +108,7 @@ bool BuildMapModule::onInit()
 {
     SDL_EnableKeyRepeat(5, 5); //we want key repeating for scrolling
 
-
+    mShot = mEngine->loadSound("audio/hyah.wav");
 
     mTileset = new VideoLayer();
     mTileset->surface = VideoLayer::getImage("images/tileset.png");
@@ -269,6 +270,8 @@ void BuildMapModule::onCleanup()
     SDL_FreeSurface(mBackground->surface);
     SDL_FreeSurface(mMouse->surface);
 
+    mEngine->freeSound(mShot);
+
     SDL_FreeSurface(picSurface);
 
     for (int i = 0; i < NUM_STEPS; i++)
@@ -318,6 +321,7 @@ void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY, bool 
 
 void BuildMapModule::onLButtonDown(int inX, int inY)
 {
+    mEngine->playSound(mShot);
     if (mBullet != NULL)
     {
         mEngine->removeLayer(mBullet->getLayer());

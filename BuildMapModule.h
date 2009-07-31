@@ -54,6 +54,7 @@ class BuildMapModule : public EngineModule
         SDL_Surface* tempSurface;
         int tileMap[MAP_SIZE][MAP_SIZE]; //Define the map
         double mAngle;
+        Mix_Chunk* mShot;
 
         stringstream s;
 

@@ -296,3 +296,9 @@ void GameEngine::freeSound(Mix_Chunk* inSound)
 {
     if (inSound != NULL) Mix_FreeChunk(inSound);
 }
+
+void GameEngine::playSound(Mix_Chunk* inSound)
+{
+    if (!mAudio) return;
+    Mix_PlayChannel(-1, inSound, 0);
+}
