@@ -39,7 +39,7 @@ class BuildMapModule : public EngineModule
         VideoLayer* mTileset;
         VideoLayer* mBackground;
         VideoLayer* mTurret;
-        VideoLayer* mTurretDirections;
+
 
         VideoLayer* temp;
         SDL_Rect dest;
