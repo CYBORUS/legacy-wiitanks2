@@ -5,7 +5,6 @@ Mask GameEngine::mask;
 
 GameEngine::GameEngine()
 {
-    cerr << "??" << endl;
     mWindowIcon = NULL;
     mJoystick = NULL;
     mCanvas = NULL;

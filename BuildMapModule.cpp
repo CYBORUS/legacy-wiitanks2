@@ -251,12 +251,13 @@ void BuildMapModule::onLoop()
     src.x = tempRect->x;
     src.y = tempRect->y;
 
+    tempRect = NULL;
+
     SDL_Delay(5);
 }
 
 void BuildMapModule::onFrame()
 {
-    cerr << "onFrame\n";
     if (mBullet != NULL)
     {
         mBullet->onUpdate();
@@ -294,8 +295,10 @@ void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY, bool 
     if (mMouse == NULL) return;
     mMouse->setLocation(inX, inY);
 
-    double x = (double)(inX - turretX);
-    double y = (double)(inY - turretY) * -1.0;
+    tempRect = mEngine->getCamera();
+
+    double x = (double)((inX + tempRect->x) - turretX);
+    double y = (double)((inY + tempRect->y) - turretY) * -1.0;
     double angle = atan2(y, x) * 180 / 3.14159265;
     if (angle < 0)
     {
