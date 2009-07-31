@@ -20,7 +20,8 @@ BuildMapModule::BuildMapModule()
     picSurface = NULL;
     tempSurface = NULL;
     srand(time(NULL));
-    oldAngle = 0;
+    mAngle = 0;
+    mBullet = NULL;
 
     temp = new VideoLayer[NUM_STEPS]();
 
@@ -243,6 +244,14 @@ void BuildMapModule::onLoop()
     SDL_Delay(5);
 }
 
+void BuildMapModule::onFrame()
+{
+    if (mBullet != NULL)
+    {
+        mBullet->onUpdate();
+    }
+}
+
 void BuildMapModule::onCleanup()
 {
     SDL_FreeSurface(mBackground->surface);
@@ -279,6 +288,7 @@ void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY, bool 
     {
         angle += 360;
     }
+    mAngle = angle;
 
 
     which = (int(angle / (360 / NUM_STEPS)));
@@ -291,21 +301,24 @@ void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY, bool 
 
 void BuildMapModule::onLButtonDown(int inX, int inY)
 {
-    if (mEngine == NULL) return;
-    mEngine->onExit();
+    if (mBullet != NULL)
+    {
+        mEngine->removeLayer(mBullet->getLayer());
+        SDL_FreeSurface(mBullet->getLayer()->surface);
+        delete mBullet;
+    }
+
+    double turretX = (double)mTurret->location.x;
+    double turretY = (double)mTurret->location.y;
+    mBullet = new Bullet((double)(inX - turretX), (double)(inY - turretY), turretX + 0.0, turretY + 0.0, 10.0);
+    mEngine->addLayer(mBullet->getLayer());
+
 }
 
 void BuildMapModule::onRButtonDown(int inX, int inY)
 {
-    tempSurface = SDL_DisplayFormatAlpha(rotozoomSurface(mTurret->surface, 45.0, 1.0, 1));
-
-    src.x = 8;
-    src.y = 8;
-    src.w = 32;
-    src.h = 32;
-
-    SDL_BlitSurface(tempSurface, &src, mTurret->surface, NULL);
-    SDL_FreeSurface(tempSurface);
+    if (mEngine == NULL) return;
+    mEngine->onExit();
 
 }
 

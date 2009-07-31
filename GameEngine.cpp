@@ -58,6 +58,7 @@ void GameEngine::removeLayer(VideoLayer* inLayer)
 
 bool GameEngine::start(EngineModule* inModule)
 {
+    mNextFrame = SDL_GetTicks() + NEXT_FRAME;
     EngineModule* em = inModule;
     EngineModule* d = NULL;
 
@@ -81,6 +82,11 @@ bool GameEngine::start(EngineModule* inModule)
         {
             while (SDL_PollEvent(&event)) em->onEvent(&event);
             em->onLoop();
+            if (SDL_GetTicks() > mNextFrame)
+            {
+                em->onFrame();
+                mNextFrame += NEXT_FRAME;
+            }
             onRender();
 
             SDL_Delay(1); // prevent CPU abuse

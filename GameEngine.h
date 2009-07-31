@@ -43,6 +43,7 @@ class GameEngine
         void onMusicEnd();
 
         bool mRunning;
+        unsigned int mNextFrame;
         SDL_Surface* mWindowIcon;
         SDL_Joystick* mJoystick;
 };

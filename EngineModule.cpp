@@ -295,3 +295,7 @@ void EngineModule::setEngine(GameEngine* inEngine)
     mEngine = inEngine;
 }
 
+void EngineModule::onFrame()
+{
+
+}

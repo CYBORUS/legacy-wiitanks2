@@ -16,6 +16,7 @@ class EngineModule
         /// module operation
         virtual bool onInit() = 0;
         virtual void onLoop() = 0;
+        virtual void onFrame();
         virtual void onCleanup() = 0;
         virtual EngineModule* getNextModule() = 0;
         void setEngine(GameEngine* inEngine);

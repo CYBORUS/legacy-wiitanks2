@@ -7,6 +7,7 @@ using namespace std;
 #include "EngineModule.h"
 #include "TestModule.h"
 #include "SDL_rotozoom.h"
+#include "Bullet.h"
 #include <cmath>
 #include <SDL.h>
 
@@ -22,6 +23,7 @@ class BuildMapModule : public EngineModule
         //module operation
         bool onInit();
         void onLoop();
+        void onFrame();
         void onCleanup();
         EngineModule* getNextModule();
 
@@ -40,6 +42,8 @@ class BuildMapModule : public EngineModule
         VideoLayer* mBackground;
         VideoLayer* mTurret;
 
+        Bullet* mBullet;
+
 
         VideoLayer* temp;
         SDL_Rect dest;
@@ -47,7 +51,7 @@ class BuildMapModule : public EngineModule
         SDL_Surface* picSurface;
         SDL_Surface* tempSurface;
         int tileMap[MAP_SIZE][MAP_SIZE]; //Define the map
-        double oldAngle;
+        double mAngle;
 
         stringstream s;
 
