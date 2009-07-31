@@ -3,8 +3,6 @@
 
 #include "GameEngine.h"
 
-
-
 class GameEngine;
 
 class EngineModule
@@ -20,6 +18,7 @@ class EngineModule
         virtual void onCleanup() = 0;
         virtual EngineModule* getNextModule() = 0;
         void setEngine(GameEngine* inEngine);
+        virtual SDL_Surface* getCanvas();
 
         /// input events
         virtual void onEvent(SDL_Event* inEvent);

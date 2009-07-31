@@ -1,11 +1,16 @@
 #include "GameEngine.h"
 using namespace std;
 
+Mask GameEngine::mask;
 
 GameEngine::GameEngine()
 {
     mWindowIcon = NULL;
     mJoystick = NULL;
+    mCanvas = NULL;
+    mCanvasTwo = NULL;
+    mCamera.x = 0;
+    mCamera.y = 0;
 }
 
 GameEngine::~GameEngine()
@@ -79,6 +84,10 @@ bool GameEngine::start(EngineModule* inModule)
             break;
         }
 
+        mCanvas = em->getCanvas();
+
+        mCanvasTwo = SDL_DisplayFormat(mCanvas);
+
         while (mRunning)
         {
             while (SDL_PollEvent(&event)) em->onEvent(&event);
@@ -95,6 +104,9 @@ bool GameEngine::start(EngineModule* inModule)
 
         mWindow.next = NULL;
         em->onCleanup();
+        //SDL_FreeSurface(mCanvas);
+        SDL_FreeSurface(mCanvasTwo);
+
         d = em;
         em = em->getNextModule();
         delete d;
@@ -106,12 +118,24 @@ bool GameEngine::start(EngineModule* inModule)
 bool GameEngine::onInit()
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) return false;
-
-
-
-
     if (TTF_Init() == -1) return false;
     if (!mWindow.setVideoMode()) return false;
+
+    if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+    {
+        GameEngine::mask.red   = 0xff000000;
+        GameEngine::mask.green = 0x00ff0000;
+        GameEngine::mask.blue  = 0x0000ff00;
+        GameEngine::mask.alpha = 0x000000ff;
+    }
+    else
+    {
+        GameEngine::mask.red   = 0x000000ff;
+        GameEngine::mask.green = 0x0000ff00;
+        GameEngine::mask.blue  = 0x00ff0000;
+        GameEngine::mask.alpha = 0xff000000;
+    }
+
     mWindow.next = NULL;
 
     if (SDL_NumJoysticks() > 0)
@@ -170,9 +194,18 @@ inline void GameEngine::onRender()
     //SDL_Surface* t = NULL;
     //SDL_Surface* tempSurface = NULL;
 
+    SDL_BlitSurface(mCanvas, NULL, mCanvasTwo, NULL);
+    while (iterator != NULL && iterator->priority < PRIORITY_GUI)
+    {
+        SDL_BlitSurface(iterator->surface, iterator->clip, mCanvasTwo,
+            &iterator->location);
+        iterator = iterator->next;
+    }
+
+    SDL_BlitSurface(mCanvasTwo, NULL, mWindow.surface, &mCamera);
+
     while (iterator != NULL)
     {
-        //if (iterator->surface == NULL) exit(1);
         SDL_BlitSurface(iterator->surface, iterator->clip, mWindow.surface,
             &iterator->location);
         iterator = iterator->next;
@@ -241,4 +274,33 @@ void GameEngine::onResize(int inWidth, int inHeight)
 
 void GameEngine::onExpose()
 {
+}
+
+void GameEngine::setCanvas(SDL_Surface* inCanvas)
+{
+    mCanvas = inCanvas;
+}
+
+void GameEngine::setCamera(int inX, int inY)
+{
+    mCamera.x = -inX;
+    mCamera.y = -inY;
+
+    if (mCamera.x > 0)
+    {
+        mCamera.x = 0;
+    }
+    else if (mWindow.surface->w - mCamera.x > mCanvas->w)
+    {
+        mCamera.x = mWindow.surface->w - mCanvas->w;
+    }
+
+    if (mCamera.y > 0)
+    {
+        mCamera.y = 0;
+    }
+    else if (mWindow.surface->h - mCamera.y > mCanvas->h)
+    {
+        mCamera.y = mWindow.surface->h - mCanvas->h;
+    }
 }

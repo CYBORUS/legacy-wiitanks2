@@ -195,7 +195,7 @@ bool BuildMapModule::onInit()
 
     //SDL_BlitSurface(mTurret->surface, NULL, mBackground->surface, &dest);
 
-    mEngine->addLayer(mBackground);
+    //mEngine->addLayer(mBackground);
     // End of development code
 
     mMouse = new VideoLayer();
@@ -217,29 +217,30 @@ bool BuildMapModule::onInit()
 
 void BuildMapModule::onLoop()
 {
-    src.x -= xMove;
-    src.y -= yMove;
+    src.x += xMove;
+    src.y += yMove;
 
-    if (src.x > 0)
-    {
-        src.x = 0;
-    }
-    else if (src.x < (800 - X))
-    {
-        src.x = 800 - X;
-    }
-
-    if (src.y > 0)
-    {
-        src.y = 0;
-    }
-    else if (src.y < (600 - Y))
-    {
-        src.y = 600 - Y;
-    }
+//    if (src.x > 0)
+//    {
+//        src.x = 0;
+//    }
+//    else if (src.x < (800 - X))
+//    {
+//        src.x = 800 - X;
+//    }
+//
+//    if (src.y > 0)
+//    {
+//        src.y = 0;
+//    }
+//    else if (src.y < (600 - Y))
+//    {
+//        src.y = 600 - Y;
+//    }
 
     //SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
-    mBackground->setLocation(src.x, src.y);
+    //mBackground->setLocation(src.x, src.y);
+    mEngine->setCamera(src.x, src.y);
 
     SDL_Delay(5);
 }
@@ -370,4 +371,9 @@ void BuildMapModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
     {
         yMove = 0;
     }
+}
+
+SDL_Surface* BuildMapModule::getCanvas()
+{
+    return mBackground->surface;
 }

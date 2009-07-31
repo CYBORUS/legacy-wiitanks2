@@ -25,6 +25,7 @@ class BuildMapModule : public EngineModule
         void onLoop();
         void onFrame();
         void onCleanup();
+        SDL_Surface* getCanvas();
         EngineModule* getNextModule();
 
 
