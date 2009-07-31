@@ -246,6 +246,7 @@ void BuildMapModule::onLoop()
 
 void BuildMapModule::onFrame()
 {
+    cerr << "onFrame\n";
     if (mBullet != NULL)
     {
         mBullet->onUpdate();
@@ -256,6 +257,7 @@ void BuildMapModule::onCleanup()
 {
     SDL_FreeSurface(mBackground->surface);
     SDL_FreeSurface(mMouse->surface);
+
     SDL_FreeSurface(picSurface);
 
     for (int i = 0; i < NUM_STEPS; i++)
@@ -269,7 +271,8 @@ void BuildMapModule::onCleanup()
 
 EngineModule* BuildMapModule::getNextModule()
 {
-    return mNext;
+    //return mNext;
+    return NULL;
 }
 
 void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY, bool inLeft,

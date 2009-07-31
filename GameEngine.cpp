@@ -58,11 +58,12 @@ void GameEngine::removeLayer(VideoLayer* inLayer)
 
 bool GameEngine::start(EngineModule* inModule)
 {
-    mNextFrame = SDL_GetTicks() + NEXT_FRAME;
     EngineModule* em = inModule;
     EngineModule* d = NULL;
 
     if (!onInit()) return false;
+
+    mNextFrame = SDL_GetTicks() + NEXT_FRAME;
 
     SDL_Event event;
 
