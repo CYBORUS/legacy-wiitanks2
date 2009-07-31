@@ -49,6 +49,7 @@ class BuildMapModule : public EngineModule
         VideoLayer* temp;
         SDL_Rect dest;
         SDL_Rect src;
+        SDL_Rect* tempRect;
         SDL_Surface* picSurface;
         SDL_Surface* tempSurface;
         int tileMap[MAP_SIZE][MAP_SIZE]; //Define the map

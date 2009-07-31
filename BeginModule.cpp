@@ -68,6 +68,7 @@ bool BeginModule::onInit()
     mEngine->addLayer(mBackground);
     mEngine->addLayer(mMouse);
 
+
     mNext = new BuildMapModule();
     return true;
 }

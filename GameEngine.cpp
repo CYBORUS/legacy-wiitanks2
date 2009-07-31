@@ -5,6 +5,7 @@ Mask GameEngine::mask;
 
 GameEngine::GameEngine()
 {
+    cerr << "??" << endl;
     mWindowIcon = NULL;
     mJoystick = NULL;
     mCanvas = NULL;
@@ -281,7 +282,7 @@ void GameEngine::setCanvas(SDL_Surface* inCanvas)
     mCanvas = inCanvas;
 }
 
-void GameEngine::setCamera(int inX, int inY)
+SDL_Rect* GameEngine::setCamera(int inX, int inY)
 {
     mCamera.x = -inX;
     mCamera.y = -inY;
@@ -303,4 +304,12 @@ void GameEngine::setCamera(int inX, int inY)
     {
         mCamera.y = mWindow.surface->h - mCanvas->h;
     }
+
+    return &mCamera;
+}
+
+SDL_Rect* GameEngine::moveCamera(int inX, int inY)
+{
+    return setCamera(mCamera.x - inX, mCamera.y - inY);
+
 }

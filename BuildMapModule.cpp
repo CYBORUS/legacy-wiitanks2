@@ -35,6 +35,12 @@ BuildMapModule::BuildMapModule()
     src.w = 32;
     src.h = 32;
 
+    tempRect = new SDL_Rect();
+    tempRect->x = 0;
+    tempRect->y = 0;
+    tempRect->w = 32;
+    tempRect->h = 32;
+
     xMove = 0;
     yMove = 0;
 
@@ -240,7 +246,10 @@ void BuildMapModule::onLoop()
 
     //SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
     //mBackground->setLocation(src.x, src.y);
-    mEngine->setCamera(src.x, src.y);
+    tempRect = mEngine->moveCamera(xMove, yMove);
+
+    src.x = tempRect->x;
+    src.y = tempRect->y;
 
     SDL_Delay(5);
 }
