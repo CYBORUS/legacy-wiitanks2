@@ -37,6 +37,7 @@ class GameEngine
         void setCanvas(SDL_Surface* inCanvas);
         SDL_Rect* setCamera(int inX, int inY);
         SDL_Rect* moveCamera(int inX, int inY);
+        SDL_Rect* getCamera();
 
         void onMinimize();
         void onRestore();

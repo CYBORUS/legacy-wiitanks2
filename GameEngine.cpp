@@ -157,10 +157,10 @@ bool GameEngine::onInit()
     SDL_WM_SetIcon(mWindowIcon, NULL);
     SDL_WM_SetCaption("Zero2D","");
 
-    int audioRate = 22050;
-    Uint16 audioFormat = AUDIO_S16;
-    int audioChannels = 2;
-    int audioBuffers = 4096;
+//    int audioRate = 22050;
+//    Uint16 audioFormat = AUDIO_S16;
+//    int audioChannels = 2;
+//    int audioBuffers = 4096;
 
 //    if (Mix_OpenAudio(audioRate, audioFormat, audioChannels, audioBuffers))
 //    {
@@ -315,4 +315,9 @@ SDL_Rect* GameEngine::moveCamera(int inX, int inY)
 {
     return setCamera(mCamera.x + inX, mCamera.y + inY);
 
+}
+
+SDL_Rect* GameEngine::getCamera()
+{
+    return &mCamera;
 }
