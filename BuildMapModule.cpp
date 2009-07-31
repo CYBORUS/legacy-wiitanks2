@@ -243,8 +243,18 @@ void BuildMapModule::onLoop()
 
 void BuildMapModule::onCleanup()
 {
+    SDL_FreeSurface(mBackground->surface);
+    SDL_FreeSurface(mMouse->surface);
+    SDL_FreeSurface(picSurface);
+
+    for (int i = 0; i < NUM_STEPS; i++)
+    {
+        SDL_FreeSurface(temp[i].surface);
+    }
+    delete [] temp;
     delete mBackground;
     delete mMouse;
+    delete picSurface;
 }
 
 EngineModule* BuildMapModule::getNextModule()
