@@ -10,6 +10,11 @@ TextLayer::TextLayer() : VideoLayer()
 
 TextLayer::~TextLayer()
 {
+    if (mFont != NULL)
+    {
+        TTF_CloseFont(mFont);
+        mFont = NULL;
+    }
 }
 
 bool TextLayer::loadFont(const char* inFile, int inSize)
