@@ -27,11 +27,6 @@ void TextLayer::setColor(char inRed, char inGreen, char inBlue, char inAlpha)
     mColor.unused = inAlpha;
 }
 
-void TextLayer::setFont(TTF_Font* inFont)
-{
-    mFont = inFont;
-}
-
 void TextLayer::setText(const char* inText)
 {
     mText = inText;
