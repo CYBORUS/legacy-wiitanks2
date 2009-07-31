@@ -122,6 +122,9 @@ bool GameEngine::onInit()
     if (TTF_Init() == -1) return false;
     if (!mWindow.setVideoMode()) return false;
 
+    mCamera.w = mWindow.surface->w;
+    mCamera.h = mWindow.surface->h;
+
     if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
     {
         GameEngine::mask.red   = 0xff000000;
@@ -203,7 +206,7 @@ inline void GameEngine::onRender()
         iterator = iterator->next;
     }
 
-    SDL_BlitSurface(mCanvasTwo, NULL, mWindow.surface, &mCamera);
+    SDL_BlitSurface(mCanvasTwo, &mCamera, mWindow.surface, NULL);
 
     while (iterator != NULL)
     {
@@ -284,25 +287,25 @@ void GameEngine::setCanvas(SDL_Surface* inCanvas)
 
 SDL_Rect* GameEngine::setCamera(int inX, int inY)
 {
-    mCamera.x = -inX;
-    mCamera.y = -inY;
+    mCamera.x = inX;
+    mCamera.y = inY;
 
-    if (mCamera.x > 0)
+    if (mCamera.x < 0)
     {
         mCamera.x = 0;
     }
-    else if (mWindow.surface->w - mCamera.x > mCanvas->w)
+    else if (mWindow.surface->w + mCamera.x > mCanvas->w)
     {
-        mCamera.x = mWindow.surface->w - mCanvas->w;
+        mCamera.x = mCanvas->w - mWindow.surface->w;
     }
 
-    if (mCamera.y > 0)
+    if (mCamera.y < 0)
     {
         mCamera.y = 0;
     }
-    else if (mWindow.surface->h - mCamera.y > mCanvas->h)
+    else if (mWindow.surface->h + mCamera.y > mCanvas->h)
     {
-        mCamera.y = mWindow.surface->h - mCanvas->h;
+        mCamera.y = mCanvas->h - mWindow.surface->h;
     }
 
     return &mCamera;
@@ -310,6 +313,6 @@ SDL_Rect* GameEngine::setCamera(int inX, int inY)
 
 SDL_Rect* GameEngine::moveCamera(int inX, int inY)
 {
-    return setCamera(mCamera.x - inX, mCamera.y - inY);
+    return setCamera(mCamera.x + inX, mCamera.y + inY);
 
 }
