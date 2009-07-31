@@ -87,7 +87,7 @@ bool TestModule::onInit()
     //mSound = Mix_LoadWAV("buzztest.wav");
 
     mNextSecond = SDL_GetTicks() + 1000;
-    mNextFrame += NEXT_FRAME * 3;
+    mNextFrame = SDL_GetTicks() + NEXT_FRAME * 3;
 
     return true;
 }

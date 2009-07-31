@@ -130,8 +130,8 @@ bool BuildMapModule::onInit()
         SDL_FreeSurface(t);
 
 
-        src.x = (tempSurface->w / 2) - 16;
-        src.y = (tempSurface->h / 2) - 16;
+        src.x = (tempSurface->w / 2);
+        src.y = (tempSurface->h / 2);
 //        src.x = 8;
 //        src.y = 8;
 
@@ -302,6 +302,8 @@ void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY, bool 
 
 
     mTurret->surface = temp[which].surface;
+    mTurret->setLocation(400 - (mTurret->surface->w / 2), 300 - (mTurret->surface->h / 2));
+
 }
 
 void BuildMapModule::onLButtonDown(int inX, int inY)
