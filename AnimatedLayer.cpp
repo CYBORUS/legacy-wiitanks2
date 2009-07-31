@@ -14,8 +14,6 @@ AnimatedLayer::AnimatedLayer() : VideoLayer()
 
 AnimatedLayer::~AnimatedLayer()
 {
-    SDL_FreeSurface(surface);
-    surface = NULL;
 }
 
 void AnimatedLayer::oscillate(bool inOscillate)

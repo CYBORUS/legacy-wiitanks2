@@ -122,6 +122,15 @@ void TestModule::onCleanup()
         mMusic = NULL;
     }
 
+    SDL_FreeSurface(mTest->surface);
+    SDL_FreeSurface(mMouse->surface);
+    SDL_FreeSurface(mText->surface);
+    SDL_FreeSurface(mFPS->surface);
+    SDL_FreeSurface(mJS1->surface);
+    SDL_FreeSurface(mJS2->surface);
+    SDL_FreeSurface(mJS3->surface);
+    SDL_FreeSurface(mYoshi->surface);
+
     delete mTest;
     delete mMouse;
     delete mText;
