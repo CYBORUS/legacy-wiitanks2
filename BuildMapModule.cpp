@@ -299,6 +299,7 @@ void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY, bool 
 
     double x = (double)((inX + tempRect->x) - turretX);
     double y = (double)((inY + tempRect->y) - turretY) * -1.0;
+    tempRect = NULL;
     double angle = atan2(y, x) * 180 / 3.14159265;
     if (angle < 0)
     {
@@ -324,9 +325,11 @@ void BuildMapModule::onLButtonDown(int inX, int inY)
         delete mBullet;
     }
 
+    tempRect = mEngine->getCamera();
+
     double turretX = (double)mTurret->location.x;
     double turretY = (double)mTurret->location.y;
-    mBullet = new Bullet((double)(inX - turretX), (double)(inY - turretY), turretX + 0.0, turretY + 0.0, 10.0);
+    mBullet = new Bullet((double)((inX + tempRect->x) - turretX), (double)((inY + tempRect->y) - turretY), turretX + 0.0, turretY + 0.0, 10.0);
     mEngine->addLayer(mBullet->getLayer());
 
 }
