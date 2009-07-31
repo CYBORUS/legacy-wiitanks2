@@ -9,8 +9,9 @@ VideoLayer::VideoLayer()
     priority = 0;
     next = NULL;
     surface = NULL;
-    location = NULL;
     clip = NULL;
+    location.x = 0;
+    location.y = 0;
 }
 
 VideoLayer::~VideoLayer()
@@ -28,6 +29,12 @@ SDL_Surface* VideoLayer::getImage(const char* inFile)
     SDL_FreeSurface(t);
 
     return outSurface;
+}
+
+void VideoLayer::setLocation(int inX, int inY)
+{
+    location.x = inX;
+    location.y = inY;
 }
 
 //void VideoLayer::overlay(SDL_Surface* inTarget, SDL_Surface* inSurface)

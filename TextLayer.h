@@ -2,9 +2,9 @@
 #define	_TEXTLAYER_H
 
 #include <string>
-#include "StaticLayer.h"
+#include "VideoLayer.h"
 
-class TextLayer : public StaticLayer
+class TextLayer : public VideoLayer
 {
     public:
         TextLayer();

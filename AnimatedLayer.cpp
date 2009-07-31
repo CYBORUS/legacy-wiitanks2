@@ -8,7 +8,6 @@ AnimatedLayer::AnimatedLayer() : VideoLayer()
     mFrameOffset = 1;
     mFrameCount = 0;
     mCurrentFrame = -1;
-    location = new SDL_Rect();
     clip = new SDL_Rect();
     clip->x = 0;
 }

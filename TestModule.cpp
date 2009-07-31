@@ -20,11 +20,11 @@ TestModule::~TestModule()
 
 bool TestModule::onInit()
 {
-    mTest = new StaticLayer();
+    mTest = new VideoLayer();
     mTest->surface = VideoLayer::getImage("images/temple_fog.jpg");
     mTest->priority = PRIORITY_BACKGROUND;
 
-    mMouse = new StaticLayer();
+    mMouse = new VideoLayer();
     mMouse->surface = VideoLayer::getImage("images/normal.png");
     mMouse->priority = PRIORITY_MOUSE;
     SDL_ShowCursor(SDL_DISABLE);
@@ -67,8 +67,8 @@ bool TestModule::onInit()
     mYoshi = new AnimatedLayer();
     mYoshi->loadSheet("images/yoshi.png", 64, 8);
     mYoshi->priority = PRIORITY_GUI;
-    mYoshi->location->x = 100;
-    mYoshi->location->y = 100;
+    mYoshi->location.x = 100;
+    mYoshi->location.y = 100;
     mYoshi->update();
 
     mEngine->addLayer(mTest);

@@ -28,8 +28,8 @@ class TestModule : public EngineModule
             Sint16 inYRel);
 
         EngineModule* mNext;
-        StaticLayer* mMouse;
-        StaticLayer* mTest;
+        VideoLayer* mMouse;
+        VideoLayer* mTest;
         TextLayer* mText;
         TextLayer* mFPS;
         TextLayer* mJS1;

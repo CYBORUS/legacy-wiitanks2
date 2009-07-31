@@ -23,8 +23,8 @@ class BeginModule : public EngineModule
         void onLButtonDown(int inX, int inY);
 
         EngineModule* mNext;
-        StaticLayer* mMouse;
-        StaticLayer* mBackground;
+        VideoLayer* mMouse;
+        VideoLayer* mBackground;
         SDL_Rect dest;
         SDL_Surface* picSurface;
         SDL_Surface* tempSurface;

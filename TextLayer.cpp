@@ -2,7 +2,7 @@
 #include "TextLayer.h"
 using namespace std;
 
-TextLayer::TextLayer() : StaticLayer()
+TextLayer::TextLayer() : VideoLayer()
 {
     mFont = NULL;
     mSize = 0;
@@ -10,8 +10,6 @@ TextLayer::TextLayer() : StaticLayer()
 
 TextLayer::~TextLayer()
 {
-    SDL_FreeSurface(surface);
-    surface = NULL;
 }
 
 bool TextLayer::loadFont(const char* inFile, int inSize)

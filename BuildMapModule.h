@@ -35,13 +35,13 @@ class BuildMapModule : public EngineModule
         void onRButtonDown(int inX, int inY);
 
         EngineModule* mNext;
-        StaticLayer* mMouse;
-        StaticLayer* mTileset;
-        StaticLayer* mBackground;
-        StaticLayer* mTurret;
-        StaticLayer* mTurretDirections;
+        VideoLayer* mMouse;
+        VideoLayer* mTileset;
+        VideoLayer* mBackground;
+        VideoLayer* mTurret;
+        VideoLayer* mTurretDirections;
 
-        StaticLayer* temp;
+        VideoLayer* temp;
         SDL_Rect dest;
         SDL_Rect src;
         SDL_Surface* picSurface;

@@ -9,8 +9,6 @@ StaticLayer::StaticLayer() : VideoLayer()
 
 StaticLayer::~StaticLayer()
 {
-    SDL_FreeSurface(surface);
-    surface = NULL;
 }
 
 void StaticLayer::setLocation(int inX, int inY)

@@ -42,7 +42,7 @@ BeginModule::~BeginModule()
 bool BeginModule::onInit()
 {
 
-    mBackground = new StaticLayer();
+    mBackground = new VideoLayer();
 
     SDL_Surface* t = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_SRCALPHA,
                                 mEngine->mWindow.mWidth, mEngine->mWindow.mHeight,
@@ -60,7 +60,7 @@ bool BeginModule::onInit()
     mBackground->priority = PRIORITY_BACKGROUND;
 
 
-    mMouse = new StaticLayer();
+    mMouse = new VideoLayer();
     mMouse->surface = VideoLayer::getImage("images/normal.png");
     mMouse->priority = PRIORITY_MOUSE;
     SDL_ShowCursor(SDL_DISABLE);

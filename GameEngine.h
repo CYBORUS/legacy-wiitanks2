@@ -9,7 +9,7 @@
 #include "AnimatedLayer.h"
 #include "EngineModule.h"
 #include "ScreenLayer.h"
-#include "StaticLayer.h"
+#include "VideoLayer.h"
 #include "TextLayer.h"
 
 #define ENGINE_FPS 30

@@ -22,8 +22,8 @@ BuildMapModule::BuildMapModule()
     srand(time(NULL));
     oldAngle = 0;
 
-    mTurretDirections = new StaticLayer[16]();
-    temp = new StaticLayer[NUM_STEPS]();
+    mTurretDirections = new VideoLayer[16]();
+    temp = new VideoLayer[NUM_STEPS]();
 
     dest.x = 0;
     dest.y = 0;
@@ -103,7 +103,7 @@ bool BuildMapModule::onInit()
 
 
 
-    mTileset = new StaticLayer();
+    mTileset = new VideoLayer();
     mTileset->surface = VideoLayer::getImage("images/tileset.png");
     mTileset->priority = PRIORITY_BACKGROUND;
 
@@ -151,7 +151,7 @@ bool BuildMapModule::onInit()
     src.x = 0;
     src.y = 0;
 
-    mTurret = new StaticLayer();
+    mTurret = new VideoLayer();
     mTurret->surface = temp[0].surface;
     //SDL_SetColorKey(mTurret->surface, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(mTurret->surface->format, 0xFF, 0x0, 0xFF));
     mTurret->priority = PRIORITY_DEFAULT;
@@ -160,7 +160,7 @@ bool BuildMapModule::onInit()
     // The following setup code is placed here only for development purposes
     // In final release, it should be in the onLoop() function, and a different
     // Module should be used to display the map
-    mBackground = new StaticLayer();
+    mBackground = new VideoLayer();
 
     tempSurface = SDL_CreateRGBSurface(SDL_HWSURFACE,
                                 X, Y,
@@ -207,7 +207,7 @@ bool BuildMapModule::onInit()
     mEngine->addLayer(mBackground);
     // End of development code
 
-    mMouse = new StaticLayer();
+    mMouse = new VideoLayer();
     mMouse->surface = VideoLayer::getImage("images/normal.png");
     mMouse->priority = PRIORITY_MOUSE;
     SDL_ShowCursor(SDL_DISABLE);
@@ -266,8 +266,8 @@ EngineModule* BuildMapModule::getNextModule()
 void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY, bool inLeft,
             bool inRight, bool inMiddle)
 {
-    int turretX = mTurret->location->x + 16;
-    int turretY = mTurret->location->y + 16;
+    int turretX = mTurret->location.x + 16;
+    int turretY = mTurret->location.y + 16;
     int which = 0;
     if (mMouse == NULL) return;
     mMouse->setLocation(inX, inY);

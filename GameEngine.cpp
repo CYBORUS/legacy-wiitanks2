@@ -59,6 +59,7 @@ void GameEngine::removeLayer(VideoLayer* inLayer)
 bool GameEngine::start(EngineModule* inModule)
 {
     EngineModule* em = inModule;
+    EngineModule* d = NULL;
 
     if (!onInit()) return false;
 
@@ -87,7 +88,9 @@ bool GameEngine::start(EngineModule* inModule)
 
         mWindow.next = NULL;
         em->onCleanup();
+        d = em;
         em = em->getNextModule();
+        delete d;
     }
     onCleanup();
     return true;
@@ -164,7 +167,7 @@ inline void GameEngine::onRender()
     {
         //if (iterator->surface == NULL) exit(1);
         SDL_BlitSurface(iterator->surface, iterator->clip, mWindow.surface,
-            iterator->location);
+            &iterator->location);
         iterator = iterator->next;
     }
 

@@ -26,10 +26,12 @@ class VideoLayer
         VideoLayer();
         virtual ~VideoLayer();
 
+        void setLocation(int inX, int inY);
+
         int priority;
         SDL_Surface* surface;
         VideoLayer* next;
-        SDL_Rect* location;
+        SDL_Rect location;
         SDL_Rect* clip;
 
         static SDL_Surface* getImage(const char* inFile);
