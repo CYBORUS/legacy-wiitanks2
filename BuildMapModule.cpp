@@ -113,7 +113,7 @@ bool BuildMapModule::onInit()
     {
         double angle = i * 360 / NUM_STEPS;
 
-        tempSurface = rotozoomSurface(t, angle, 1.5, 1);
+        tempSurface = rotozoomSurface(t, angle, 1.0, 1);
         temp[i].surface = tempSurface;
         //temp[i].priority = PRIORITY_DEFAULT;
 
@@ -155,7 +155,8 @@ bool BuildMapModule::onInit()
                                 X, Y,
                                 32, rmask, gmask, bmask, amask);
 
-    picSurface = SDL_DisplayFormat(tempSurface);
+    mBackground->surface = SDL_DisplayFormat(tempSurface);
+    mBackground->setLocation(0, 0);
     mBackground->priority = PRIORITY_BACKGROUND;
     SDL_FreeSurface(tempSurface);
 
@@ -167,19 +168,19 @@ bool BuildMapModule::onInit()
             src.x = tileMap[i][j] * 32;
             dest.x = j * 32;
 
-            if (SDL_BlitSurface(mTileset->surface, &src, picSurface, &dest) == -2)
+            if (SDL_BlitSurface(mTileset->surface, &src, mBackground->surface, &dest) == -2)
             {
                 cerr << "blitting failed" << endl;
                 exit(4);
             }
         }
     }
-    tempSurface = SDL_CreateRGBSurface(SDL_HWSURFACE,
-                                X, Y,
-                                32, rmask, gmask, bmask, amask);
-
-    mBackground->surface = SDL_DisplayFormat(tempSurface);
-    SDL_FreeSurface(tempSurface);
+//    tempSurface = SDL_CreateRGBSurface(SDL_HWSURFACE,
+//                                X, Y,
+//                                32, rmask, gmask, bmask, amask);
+//
+//    mBackground->surface = SDL_DisplayFormat(tempSurface);
+//    SDL_FreeSurface(tempSurface);
 
     src.x = 0;
     src.y = 0;
@@ -189,7 +190,7 @@ bool BuildMapModule::onInit()
     dest.x = 40;
     dest.y = 30;
 
-    SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
+    //SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
 
     //SDL_BlitSurface(mTurret->surface, NULL, mBackground->surface, &dest);
 
@@ -215,28 +216,29 @@ bool BuildMapModule::onInit()
 
 void BuildMapModule::onLoop()
 {
-    src.x += xMove;
-    src.y += yMove;
+    src.x -= xMove;
+    src.y -= yMove;
 
-    if (src.x < 0)
+    if (src.x > 0)
     {
         src.x = 0;
     }
-    else if (src.x > (X - 800))
+    else if (src.x < (800 - X))
     {
-        src.x = X - 800;
+        src.x = 800 - X;
     }
 
-    if (src.y < 0)
+    if (src.y > 0)
     {
         src.y = 0;
     }
-    else if (src.y > (Y - 600))
+    else if (src.y < (600 - Y))
     {
-        src.y = Y - 600;
+        src.y = 600 - Y;
     }
 
-    SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
+    //SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
+    mBackground->setLocation(src.x, src.y);
 
     SDL_Delay(5);
 }
@@ -254,7 +256,6 @@ void BuildMapModule::onCleanup()
     delete [] temp;
     delete mBackground;
     delete mMouse;
-    delete picSurface;
 }
 
 EngineModule* BuildMapModule::getNextModule()
