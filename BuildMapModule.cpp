@@ -20,8 +20,10 @@ BuildMapModule::BuildMapModule()
     picSurface = NULL;
     tempSurface = NULL;
     srand(time(NULL));
+    oldAngle = 0;
 
     mTurretDirections = new StaticLayer[16]();
+    temp = new StaticLayer[NUM_STEPS]();
 
     dest.x = 0;
     dest.y = 0;
@@ -97,7 +99,7 @@ BuildMapModule::~BuildMapModule()
 
 bool BuildMapModule::onInit()
 {
-    //SDL_EnableKeyRepeat(5, 5); //we want key repeating for scrolling
+    SDL_EnableKeyRepeat(5, 5); //we want key repeating for scrolling
 
 
 
@@ -114,11 +116,46 @@ bool BuildMapModule::onInit()
         s.str("");
     }
 
+    SDL_Surface* t;
+    for (int i = 0; i < NUM_STEPS; i++)
+    {
+        double angle = i * 360 / NUM_STEPS;
+        t = IMG_Load("images/turrets/turret0.png");
+        tempSurface = rotozoomSurface(mTurretDirections[0].surface, angle, 1.5, 1);
+        temp[i].surface = tempSurface;
+        temp[i].priority = PRIORITY_DEFAULT;
+//        temp[i].setLocation(i * 50, i * 50);
+//        temp[i].priority = PRIORITY_DEFAULT;
+//        mEngine->addLayer(&temp[i]);
+        SDL_FreeSurface(t);
+
+
+        src.x = (tempSurface->w / 2) - 16;
+        src.y = (tempSurface->h / 2) - 16;
+//        src.x = 8;
+//        src.y = 8;
+
+//        picSurface = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_SRCALPHA,
+//                            32, 32,
+//                            32, rmask, gmask, bmask, amask);
+//
+//        temp[i].surface = SDL_DisplayFormatAlpha(picSurface);
+//        SDL_FreeSurface(picSurface);
+
+
+
+//        SDL_BlitSurface(tempSurface, &src, temp[i].surface, NULL);
+        //SDL_FreeSurface(tempSurface);
+    }
+
+    src.x = 0;
+    src.y = 0;
+
     mTurret = new StaticLayer();
-    mTurret->surface = mTurretDirections[0].surface;
+    mTurret->surface = temp[0].surface;
     //SDL_SetColorKey(mTurret->surface, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(mTurret->surface->format, 0xFF, 0x0, 0xFF));
     mTurret->priority = PRIORITY_DEFAULT;
-    mTurret->setLocation(400, 300);
+    mTurret->setLocation(400 - 16, 300 - 16);
 
     // The following setup code is placed here only for development purposes
     // In final release, it should be in the onLoop() function, and a different
@@ -177,6 +214,11 @@ bool BuildMapModule::onInit()
 
     mEngine->addLayer(mTurret);
     mEngine->addLayer(mMouse);
+
+//    tempSurface = SDL_DisplayFormat(rotozoomSurface(mTurret->surface, 90.0, 1.0, 1));
+//
+//    SDL_BlitSurface(tempSurface, NULL, mTurret->surface, NULL);
+//    SDL_FreeSurface(tempSurface);
 
     mNext = new TestModule();
     return true;
@@ -239,16 +281,47 @@ void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY, bool 
     }
 
 
-    which = (int(angle * 2.0 / 45.0 + 1)) % 16;
+    which = (int(angle / (360 / NUM_STEPS)));
+
+//    double newAngle = oldAngle - angle;
+//    oldAngle = angle;
+//    cerr << "newAngle = " << newAngle << endl;
+//
+//
+//    tempSurface = SDL_DisplayFormatAlpha(rotozoomSurface(mTurret->surface, newAngle, 1.0, 1));
+//
+//
+//    src.x = tempSurface->w - 32;
+//    src.y = tempSurface->h - 32;
+//    src.w = 32;
+//    src.h = 32;
+//
+//    SDL_BlitSurface(tempSurface, &src, mTurret->surface, NULL);
+//
+//    SDL_FreeSurface(tempSurface);
 
 
-    mTurret->surface = mTurretDirections[which].surface;
+    mTurret->surface = temp[which].surface;
 }
 
 void BuildMapModule::onLButtonDown(int inX, int inY)
 {
     if (mEngine == NULL) return;
     mEngine->onExit();
+}
+
+void BuildMapModule::onRButtonDown(int inX, int inY)
+{
+    tempSurface = SDL_DisplayFormatAlpha(rotozoomSurface(mTurret->surface, 45.0, 1.0, 1));
+
+    src.x = 8;
+    src.y = 8;
+    src.w = 32;
+    src.h = 32;
+
+    SDL_BlitSurface(tempSurface, &src, mTurret->surface, NULL);
+    SDL_FreeSurface(tempSurface);
+
 }
 
 void BuildMapModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)

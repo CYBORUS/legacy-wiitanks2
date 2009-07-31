@@ -6,11 +6,12 @@ using namespace std;
 
 #include "EngineModule.h"
 #include "TestModule.h"
-
+#include "SDL_rotozoom.h"
 #include <cmath>
 #include <SDL.h>
 
-#define MAP_SIZE 200
+#define MAP_SIZE 50
+#define NUM_STEPS 360
 
 class BuildMapModule : public EngineModule
 {
@@ -31,6 +32,7 @@ class BuildMapModule : public EngineModule
         void onLButtonDown(int inX, int inY);
         void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         void onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
+        void onRButtonDown(int inX, int inY);
 
         EngineModule* mNext;
         StaticLayer* mMouse;
@@ -38,11 +40,14 @@ class BuildMapModule : public EngineModule
         StaticLayer* mBackground;
         StaticLayer* mTurret;
         StaticLayer* mTurretDirections;
+
+        StaticLayer* temp;
         SDL_Rect dest;
         SDL_Rect src;
         SDL_Surface* picSurface;
         SDL_Surface* tempSurface;
         int tileMap[MAP_SIZE][MAP_SIZE]; //Define the map
+        double oldAngle;
 
         stringstream s;
 
