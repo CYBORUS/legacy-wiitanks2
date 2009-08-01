@@ -55,6 +55,7 @@ class BuildMapModule : public EngineModule
         int tileMap[MAP_SIZE][MAP_SIZE]; //Define the map
         double mAngle;
         Mix_Chunk* mShot;
+        Mix_Music* mMusic;
 
         stringstream s;
 

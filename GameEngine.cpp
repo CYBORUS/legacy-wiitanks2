@@ -158,13 +158,14 @@ bool GameEngine::onInit()
     SDL_WM_SetCaption("Zero2D","");
 
     int audioRate = 22050;
-    Uint16 audioFormat = AUDIO_S16;
-    int audioChannels = 4;
+    Uint16 audioFormat = MIX_DEFAULT_FORMAT;
+    int audioChannels = 2;
     int audioBuffers = 256;
 
     if (mAudio && Mix_OpenAudio(audioRate, audioFormat, audioChannels, audioBuffers))
     {
         mAudio = false;
+        cerr << "Mix_OpenAudio: " << Mix_GetError() << endl;
         cerr << "Unable to open audio!\n";
     }
 

@@ -110,6 +110,9 @@ bool BuildMapModule::onInit()
 
     mShot = mEngine->loadSound("audio/hyah.wav");
 
+    //mMusic = mEngine->loadMusic("audio/portal_still_alive.mp3");
+    //Mix_PlayMusic(mMusic, -1);
+
     mTileset = new VideoLayer();
     mTileset->surface = VideoLayer::getImage("images/tileset.png");
     mTileset->priority = PRIORITY_BACKGROUND;

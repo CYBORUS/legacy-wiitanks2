@@ -28,5 +28,4 @@ void Bullet::onUpdate()
     mPos.y += mVector.y;
 
     mBullet->setLocation((int)mPos.x, (int)mPos.y);
-    cerr << mPos.x << " : " << mPos.y << endl;
 }
