@@ -1,0 +1,20 @@
+SDL joystick handling
+http://sdl.beuc.net/sdl.wiki/Handling_Joysticks
+
+SDL_net tutorial
+http://gpwiki.org/index.php/SDL:Tutorial:Using_SDL_net
+
+SDL onto Mac
+http://experimentgarden.blogspot.com/2009/06/getting-sdl-sdl-image-and-sdl-ttf-to.html
+
+SDL_CreateRGBSurface
+http://www.libsdl.org/cgi/docwiki.cgi/SDL_CreateRGBSurface
+
+SDL_mixer tutorial
+http://www.kekkai.org/roger/sdl/mixer/
+
+SDL_mixer API
+http://jcatki.no-ip.org:8080/SDL_mixer/SDL_mixer_toc.html#SEC_Contents
+
+SDL_threads
+http://www.libsdl.org/intro.en/usingthreads.html

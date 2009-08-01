@@ -159,8 +159,8 @@ bool GameEngine::onInit()
 
     int audioRate = 22050;
     Uint16 audioFormat = AUDIO_S16;
-    int audioChannels = 2;
-    int audioBuffers = 4096;
+    int audioChannels = 4;
+    int audioBuffers = 256;
 
     if (mAudio && Mix_OpenAudio(audioRate, audioFormat, audioChannels, audioBuffers))
     {
