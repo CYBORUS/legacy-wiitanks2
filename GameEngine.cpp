@@ -120,6 +120,38 @@ bool GameEngine::onInit()
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) return false;
     if (TTF_Init() == -1) return false;
+
+
+    // This block is test code to help know what resolutions are supported
+    // Should be placed somewhere else once we have a setup screen working
+    SDL_Rect** modes;
+
+    /* Get available fullscreen/hardware modes */
+    modes = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
+
+    /* Check if there are any modes available */
+    if (modes == (SDL_Rect**)0)
+    {
+        printf("No modes available!\n");
+        exit(-1);
+    }
+
+    /* Check if our resolution is restricted */
+    if (modes == (SDL_Rect**)-1)
+    {
+        printf("All resolutions available.\n");
+    }
+    else
+    {
+        /* Print valid modes */
+        printf("Available Modes\n");
+        for (int i=0; modes[i]; ++i)
+        printf("  %d x %d\n", modes[i]->w, modes[i]->h);
+    }
+
+    //end of screen resolution code
+
+
     if (!mWindow.setVideoMode()) return false;
 
     mCamera.w = mWindow.surface->w;
