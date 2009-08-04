@@ -41,7 +41,6 @@ BeginModule::~BeginModule()
 
 bool BeginModule::onInit()
 {
-
     mBackground = new VideoLayer();
 
     SDL_Surface* t = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_SRCALPHA,
@@ -60,22 +59,16 @@ bool BeginModule::onInit()
     mBackground->priority = PRIORITY_BACKGROUND;
 
 
-    mMouse = new VideoLayer();
-    mMouse->surface = VideoLayer::getImage("images/normal.png");
-    mMouse->priority = PRIORITY_MOUSE;
+//    mMouse = new VideoLayer();
+//    mMouse->surface = VideoLayer::getImage("images/normal.png");
+//    mMouse->priority = PRIORITY_MOUSE;
     SDL_ShowCursor(SDL_DISABLE);
 
-    mEngine->addLayer(mBackground);
-    mEngine->addLayer(mMouse);
+    //mEngine->addLayer(mBackground);
+    //mEngine->addLayer(mMouse);
 
+    //mEngine->buildSurfaces();
 
-    mNext = new BuildMapModule();
-    return true;
-}
-
-void BeginModule::onLoop()
-{
-    SDL_Surface* t = NULL;
 
     if ((t = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_SRCALPHA,
                                 mEngine->mWindow.mWidth, mEngine->mWindow.mHeight,
@@ -88,7 +81,19 @@ void BeginModule::onLoop()
     tempSurface = SDL_DisplayFormat(t);
     SDL_FreeSurface(t);
 
-    SDL_FillRect( tempSurface, 0, SDL_MapRGBA(tempSurface->format, 0, 0, 0, 0) );
+    mNext = new BuildMapModule();
+    return true;
+}
+
+void BeginModule::onLoop()
+{
+
+}
+
+void BeginModule::onFrame()
+{
+
+    //SDL_FillRect( tempSurface, 0, SDL_MapRGBA(tempSurface->format, 0, 0, 0, 0) );
 
     SDL_BlitSurface(picSurface, NULL, tempSurface, &dest);
 
@@ -98,7 +103,7 @@ void BeginModule::onLoop()
 
     SDL_BlitSurface(tempSurface, NULL, mBackground->surface, NULL);
     SDL_FillRect(tempSurface, 0, SDL_MapRGBA(tempSurface->format, 0, 0, 0, 0));
-    SDL_FreeSurface(tempSurface);
+    //SDL_FreeSurface(tempSurface);
 
     AlphaValue += incDec * 5;
 
@@ -132,7 +137,7 @@ void BeginModule::onLoop()
         }
     }
 
-    SDL_Delay(10);
+    mEngine->buildSurfaces();
 
 }
 
@@ -152,12 +157,17 @@ void BeginModule::onCleanup()
 void BeginModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     bool inLeft, bool inRight, bool inMiddle)
 {
-    if (mMouse == NULL) return;
-    mMouse->setLocation(inX, inY);
+//    if (mMouse == NULL) return;
+//    mMouse->setLocation(inX, inY);
 }
 
 void BeginModule::onLButtonDown(int inX, int inY)
 {
     if (mEngine == NULL) return;
     mEngine->onExit();
+}
+
+SDL_Surface* BeginModule::getCanvas()
+{
+    return mBackground->surface;
 }

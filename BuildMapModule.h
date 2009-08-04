@@ -2,6 +2,7 @@
 #define _BUILDMAPMODULE_H
 
 #include <sstream>
+#include <iostream>
 using namespace std;
 
 #include "EngineModule.h"
@@ -47,8 +48,8 @@ class BuildMapModule : public EngineModule
 
 
         VideoLayer* temp;
-        SDL_Rect dest;
-        SDL_Rect src;
+        SDL_Rect mDest;
+        SDL_Rect mSrc;
         SDL_Rect* tempRect;
         SDL_Surface* picSurface;
         SDL_Surface* tempSurface;

@@ -1,6 +1,9 @@
 #ifndef _BEGINMODULE_H
 #define	_BEGINMODULE_H
 
+#include <iostream>
+using namespace std;
+
 #include "EngineModule.h"
 #include "BuildMapModule.h"
 #include <SDL.h>
@@ -14,8 +17,10 @@ class BeginModule : public EngineModule
         /// module operation
         bool onInit();
         void onLoop();
+        void onFrame();
         void onCleanup();
         EngineModule* getNextModule();
+        SDL_Surface* getCanvas();
 
     private:
         void onMouseMove(int inX, int inY, int inRelX, int inRelY, bool inLeft,

@@ -6,6 +6,7 @@
 #include <SDL_mixer.h>
 #include <iostream>
 #include <sstream>
+#include <cmath>
 #include "AnimatedLayer.h"
 #include "EngineModule.h"
 #include "ScreenLayer.h"
@@ -38,6 +39,8 @@ class GameEngine
         SDL_Rect* setCamera(int inX, int inY);
         SDL_Rect* moveCamera(int inX, int inY);
         SDL_Rect* getCamera();
+        void changeSurface(SDL_Rect* inOld, SDL_Rect* inNew, VideoLayer* inLayer);
+        void buildSurfaces();
 
         Mix_Music* loadMusic(const char* inFile);
         void freeMusic(Mix_Music* inMusic);
@@ -66,9 +69,9 @@ class GameEngine
         bool mRunning;
         unsigned int mNextFrame;
         SDL_Surface* mWindowIcon;
-        SDL_Surface* mCanvasTwo;
         SDL_Joystick* mJoystick;
         SDL_Surface* mCanvas;
+        SDL_Surface* mCanvasTwo;
         SDL_Rect mCamera;
 };
 

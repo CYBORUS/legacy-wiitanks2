@@ -6,8 +6,7 @@ int main(int argc, char** argv)
 {
     GameEngine ge;
 
-    freopen("CON", "w", stdout);
-    freopen("CON", "w", stderr);
+
 
 
 

@@ -89,6 +89,8 @@ bool GameEngine::start(EngineModule* inModule)
 
         mCanvasTwo = SDL_DisplayFormat(mCanvas);
 
+        buildSurfaces(); //do an initial build of all the surfaces
+
         while (mRunning)
         {
             while (SDL_PollEvent(&event)) em->onEvent(&event);
@@ -121,7 +123,8 @@ bool GameEngine::onInit()
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) return false;
     if (TTF_Init() == -1) return false;
 
-
+    freopen("CON", "w", stdout);
+    freopen("CON", "w", stderr);
     // This block is test code to help know what resolutions are supported
     // Should be placed somewhere else once we have a setup screen working
     SDL_Rect** modes;
@@ -206,24 +209,24 @@ bool GameEngine::onInit()
 
 inline void GameEngine::onRender()
 {
-    VideoLayer* iterator = mWindow.next;
-
-    SDL_BlitSurface(mCanvas, NULL, mCanvasTwo, NULL);
-    while (iterator != NULL && iterator->priority < PRIORITY_GUI)
-    {
-        SDL_BlitSurface(iterator->surface, iterator->clip, mCanvasTwo,
-            &iterator->location);
-        iterator = iterator->next;
-    }
-
-    SDL_BlitSurface(mCanvasTwo, &mCamera, mWindow.surface, NULL);
-
-    while (iterator != NULL)
-    {
-        SDL_BlitSurface(iterator->surface, iterator->clip, mWindow.surface,
-            &iterator->location);
-        iterator = iterator->next;
-    }
+//    VideoLayer* iterator = mWindow.next;
+//
+//    SDL_BlitSurface(mCanvas, NULL, mCanvasTwo, NULL);
+//    while (iterator != NULL && iterator->priority < PRIORITY_GUI)
+//    {
+//        SDL_BlitSurface(iterator->surface, iterator->clip, mCanvasTwo,
+//            &iterator->location);
+//        iterator = iterator->next;
+//    }
+//
+//    SDL_BlitSurface(mCanvasTwo, &mCamera, mWindow.surface, NULL);
+//
+//    while (iterator != NULL)
+//    {
+//        SDL_BlitSurface(iterator->surface, iterator->clip, mWindow.surface,
+//            &iterator->location);
+//        iterator = iterator->next;
+//    }
 
     SDL_Flip(mWindow.surface);
 }
@@ -295,6 +298,8 @@ SDL_Rect* GameEngine::setCamera(int inX, int inY)
         mCamera.y = mCanvas->h - mWindow.surface->h;
     }
 
+    SDL_BlitSurface(mCanvasTwo, &mCamera, mWindow.surface, NULL);
+
     return &mCamera;
 }
 
@@ -307,6 +312,204 @@ SDL_Rect* GameEngine::getCamera()
 {
     return &mCamera;
 }
+
+void GameEngine::buildSurfaces()
+{
+    VideoLayer* iterator = mWindow.next;
+
+    SDL_BlitSurface(mCanvas, NULL, mCanvasTwo, NULL);
+    while (iterator != NULL && iterator->priority < PRIORITY_GUI)
+    {
+        SDL_BlitSurface(iterator->surface, iterator->clip, mCanvasTwo,
+            &iterator->location);
+        iterator = iterator->next;
+    }
+
+    SDL_BlitSurface(mCanvasTwo, &mCamera, mWindow.surface, NULL);
+
+    while (iterator != NULL)
+    {
+        SDL_BlitSurface(iterator->surface, iterator->clip, mWindow.surface,
+            &iterator->location);
+        iterator = iterator->next;
+    }
+
+}
+
+void GameEngine::changeSurface(SDL_Rect* inOld, SDL_Rect* inNew, VideoLayer* inLayer)
+{
+    //SDL_FreeSurface(mCanvasTwo);
+
+    //mCanvasTwo = SDL_DisplayFormat(mCanvas);
+    SDL_Rect newSrc;
+    SDL_Rect newDest;
+    int wDiff;
+    int hDiff;
+
+    VideoLayer* iterator = mWindow.next;
+
+    //need 4 tests
+
+
+    while (iterator != NULL && iterator->priority < PRIORITY_GUI)
+    {
+        if (((iterator->location.x + iterator->location.w) >= inOld->x) && (iterator->location.x <= (inOld->x + inOld->w)) &&
+            ((iterator->location.y + iterator->location.h) >= inOld->y) && (iterator->location.y <= (inOld->y + inOld->h)))
+        {
+
+            newSrc.x = (iterator->location.x) - inOld->x;
+            newSrc.y = (iterator->location.y) - inOld->y;
+            wDiff = (iterator->location.w) - inOld->w;
+            hDiff = (iterator->location.h) - inOld->h;
+
+            if (newSrc.x <= 0)
+            {
+                if (wDiff < 0)
+                {
+                    newSrc.w = newSrc.x + iterator->location.w;
+                }
+                else
+                {
+                    newSrc.w = inOld->w;
+                }
+                newSrc.x *= -1;
+
+                newDest.x = 0;
+            }
+            else
+            {
+                if (wDiff <= 0)
+                {
+                    newSrc.w = iterator->location.w;
+                }
+                else
+                {
+                    newSrc.w = iterator->location.w - wDiff;
+                }
+
+                newSrc.x = newDest.x;
+                newDest.x = 0;
+            }
+
+            if (newSrc.y <= 0)
+            {
+                if (hDiff < 0)
+                {
+                    newSrc.h = newSrc.y + iterator->location.h;
+                }
+                else
+                {
+                    newSrc.h = inOld->h;
+                }
+                newSrc.y *= -1;
+
+                newDest.y = 0;
+            }
+            else
+            {
+                if (hDiff <= 0)
+                {
+                    newSrc.h = iterator->location.h;
+                }
+                else
+                {
+                    newSrc.h = iterator->location.h - hDiff;
+                }
+                newDest.y = newSrc.y;
+                newSrc.y = 0;
+            }
+
+            SDL_BlitSurface(iterator->surface, &newSrc, mCanvasTwo,
+                &newDest);
+        }
+        iterator = iterator->next;
+
+    }
+
+    if (inLayer->priority < PRIORITY_GUI)
+    {
+        SDL_BlitSurface(inLayer->surface, NULL, mCanvasTwo, inNew);
+    }
+    cerr << "done blitting canvas" << endl;
+
+    SDL_BlitSurface(mCanvasTwo, &mCamera, mWindow.surface, NULL);
+
+    while (iterator != NULL)
+    {
+        if (((iterator->location.x + iterator->location.w) >= inOld->x) && (iterator->location.x <= (inOld->x + inOld->w)) &&
+            ((iterator->location.y + iterator->location.h) >= inOld->y) && (iterator->location.y <= (inOld->y + inOld->h)))
+        {
+
+            newSrc.x = (iterator->location.x) - inOld->x;
+            newSrc.y = (iterator->location.y) - inOld->y;
+            wDiff = (iterator->location.w) - inOld->w;
+            hDiff = (iterator->location.h) - inOld->h;
+
+            if (newSrc.x <= 0)
+            {
+                if (wDiff < 0)
+                {
+                    newSrc.w = newSrc.x + iterator->location.w;
+                }
+                else
+                {
+                    newSrc.w = inOld->w;
+                }
+                newSrc.x *= -1;
+
+                newDest.x = 0;
+            }
+            else
+            {
+                if (wDiff <= 0)
+                {
+                    newSrc.w = iterator->location.w;
+                }
+                else
+                {
+                    newSrc.w = iterator->location.w - wDiff;
+                }
+
+                newSrc.x = newDest.x;
+                newDest.x = 0;
+            }
+
+            if (newSrc.y <= 0)
+            {
+                if (hDiff < 0)
+                {
+                    newSrc.h = newSrc.y + iterator->location.h;
+                }
+                else
+                {
+                    newSrc.h = inOld->h;
+                }
+                newSrc.y *= -1;
+
+                newDest.y = 0;
+            }
+            else
+            {
+                if (hDiff <= 0)
+                {
+                    newSrc.h = iterator->location.h;
+                }
+                else
+                {
+                    newSrc.h = iterator->location.h - hDiff;
+                }
+                newDest.y = newSrc.y;
+                newSrc.y = 0;
+            }
+
+            SDL_BlitSurface(iterator->surface, &newSrc, mWindow.surface,
+                &newDest);
+        }
+        iterator = iterator->next;
+
+    }
+}
+
 
 Mix_Music* GameEngine::loadMusic(const char* inFile)
 {

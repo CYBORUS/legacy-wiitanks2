@@ -26,15 +26,15 @@ BuildMapModule::BuildMapModule()
 
     temp = new VideoLayer[NUM_STEPS]();
 
-    dest.x = 0;
-    dest.y = 0;
-    dest.w = 32;
-    dest.h = 32;
+    mDest.x = 0;
+    mDest.y = 0;
+    mDest.w = 32;
+    mDest.h = 32;
 
-    src.x = 0;
-    src.y = 0;
-    src.w = 32;
-    src.h = 32;
+    mSrc.x = 0;
+    mSrc.y = 0;
+    mSrc.w = 32;
+    mSrc.h = 32;
 
     tempRect = new SDL_Rect();
     tempRect->x = 0;
@@ -130,10 +130,10 @@ bool BuildMapModule::onInit()
 
 
 
-//        src.x = (tempSurface->w / 2);
-//        src.y = (tempSurface->h / 2);
-//        src.x = 0;
-//        src.y = 0;
+//        mSrc.x = (tempSurface->w / 2);
+//        mSrc.y = (tempSurface->h / 2);
+//        mSrc.x = 0;
+//        mSrc.y = 0;
 //
 //        picSurface = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_SRCALPHA,
 //                            32, 32,
@@ -144,12 +144,12 @@ bool BuildMapModule::onInit()
 //
 //
 //
-//        SDL_BlitSurface(tempSurface, &src, temp[i].surface, NULL);
+//        SDL_BlitSurface(tempSurface, &mSrc, temp[i].surface, NULL);
 //        SDL_FreeSurface(tempSurface);
     }
     SDL_FreeSurface(t);
-    src.x = 0;
-    src.y = 0;
+    mSrc.x = 0;
+    mSrc.y = 0;
 
     mTurret = new VideoLayer();
     mTurret->surface = temp[0].surface;
@@ -173,37 +173,32 @@ bool BuildMapModule::onInit()
 
     for (int i = 0; i < MAP_SIZE; i++)
     {
-        dest.y = i * 32;
+        mDest.y = i * 32;
         for (int j = 0; j < MAP_SIZE; j++)
         {
-            src.x = tileMap[i][j] * 32;
-            dest.x = j * 32;
+            mSrc.x = tileMap[i][j] * 32;
+            mDest.x = j * 32;
 
-            if (SDL_BlitSurface(mTileset->surface, &src, mBackground->surface, &dest) == -2)
+            if (SDL_BlitSurface(mTileset->surface, &mSrc, mBackground->surface, &mDest) == -2)
             {
                 cerr << "blitting failed" << endl;
                 exit(4);
             }
         }
     }
-//    tempSurface = SDL_CreateRGBSurface(SDL_HWSURFACE,
-//                                X, Y,
-//                                32, rmask, gmask, bmask, amask);
-//
-//    mBackground->surface = SDL_DisplayFormat(tempSurface);
-//    SDL_FreeSurface(tempSurface);
 
-    src.x = 0;
-    src.y = 0;
-    src.w = 800;
-    src.h = 600;
 
-    dest.x = 40;
-    dest.y = 30;
+    mSrc.x = 0;
+    mSrc.y = 0;
+    mSrc.w = 800;
+    mSrc.h = 600;
 
-    //SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
+    mDest.x = 40;
+    mDest.y = 30;
 
-    //SDL_BlitSurface(mTurret->surface, NULL, mBackground->surface, &dest);
+    //SDL_BlitSurface(picSurface, &mSrc, mBackground->surface, NULL);
+
+    //SDL_BlitSurface(mTurret->surface, NULL, mBackground->surface, &mDest);
 
     //mEngine->addLayer(mBackground);
     // End of development code
@@ -221,43 +216,47 @@ bool BuildMapModule::onInit()
 //    SDL_BlitSurface(tempSurface, NULL, mTurret->surface, NULL);
 //    SDL_FreeSurface(tempSurface);
 
+    //mEngine->buildSurfaces();
+
+
     mNext = new TestModule();
     return true;
 }
 
 void BuildMapModule::onLoop()
 {
-    src.x += xMove;
-    src.y += yMove;
-
-//    if (src.x > 0)
+//    mSrc.x += xMove;
+//    mSrc.y += yMove;
+//
+//    if (mSrc.x > 0)
 //    {
-//        src.x = 0;
+//        mSrc.x = 0;
 //    }
-//    else if (src.x < (800 - X))
+//    else if (mSrc.x < (800 - X))
 //    {
-//        src.x = 800 - X;
+//        mSrc.x = 800 - X;
 //    }
 //
-//    if (src.y > 0)
+//    if (mSrc.y > 0)
 //    {
-//        src.y = 0;
+//        mSrc.y = 0;
 //    }
-//    else if (src.y < (600 - Y))
+//    else if (mSrc.y < (600 - Y))
 //    {
-//        src.y = 600 - Y;
+//        mSrc.y = 600 - Y;
 //    }
-
-    //SDL_BlitSurface(picSurface, &src, mBackground->surface, NULL);
-    //mBackground->setLocation(src.x, src.y);
-    tempRect = mEngine->moveCamera(xMove, yMove);
-
-    src.x = tempRect->x;
-    src.y = tempRect->y;
-
-    tempRect = NULL;
-
-    SDL_Delay(5);
+//
+//    //SDL_BlitSurface(picSurface, &mSrc, mBackground->surface, NULL);
+//    //mBackground->setLocation(mSrc.x, mSrc.y);
+//    tempRect = mEngine->moveCamera(xMove, yMove);
+//
+//    mSrc.x = tempRect->x;
+//    mSrc.y = tempRect->y;
+//
+//    tempRect = NULL;
+//
+//
+//    SDL_Delay(5);
 }
 
 void BuildMapModule::onFrame()
@@ -266,6 +265,9 @@ void BuildMapModule::onFrame()
     {
         mBullet->onUpdate();
     }
+
+    mEngine->moveCamera(xMove, yMove);
+    mEngine->buildSurfaces();
 }
 
 void BuildMapModule::onCleanup()
@@ -297,9 +299,28 @@ void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY, bool 
 {
     int turretX = mTurret->location.x + 16;
     int turretY = mTurret->location.y + 16;
+
+    mDest.x = inX;
+    mDest.y = inY;
+    mDest.w = 32;
+    mDest.h = 32;
+
+    mSrc.x = mMouse->location.x;
+    mSrc.y = mMouse->location.y;
+    mSrc.w = 32;
+    mSrc.h = 32;
+
     int which = 0;
     if (mMouse == NULL) return;
     mMouse->setLocation(inX, inY);
+
+    //mEngine->changeSurface(&mSrc, &mDest, mMouse);
+
+    mDest.x = turretX - 16;
+    mDest.y = turretY - 16;
+
+    mSrc.x = mDest.x;
+    mSrc.y = mDest.y;
 
     tempRect = mEngine->getCamera();
 
@@ -319,6 +340,8 @@ void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY, bool 
 
     mTurret->surface = temp[which].surface;
     mTurret->setLocation(400 - (mTurret->surface->w / 2), 300 - (mTurret->surface->h / 2));
+
+    //mEngine->changeSurface(&mSrc, &mDest, mTurret);
 
 }
 
@@ -351,7 +374,7 @@ void BuildMapModule::onRButtonDown(int inX, int inY)
 void BuildMapModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     int c = inSym; //what key is this
-    int amount = 5; //number of pixels to increment/decrement by
+    int amount = 20; //number of pixels to increment/decrement by
 
     if (c == SDLK_LEFT)
     {
