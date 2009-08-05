@@ -297,8 +297,8 @@ EngineModule* BuildMapModule::getNextModule()
     //return NULL;
 }
 
-void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY, bool inLeft,
-            bool inRight, bool inMiddle)
+void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
+    bool inLeft, bool inRight, bool inMiddle)
 {
     int turretX = mTurret->location.x + 16;
     int turretY = mTurret->location.y + 16;
