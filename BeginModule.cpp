@@ -43,7 +43,7 @@ bool BeginModule::onInit()
 {
     mBackground = new VideoLayer();
 
-    SDL_Surface* t = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_SRCALPHA,
+    SDL_Surface* t = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA,
                                 mEngine->mWindow.mWidth, mEngine->mWindow.mHeight,
                                 32, rmask, gmask, bmask, amask);
 
@@ -70,7 +70,7 @@ bool BeginModule::onInit()
     //mEngine->buildSurfaces();
 
 
-    if ((t = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_SRCALPHA,
+    if ((t = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA,
                                 mEngine->mWindow.mWidth, mEngine->mWindow.mHeight,
                                 32, rmask, gmask, bmask, amask)) == NULL)
     {
@@ -137,7 +137,7 @@ void BeginModule::onFrame()
         }
     }
 
-    mEngine->buildSurfaces();
+    //mEngine->buildSurfaces();
 
 }
 

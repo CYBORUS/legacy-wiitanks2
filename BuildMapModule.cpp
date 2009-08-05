@@ -162,7 +162,7 @@ bool BuildMapModule::onInit()
     // Module should be used to display the map
     mBackground = new VideoLayer();
 
-    tempSurface = SDL_CreateRGBSurface(SDL_HWSURFACE,
+    tempSurface = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_DOUBLEBUF,
                                 X, Y,
                                 32, rmask, gmask, bmask, amask);
 
@@ -266,8 +266,11 @@ void BuildMapModule::onFrame()
         mBullet->onUpdate();
     }
 
-    mEngine->moveCamera(xMove, yMove);
-    mEngine->buildSurfaces();
+    if (xMove || yMove)
+    {
+        mEngine->moveCamera(xMove, yMove);
+    }
+    //mEngine->buildSurfaces();
 }
 
 void BuildMapModule::onCleanup()
@@ -290,8 +293,8 @@ void BuildMapModule::onCleanup()
 
 EngineModule* BuildMapModule::getNextModule()
 {
-    //return mNext;
-    return NULL;
+    return mNext;
+    //return NULL;
 }
 
 void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY, bool inLeft,
@@ -300,15 +303,15 @@ void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY, bool 
     int turretX = mTurret->location.x + 16;
     int turretY = mTurret->location.y + 16;
 
-    mDest.x = inX;
-    mDest.y = inY;
-    mDest.w = 32;
-    mDest.h = 32;
-
-    mSrc.x = mMouse->location.x;
-    mSrc.y = mMouse->location.y;
-    mSrc.w = 32;
-    mSrc.h = 32;
+//    mDest.x = inX;
+//    mDest.y = inY;
+//    mDest.w = mMouse->surface->w;
+//    mDest.h = mMouse->surface->h;
+//
+//    mSrc.x = mMouse->location.x;
+//    mSrc.y = mMouse->location.y;
+//    mSrc.w = mDest.w;
+//    mSrc.h = mDest.h;
 
     int which = 0;
     if (mMouse == NULL) return;
@@ -316,11 +319,11 @@ void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY, bool 
 
     //mEngine->changeSurface(&mSrc, &mDest, mMouse);
 
-    mDest.x = turretX - 16;
-    mDest.y = turretY - 16;
 
-    mSrc.x = mDest.x;
-    mSrc.y = mDest.y;
+    mSrc.x = turretX - 16;
+    mSrc.y = turretY - 16;
+    mSrc.w = mTurret->surface->w;
+    mSrc.h = mTurret->surface->h;
 
     tempRect = mEngine->getCamera();
 
@@ -341,7 +344,15 @@ void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY, bool 
     mTurret->surface = temp[which].surface;
     mTurret->setLocation(400 - (mTurret->surface->w / 2), 300 - (mTurret->surface->h / 2));
 
+//    mDest.x = mTurret->location.x;
+//    mDest.y = mTurret->location.y;
+//    mDest.w = mTurret->surface->w;
+//    mDest.h = mTurret->surface->h;
+
+
     //mEngine->changeSurface(&mSrc, &mDest, mTurret);
+
+    //mEngine->buildSurfaces();
 
 }
 

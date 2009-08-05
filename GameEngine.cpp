@@ -90,17 +90,23 @@ bool GameEngine::start(EngineModule* inModule)
         mCanvasTwo = SDL_DisplayFormat(mCanvas);
 
         buildSurfaces(); //do an initial build of all the surfaces
+        //SDL_Flip(mWindow.surface);
 
         while (mRunning)
         {
             while (SDL_PollEvent(&event)) em->onEvent(&event);
             em->onLoop();
-            if (SDL_GetTicks() > mNextFrame)
+            if ((mCurrentFrame = SDL_GetTicks()) > mNextFrame)
             {
-                em->onFrame();
-                mNextFrame += NEXT_FRAME;
+                while (mNextFrame <= mCurrentFrame)
+                {
+                    em->onFrame();
+                    mNextFrame += NEXT_FRAME;
+                }
+                buildSurfaces();
             }
-            onRender();
+            //onRender();
+            SDL_Flip(mWindow.surface);
 
             SDL_Delay(1); // prevent CPU abuse
         }
@@ -298,7 +304,8 @@ SDL_Rect* GameEngine::setCamera(int inX, int inY)
         mCamera.y = mCanvas->h - mWindow.surface->h;
     }
 
-    SDL_BlitSurface(mCanvasTwo, &mCamera, mWindow.surface, NULL);
+    //SDL_BlitSurface(mCanvasTwo, &mCamera, mWindow.surface, NULL);
+    //buildSurfaces();
 
     return &mCamera;
 }
@@ -313,7 +320,7 @@ SDL_Rect* GameEngine::getCamera()
     return &mCamera;
 }
 
-void GameEngine::buildSurfaces()
+inline void GameEngine::buildSurfaces()
 {
     VideoLayer* iterator = mWindow.next;
 
@@ -338,9 +345,6 @@ void GameEngine::buildSurfaces()
 
 void GameEngine::changeSurface(SDL_Rect* inOld, SDL_Rect* inNew, VideoLayer* inLayer)
 {
-    //SDL_FreeSurface(mCanvasTwo);
-
-    //mCanvasTwo = SDL_DisplayFormat(mCanvas);
     SDL_Rect newSrc;
     SDL_Rect newDest;
     int wDiff;
@@ -348,76 +352,38 @@ void GameEngine::changeSurface(SDL_Rect* inOld, SDL_Rect* inNew, VideoLayer* inL
 
     VideoLayer* iterator = mWindow.next;
 
-    //need 4 tests
+    newDest.x = inOld->x;
+    newDest.y = inOld->y;
+    newDest.w = inOld->w;
+    newDest.h = inOld->h;
 
+    SDL_BlitSurface(mCanvas, inOld, mCanvasTwo, &newDest);
 
     while (iterator != NULL && iterator->priority < PRIORITY_GUI)
     {
-        if (((iterator->location.x + iterator->location.w) >= inOld->x) && (iterator->location.x <= (inOld->x + inOld->w)) &&
-            ((iterator->location.y + iterator->location.h) >= inOld->y) && (iterator->location.y <= (inOld->y + inOld->h)))
+        if (((iterator->location.x + iterator->location.w - 1) >= inOld->x) && (iterator->location.x <= (inOld->x + inOld->w - 1)) &&
+            ((iterator->location.y + iterator->location.h - 1) >= inOld->y) && (iterator->location.y <= (inOld->y + inOld->h - 1)))
         {
 
-            newSrc.x = (iterator->location.x) - inOld->x;
-            newSrc.y = (iterator->location.y) - inOld->y;
-            wDiff = (iterator->location.w) - inOld->w;
-            hDiff = (iterator->location.h) - inOld->h;
+            newSrc.x = inOld->x - (iterator->location.x);
+            newSrc.y = inOld->y - (iterator->location.y);
+            wDiff = (iterator->location.x + iterator->location.w) - (inOld->x + inOld->w);
+            hDiff = (iterator->location.y + iterator->location.h) - (inOld->y + inOld->h);
 
-            if (newSrc.x <= 0)
-            {
-                if (wDiff < 0)
-                {
-                    newSrc.w = newSrc.x + iterator->location.w;
-                }
-                else
-                {
-                    newSrc.w = inOld->w;
-                }
-                newSrc.x *= -1;
+            if (newSrc.x < 0) newSrc.x = 0;
+            if (newSrc.y < 0) newSrc.y = 0;
 
-                newDest.x = 0;
-            }
-            else
-            {
-                if (wDiff <= 0)
-                {
-                    newSrc.w = iterator->location.w;
-                }
-                else
-                {
-                    newSrc.w = iterator->location.w - wDiff;
-                }
+            if (wDiff < 0) wDiff = 0;
+            if (hDiff < 0) hDiff = 0;
 
-                newSrc.x = newDest.x;
-                newDest.x = 0;
-            }
+            newSrc.w = iterator->location.w - newSrc.x - newSrc.w;
+            newSrc.h = iterator->location.h - newSrc.y - newSrc.h;
 
-            if (newSrc.y <= 0)
-            {
-                if (hDiff < 0)
-                {
-                    newSrc.h = newSrc.y + iterator->location.h;
-                }
-                else
-                {
-                    newSrc.h = inOld->h;
-                }
-                newSrc.y *= -1;
+            newDest.x = inOld->x + newSrc.x;
+            newDest.y = inOld->y + newSrc.y;
+            newDest.w = newSrc.w;
+            newDest.h = newSrc.h;
 
-                newDest.y = 0;
-            }
-            else
-            {
-                if (hDiff <= 0)
-                {
-                    newSrc.h = iterator->location.h;
-                }
-                else
-                {
-                    newSrc.h = iterator->location.h - hDiff;
-                }
-                newDest.y = newSrc.y;
-                newSrc.y = 0;
-            }
 
             SDL_BlitSurface(iterator->surface, &newSrc, mCanvasTwo,
                 &newDest);
@@ -430,83 +396,44 @@ void GameEngine::changeSurface(SDL_Rect* inOld, SDL_Rect* inNew, VideoLayer* inL
     {
         SDL_BlitSurface(inLayer->surface, NULL, mCanvasTwo, inNew);
     }
-    cerr << "done blitting canvas" << endl;
 
     SDL_BlitSurface(mCanvasTwo, &mCamera, mWindow.surface, NULL);
 
     while (iterator != NULL)
     {
-        if (((iterator->location.x + iterator->location.w) >= inOld->x) && (iterator->location.x <= (inOld->x + inOld->w)) &&
-            ((iterator->location.y + iterator->location.h) >= inOld->y) && (iterator->location.y <= (inOld->y + inOld->h)))
+        if (((iterator->location.x + iterator->location.w - 1) >= inOld->x) && (iterator->location.x <= (inOld->x + inOld->w - 1)) &&
+            ((iterator->location.y + iterator->location.h - 1) >= inOld->y) && (iterator->location.y <= (inOld->y + inOld->h - 1)))
         {
 
-            newSrc.x = (iterator->location.x) - inOld->x;
-            newSrc.y = (iterator->location.y) - inOld->y;
-            wDiff = (iterator->location.w) - inOld->w;
-            hDiff = (iterator->location.h) - inOld->h;
+            newSrc.x = inOld->x - (iterator->location.x);
+            newSrc.y = inOld->y - (iterator->location.y);
+            wDiff = (iterator->location.x + iterator->location.w) - (inOld->x + inOld->w);
+            hDiff = (iterator->location.y + iterator->location.h) - (inOld->y + inOld->h);
 
-            if (newSrc.x <= 0)
-            {
-                if (wDiff < 0)
-                {
-                    newSrc.w = newSrc.x + iterator->location.w;
-                }
-                else
-                {
-                    newSrc.w = inOld->w;
-                }
-                newSrc.x *= -1;
+            if (newSrc.x < 0) newSrc.x = 0;
+            if (newSrc.y < 0) newSrc.y = 0;
 
-                newDest.x = 0;
-            }
-            else
-            {
-                if (wDiff <= 0)
-                {
-                    newSrc.w = iterator->location.w;
-                }
-                else
-                {
-                    newSrc.w = iterator->location.w - wDiff;
-                }
+            if (wDiff < 0) wDiff = 0;
+            if (hDiff < 0) hDiff = 0;
 
-                newSrc.x = newDest.x;
-                newDest.x = 0;
-            }
+            newSrc.w = iterator->location.w - newSrc.x - newSrc.w;
+            newSrc.h = iterator->location.h - newSrc.y - newSrc.h;
 
-            if (newSrc.y <= 0)
-            {
-                if (hDiff < 0)
-                {
-                    newSrc.h = newSrc.y + iterator->location.h;
-                }
-                else
-                {
-                    newSrc.h = inOld->h;
-                }
-                newSrc.y *= -1;
+            newDest.x = inOld->x + newSrc.x;
+            newDest.y = inOld->y + newSrc.y;
+            newDest.w = newSrc.w;
+            newDest.h = newSrc.h;
 
-                newDest.y = 0;
-            }
-            else
-            {
-                if (hDiff <= 0)
-                {
-                    newSrc.h = iterator->location.h;
-                }
-                else
-                {
-                    newSrc.h = iterator->location.h - hDiff;
-                }
-                newDest.y = newSrc.y;
-                newSrc.y = 0;
-            }
 
             SDL_BlitSurface(iterator->surface, &newSrc, mWindow.surface,
                 &newDest);
         }
         iterator = iterator->next;
+    }
 
+    if (inLayer->priority >= PRIORITY_GUI)
+    {
+        SDL_BlitSurface(inLayer->surface, NULL, mWindow.surface, inNew);
     }
 }
 

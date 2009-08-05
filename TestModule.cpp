@@ -168,6 +168,8 @@ void TestModule::onLButtonDown(int inX, int inY)
 //        Mix_HaltChannel(mChannel);
 //        mChannel = -1;
 //    }
+    if (mEngine == NULL) return;
+    mEngine->onExit();
 }
 
 void TestModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)

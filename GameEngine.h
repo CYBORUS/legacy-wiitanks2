@@ -68,6 +68,7 @@ class GameEngine
         bool mAudio;
         bool mRunning;
         unsigned int mNextFrame;
+        unsigned int mCurrentFrame;
         SDL_Surface* mWindowIcon;
         SDL_Joystick* mJoystick;
         SDL_Surface* mCanvas;
