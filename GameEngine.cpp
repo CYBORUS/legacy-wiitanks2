@@ -103,10 +103,10 @@ bool GameEngine::start(EngineModule* inModule)
                     em->onFrame();
                     mNextFrame += NEXT_FRAME;
                 }
-                buildSurfaces();
+                //buildSurfaces();
+                //SDL_Flip(mWindow.surface);
+                onRender();
             }
-            //onRender();
-            SDL_Flip(mWindow.surface);
 
             SDL_Delay(1); // prevent CPU abuse
         }
@@ -215,24 +215,24 @@ bool GameEngine::onInit()
 
 inline void GameEngine::onRender()
 {
-//    VideoLayer* iterator = mWindow.next;
-//
-//    SDL_BlitSurface(mCanvas, NULL, mCanvasTwo, NULL);
-//    while (iterator != NULL && iterator->priority < PRIORITY_GUI)
-//    {
-//        SDL_BlitSurface(iterator->surface, iterator->clip, mCanvasTwo,
-//            &iterator->location);
-//        iterator = iterator->next;
-//    }
-//
-//    SDL_BlitSurface(mCanvasTwo, &mCamera, mWindow.surface, NULL);
-//
-//    while (iterator != NULL)
-//    {
-//        SDL_BlitSurface(iterator->surface, iterator->clip, mWindow.surface,
-//            &iterator->location);
-//        iterator = iterator->next;
-//    }
+    VideoLayer* iterator = mWindow.next;
+
+    SDL_BlitSurface(mCanvas, NULL, mCanvasTwo, NULL);
+    while (iterator != NULL && iterator->priority < PRIORITY_GUI)
+    {
+        SDL_BlitSurface(iterator->surface, iterator->clip, mCanvasTwo,
+            &iterator->location);
+        iterator = iterator->next;
+    }
+
+    SDL_BlitSurface(mCanvasTwo, &mCamera, mWindow.surface, NULL);
+
+    while (iterator != NULL)
+    {
+        SDL_BlitSurface(iterator->surface, iterator->clip, mWindow.surface,
+            &iterator->location);
+        iterator = iterator->next;
+    }
 
     SDL_Flip(mWindow.surface);
 }

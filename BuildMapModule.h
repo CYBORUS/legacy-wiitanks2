@@ -5,12 +5,12 @@
 #include <iostream>
 using namespace std;
 
-#include "EngineModule.h"
-#include "TestModule.h"
-#include "SDL_rotozoom.h"
-#include "Bullet.h"
 #include <cmath>
 #include <SDL.h>
+#include <SDL_rotozoom.h>
+#include "EngineModule.h"
+#include "TestModule.h"
+#include "Bullet.h"
 
 #define MAP_SIZE 50
 #define NUM_STEPS 360

@@ -14,7 +14,7 @@
 #include "TextLayer.h"
 
 #define ENGINE_FPS 30
-#define NEXT_FRAME 33
+#define NEXT_FRAME 25
 
 struct Mask
 {
