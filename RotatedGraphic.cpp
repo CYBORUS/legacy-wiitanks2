@@ -18,6 +18,8 @@ RotatedGraphic::RotatedGraphic(const char* inFile, int inRotations)
 
 RotatedGraphic::~RotatedGraphic()
 {
+    for (int i = 0; i < mRotations; i++) SDL_FreeSurface(mSurfaces[i]);
+
     delete [] mSurfaces;
 }
 
