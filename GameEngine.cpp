@@ -12,6 +12,7 @@ GameEngine::GameEngine()
     mAudio = true;
     mCamera.x = 0;
     mCamera.y = 0;
+
 }
 
 GameEngine::~GameEngine()
@@ -64,6 +65,7 @@ void GameEngine::removeLayer(VideoLayer* inLayer)
 
 bool GameEngine::start(EngineModule* inModule)
 {
+    //settings = new GameSettings();
     EngineModule* em = inModule;
     EngineModule* d = NULL;
 

@@ -42,6 +42,7 @@ class BuildMapModule : public EngineModule
         VideoLayer* mMouse;
         VideoLayer* mTileset;
         VideoLayer* mBackground;
+        VideoLayer* mTank;
         VideoLayer* mTurret;
 
         Bullet* mBullet;
