@@ -20,7 +20,9 @@ class Tank
         void setBody(int inAngle);
         void setTurret(int inAngle);
 
-        SDL_Surface* getTank(RotatedGraphic* inGraphics);
+        void turnTank(int inOffset);
+
+        SDL_Surface* getTank(RotatedGraphic* inTankGraphics, RotatedGraphic* inTurretGraphics);
 
 
     private:

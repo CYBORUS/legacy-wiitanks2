@@ -23,7 +23,11 @@ SDL_Surface* VideoLayer::getImage(const char* inFile)
     SDL_Surface* t = NULL;
     SDL_Surface* outSurface = NULL;
 
-    if((t = IMG_Load(inFile)) == NULL) return NULL;
+    if((t = IMG_Load(inFile)) == NULL)
+    {
+        cerr << "Failed to load " << inFile << endl;
+        return NULL;
+    }
 
     outSurface = SDL_DisplayFormatAlpha(t);
     SDL_FreeSurface(t);

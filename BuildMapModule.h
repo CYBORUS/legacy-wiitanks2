@@ -11,9 +11,18 @@ using namespace std;
 #include "EngineModule.h"
 #include "TestModule.h"
 #include "Bullet.h"
+#include "Tank.h"
 
 #define MAP_SIZE 50
 #define NUM_STEPS 360
+
+
+struct ActiveTank
+{
+    Tank* tank;
+    ActiveTank* next;
+    VideoLayer* layer;
+};
 
 class BuildMapModule : public EngineModule
 {
@@ -42,8 +51,9 @@ class BuildMapModule : public EngineModule
         VideoLayer* mMouse;
         VideoLayer* mTileset;
         VideoLayer* mBackground;
-        VideoLayer* mTank;
-        VideoLayer* mTurret;
+        ActiveTank* mTanks;
+        RotatedGraphic* mTankGraphics;
+        RotatedGraphic* mTurretGraphics;
 
         Bullet* mBullet;
 
