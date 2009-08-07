@@ -10,6 +10,8 @@ Tank::Tank(int inBodyGraphic, int inTurretGraphic)
 
     mTurret.graphic = inTurretGraphic;
     mTurret.angle = 0;
+
+    mCurrentTank = NULL;
 }
 
 void Tank::setBody(int inAngle)
@@ -38,19 +40,20 @@ void Tank::turnTank(int inOffset)
 
 SDL_Surface* Tank::getTank(RotatedGraphic* inTankGraphics, RotatedGraphic* inTurretGraphics)
 {
-    SDL_Surface* tempTankSurface;
+    SDL_FreeSurface(mCurrentTank);
+
     SDL_Surface* tempTurretSurface;
     SDL_Rect location;
 
-    tempTankSurface = SDL_DisplayFormatAlpha(inTankGraphics[mTankBody.graphic].getSurface(mTankBody.angle));
+    mCurrentTank = SDL_DisplayFormatAlpha(inTankGraphics[mTankBody.graphic].getSurface(mTankBody.angle));
 
     tempTurretSurface = inTurretGraphics[mTurret.graphic].getSurface(mTurret.angle);
     //tempSurface = SDL_DisplayFormat(inTankGraphics->getSurface(mTankBody.angle));
 
-    location.x = tempTankSurface->w / 2 - tempTurretSurface->w / 2;
-    location.y = tempTankSurface->h / 2 - tempTurretSurface->h / 2;
+    location.x = mCurrentTank->w / 2 - tempTurretSurface->w / 2;
+    location.y = mCurrentTank->h / 2 - tempTurretSurface->h / 2;
 
-    SDL_BlitSurface(tempTurretSurface, NULL, tempTankSurface, &location);
+    SDL_BlitSurface(tempTurretSurface, NULL, mCurrentTank, &location);
 
-    return tempTankSurface;
+    return mCurrentTank;
 }

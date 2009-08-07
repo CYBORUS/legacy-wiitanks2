@@ -28,6 +28,7 @@ class Tank
     private:
         Direction mTankBody;
         Direction mTurret;
+        SDL_Surface* mCurrentTank;
 
 };
 
