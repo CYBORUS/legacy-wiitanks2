@@ -21,7 +21,6 @@ VideoLayer::~VideoLayer()
 SDL_Surface* VideoLayer::getImage(const char* inFile)
 {
     SDL_Surface* t = NULL;
-    SDL_Surface* u = NULL;
     SDL_Surface* outSurface = NULL;
 
     if((t = IMG_Load(inFile)) == NULL)
@@ -30,29 +29,8 @@ SDL_Surface* VideoLayer::getImage(const char* inFile)
         return NULL;
     }
 
-    Uint32 rmask, gmask, bmask, amask;
-
-    if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-    {
-        rmask = 0xff000000;
-        gmask = 0x00ff0000;
-        bmask = 0x0000ff00;
-        amask = 0x000000ff;
-    }
-    else
-    {
-        rmask = 0x000000ff;
-        gmask = 0x0000ff00;
-        bmask = 0x00ff0000;
-        amask = 0xff000000;
-    }
-
-    u = SDL_DisplayFormatAlpha(t);
+    outSurface = SDL_DisplayFormatAlpha(t);
     SDL_FreeSurface(t);
-    outSurface = SDL_CreateRGBSurface(SDL_HWSURFACE, u->w, u->h,
-        32, rmask, gmask, bmask, amask);
-    SDL_BlitSurface(u, NULL, outSurface, NULL);
-    SDL_FreeSurface(u);
 
     return outSurface;
 }
