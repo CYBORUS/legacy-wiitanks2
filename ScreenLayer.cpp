@@ -14,7 +14,7 @@ bool ScreenLayer::setVideoMode()
 {
     //SDL_RESIZABLE
     surface = SDL_SetVideoMode(mWidth, mHeight, 0,
-        SDL_SWSURFACE);
+        SDL_SWSURFACE | SDL_FULLSCREEN);
     if (surface == NULL) return false;
     return true;
 }

@@ -121,6 +121,9 @@ bool GameEngine::start(EngineModule* inModule)
         d = em;
         em = em->getNextModule();
         delete d;
+
+        mCamera.x = 0;
+        mCamera.y = 0;
     }
     onCleanup();
     return true;
