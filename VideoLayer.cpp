@@ -49,7 +49,7 @@ SDL_Surface* VideoLayer::getImage(const char* inFile)
 
     u = SDL_DisplayFormatAlpha(t);
     SDL_FreeSurface(t);
-    outSurface = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_SRCALPHA, t->w, t->h,
+    outSurface = SDL_CreateRGBSurface(SDL_HWSURFACE, u->w, u->h,
         32, rmask, gmask, bmask, amask);
     SDL_BlitSurface(u, NULL, outSurface, NULL);
     SDL_FreeSurface(u);
