@@ -44,25 +44,46 @@ bool TestModule::onInit()
     mFPS->priority = PRIORITY_TEXT;
 
     mJS1 = new TextLayer();
-    mJS1->setColor(0, 255, 255, 0);
+    mJS1->setColor(0, 128, 255, 0);
     mJS1->loadFont("images/DejaVuSans.ttf", 32);
     mJS1->setText("JOYSTICK 1");
     mJS1->setLocation(400, 50);
     mJS1->priority = PRIORITY_TEXT;
 
     mJS2 = new TextLayer();
-    mJS2->setColor(0, 255, 255, 0);
+    mJS2->setColor(0, 128, 255, 0);
     mJS2->loadFont("images/DejaVuSans.ttf", 32);
     mJS2->setText("JOYSTICK 2");
     mJS2->setLocation(400, 100);
     mJS2->priority = PRIORITY_TEXT;
 
     mJS3 = new TextLayer();
-    mJS3->setColor(0, 255, 255, 0);
+    mJS3->setColor(0, 128, 255, 0);
     mJS3->loadFont("images/DejaVuSans.ttf", 32);
     mJS3->setText("JOYSTICK 3");
     mJS3->setLocation(400, 150);
     mJS3->priority = PRIORITY_TEXT;
+
+    mJS4 = new TextLayer();
+    mJS4->setColor(0, 128, 255, 0);
+    mJS4->loadFont("images/DejaVuSans.ttf", 32);
+    mJS4->setText("JOYSTICK 4");
+    mJS4->setLocation(400, 200);
+    mJS4->priority = PRIORITY_TEXT;
+
+    mJS5 = new TextLayer();
+    mJS5->setColor(0, 128, 255, 0);
+    mJS5->loadFont("images/DejaVuSans.ttf", 32);
+    mJS5->setText("JOYSTICK BUTTONS");
+    mJS5->setLocation(400, 250);
+    mJS5->priority = PRIORITY_TEXT;
+
+    mJS6 = new TextLayer();
+    mJS6->setColor(0, 128, 255, 0);
+    mJS6->loadFont("images/DejaVuSans.ttf", 32);
+    mJS6->setText("JOYSTICK HAT");
+    mJS6->setLocation(400, 300);
+    mJS6->priority = PRIORITY_TEXT;
 
     mYoshi = new AnimatedLayer();
     mYoshi->loadSheet("images/yoshi.png", 64, 8);
@@ -78,6 +99,9 @@ bool TestModule::onInit()
     mEngine->addLayer(mJS1);
     mEngine->addLayer(mJS2);
     mEngine->addLayer(mJS3);
+    mEngine->addLayer(mJS4);
+    mEngine->addLayer(mJS5);
+    mEngine->addLayer(mJS6);
     mEngine->addLayer(mYoshi);
 
     //mMusic = Mix_LoadMUS("theme.ogg");
@@ -94,10 +118,12 @@ bool TestModule::onInit()
 
 void TestModule::onLoop()
 {
-    stringstream s;
-
     mFrames++;
+}
 
+void TestModule::onFrame()
+{
+    stringstream s;
     if (SDL_GetTicks() > mNextFrame)
     {
         mNextFrame += NEXT_FRAME * 3;
@@ -129,6 +155,9 @@ void TestModule::onCleanup()
     SDL_FreeSurface(mJS1->surface);
     SDL_FreeSurface(mJS2->surface);
     SDL_FreeSurface(mJS3->surface);
+    SDL_FreeSurface(mJS4->surface);
+    SDL_FreeSurface(mJS5->surface);
+    SDL_FreeSurface(mJS6->surface);
     SDL_FreeSurface(mYoshi->surface);
 
     delete mTest;
@@ -138,6 +167,9 @@ void TestModule::onCleanup()
     delete mJS1;
     delete mJS2;
     delete mJS3;
+    delete mJS4;
+    delete mJS5;
+    delete mJS6;
     delete mYoshi;
 }
 
@@ -179,14 +211,37 @@ void TestModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)
     int v = (int) inValue;
     //s << "w " << w << " a " << a << " v " << v;
     s << v;
-    if (a % 2 == 0)
+
+    switch (a % 4)
     {
-        mJS1->setText(s.str().c_str());
+        case 0:
+            mJS1->setText(s.str().c_str());
+            break;
+        case 1:
+            mJS2->setText(s.str().c_str());
+            break;
+        case 2:
+            mJS3->setText(s.str().c_str());
+            break;
+        default:
+            mJS4->setText(s.str().c_str());
     }
-    else
-    {
-        mJS2->setText(s.str().c_str());
-    }
+//    if (a % 4 == 0)
+//    {
+//        mJS1->setText(s.str().c_str());
+//    }
+//    else if (a % 4 == 1)
+//    {
+//        mJS2->setText(s.str().c_str());
+//    }
+//    else if (a % 4 == 2)
+//    {
+//        mJS3->setText(s.str().c_str());
+//    }
+//    else
+//    {
+//        mJS4->setText(s.str().c_str());
+//    }
 }
 
 void TestModule::onJoyButtonDown(Uint8 inWhich, Uint8 inButton)
@@ -194,7 +249,7 @@ void TestModule::onJoyButtonDown(Uint8 inWhich, Uint8 inButton)
     stringstream s;
     int b = (int) inButton;
     s << "b " << b;
-    mJS3->setText(s.str().c_str());
+    mJS5->setText(s.str().c_str());
 }
 
 void TestModule::onJoyButtonUp(Uint8 inWhich, Uint8 inButton)
@@ -203,9 +258,16 @@ void TestModule::onJoyButtonUp(Uint8 inWhich, Uint8 inButton)
 
 void TestModule::onJoyHat(Uint8 inWhich, Uint8 inHat, Uint8 inValue)
 {
+    stringstream s;
+    int a = (int) inHat;
+    int v = (int) inValue;
+
+    s << "hat " << v;
+    mJS6->setText(s.str().c_str());
 }
 
 void TestModule::onJoyBall(Uint8 inWhich, Uint8 inBall, Sint16 inXRel,
     Sint16 inYRel)
 {
+    cerr << "joyball firing" << endl;
 }

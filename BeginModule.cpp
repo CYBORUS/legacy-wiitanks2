@@ -70,7 +70,7 @@ bool BeginModule::onInit()
     //mEngine->buildSurfaces();
 
 
-    if ((t = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA,
+    if ((t = SDL_CreateRGBSurface(SDL_SWSURFACE,
                                 mEngine->mWindow.mWidth, mEngine->mWindow.mHeight,
                                 32, rmask, gmask, bmask, amask)) == NULL)
     {
@@ -97,7 +97,7 @@ void BeginModule::onFrame()
 
     SDL_BlitSurface(picSurface, NULL, tempSurface, &dest);
 
-    SDL_SetAlpha(tempSurface, SDL_SRCALPHA, AlphaValue);
+    SDL_SetAlpha(tempSurface, SDL_SRCALPHA | SDL_RLEACCEL, AlphaValue);
     SDL_FillRect(mBackground->surface, 0, SDL_MapRGBA(tempSurface->format, 0, 0, 0, 0));
 
 

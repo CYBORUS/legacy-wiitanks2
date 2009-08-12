@@ -71,6 +71,10 @@ class BuildMapModule : public EngineModule
 
         stringstream s;
 
+        unsigned int mNextSecond;
+        TextLayer* mFPS;
+        int mFrames;
+
         //to control scroll movement
         int xMove;
         int yMove;

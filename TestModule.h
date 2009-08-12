@@ -12,6 +12,7 @@ class TestModule : public EngineModule
         /// module operation
         bool onInit();
         void onLoop();
+        void onFrame();
         void onCleanup();
         EngineModule* getNextModule();
         void setEngine(GameEngine* inEngine);
@@ -35,6 +36,9 @@ class TestModule : public EngineModule
         TextLayer* mJS1;
         TextLayer* mJS2;
         TextLayer* mJS3;
+        TextLayer* mJS4;
+        TextLayer* mJS5;
+        TextLayer* mJS6;
         AnimatedLayer* mYoshi;
         Mix_Music* mMusic;
         Mix_Chunk* mSound;

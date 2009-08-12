@@ -27,6 +27,8 @@ BuildMapModule::BuildMapModule()
     mTankGraphics = NULL;
     mTurretGraphics = NULL;
 
+    mFrames = 0;
+
     temp = new VideoLayer[NUM_STEPS]();
 
     mDest.x = 0;
@@ -120,14 +122,19 @@ bool BuildMapModule::onInit()
     mTileset->surface = VideoLayer::getImage("images/tileset.png");
     mTileset->priority = PRIORITY_BACKGROUND;
 
+    mFPS = new TextLayer();
+    mFPS->setColor(0, 0, 0, 0);
+    mFPS->loadFont("images/DejaVuSans.ttf", 12);
+    mFPS->setText("0 FPS");
+    mFPS->setLocation(600, 500);
+    mFPS->priority = PRIORITY_TEXT;
 
-    SDL_Surface* t;
-    t = IMG_Load("images/turrets/turret0.png");
+
 
     mTanks = new ActiveTank;
-    mTanks->tank = new Tank(0, 0);
     mTanks->next = NULL;
     mTanks->layer = new VideoLayer();
+    mTanks->tank = new Tank(0, 0, mTanks->layer);
     mTanks->layer->priority = PRIORITY_DEFAULT;
     mTanks->layer->location.x = 400;
     mTanks->layer->location.y = 300;
@@ -136,42 +143,10 @@ bool BuildMapModule::onInit()
     mTurretGraphics = new RotatedGraphic("images/turrets/turret0.png", NUM_STEPS);
 
     mTanks->layer->surface = mTanks->tank->getTank(mTankGraphics, mTurretGraphics);
-    for (int i = 0; i < NUM_STEPS; i++)
-    {
-        double angle = i * 360 / NUM_STEPS;
 
-        tempSurface = rotozoomSurface(t, angle, 1.0, 1);
-        temp[i].surface = tempSurface;
-        //temp[i].priority = PRIORITY_DEFAULT;
-
-
-
-//        mSrc.x = (tempSurface->w / 2);
-//        mSrc.y = (tempSurface->h / 2);
-//        mSrc.x = 0;
-//        mSrc.y = 0;
-//
-//        picSurface = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_SRCALPHA,
-//                            32, 32,
-//                            32, rmask, gmask, bmask, amask);
-//
-//        temp[i].surface = SDL_DisplayFormat(picSurface);
-//        SDL_FreeSurface(picSurface);
-//
-//
-//
-//        SDL_BlitSurface(tempSurface, &mSrc, temp[i].surface, NULL);
-//        SDL_FreeSurface(tempSurface);
-    }
-    SDL_FreeSurface(t);
     mSrc.x = 0;
     mSrc.y = 0;
 
-    //mTurret = new VideoLayer();
-    //mTurret->surface = temp[0].surface;
-    //SDL_SetColorKey(mTurret->surface, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(mTurret->surface->format, 0xFF, 0x0, 0xFF));
-    //mTurret->priority = PRIORITY_DEFAULT;
-    //mTurret->setLocation(400 - 16, 300 - 16);
 
     // The following setup code is placed here only for development purposes
     // In final release, it should be in the onLoop() function, and a different
@@ -212,11 +187,6 @@ bool BuildMapModule::onInit()
     mDest.x = 40;
     mDest.y = 30;
 
-    //SDL_BlitSurface(picSurface, &mSrc, mBackground->surface, NULL);
-
-    //SDL_BlitSurface(mTurret->surface, NULL, mBackground->surface, &mDest);
-
-    //mEngine->addLayer(mBackground);
     // End of development code
 
     mMouse = new VideoLayer();
@@ -224,25 +194,19 @@ bool BuildMapModule::onInit()
     mMouse->priority = PRIORITY_MOUSE;
     SDL_ShowCursor(SDL_DISABLE);
 
-    //mEngine->addLayer(mTurret);
-    //mTanks->layer->surface = VideoLayer::getImage("images/turrets/turret0.png");
     mEngine->addLayer(mTanks->layer);
+    mEngine->addLayer(mFPS);
     mEngine->addLayer(mMouse);
 
-//    tempSurface = SDL_DisplayFormat(rotozoomSurface(mTurret->surface, 90.0, 1.0, 1));
-//
-//    SDL_BlitSurface(tempSurface, NULL, mTurret->surface, NULL);
-//    SDL_FreeSurface(tempSurface);
-
-    //mEngine->buildSurfaces();
-
-
     mNext = new TestModule();
+
+    mNextSecond = SDL_GetTicks() + 1000;
     return true;
 }
 
 void BuildMapModule::onLoop()
 {
+    mFrames++;
 //    mSrc.x += xMove;
 //    mSrc.y += yMove;
 //
@@ -288,6 +252,23 @@ void BuildMapModule::onFrame()
     {
         mEngine->moveCamera(xMove, yMove);
     }
+
+    if (SDL_GetTicks() > mNextSecond)
+    {
+        s << mFrames << " FPS";
+        mFPS->setText(s.str().c_str());
+        mNextSecond = SDL_GetTicks() + 1000;
+        mFrames = 0;
+        s.str("");
+    }
+
+    ActiveTank* iterator = mTanks;
+
+    while (iterator != NULL)
+    {
+        mTanks->tank->updateTank();
+        iterator = mTanks->next;
+    }
     //mEngine->buildSurfaces();
 }
 
@@ -321,27 +302,10 @@ void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     int turretX = mTanks->layer->location.x + 16;
     int turretY = mTanks->layer->location.y + 16;
 
-//    mDest.x = inX;
-//    mDest.y = inY;
-//    mDest.w = mMouse->surface->w;
-//    mDest.h = mMouse->surface->h;
-//
-//    mSrc.x = mMouse->location.x;
-//    mSrc.y = mMouse->location.y;
-//    mSrc.w = mDest.w;
-//    mSrc.h = mDest.h;
-
     int which = 0;
     if (mMouse == NULL) return;
     mMouse->setLocation(inX, inY);
 
-    //mEngine->changeSurface(&mSrc, &mDest, mMouse);
-
-
-//    mSrc.x = turretX - 16;
-//    mSrc.y = turretY - 16;
-//    mSrc.w = mTurret->surface->w;
-//    mSrc.h = mTurret->surface->h;
 
     tempRect = mEngine->getCamera();
 
@@ -360,17 +324,6 @@ void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
 
     mTanks->tank->setTurret(which);
     mTanks->layer->surface = mTanks->tank->getTank(mTankGraphics, mTurretGraphics); //temp[which].surface;
-    mTanks->layer->setLocation(400 - (mTanks->layer->surface->w / 2), 300 - (mTanks->layer->surface->h / 2));
-
-//    mDest.x = mTurret->location.x;
-//    mDest.y = mTurret->location.y;
-//    mDest.w = mTurret->surface->w;
-//    mDest.h = mTurret->surface->h;
-
-
-    //mEngine->changeSurface(&mSrc, &mDest, mTurret);
-
-    //mEngine->buildSurfaces();
 
 }
 
@@ -403,28 +356,33 @@ void BuildMapModule::onRButtonDown(int inX, int inY)
 void BuildMapModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     int c = inSym; //what key is this
-    int amount = 20; //number of pixels to increment/decrement by
+    int amount = 0; //number of pixels to increment/decrement by
 
     if (c == SDLK_LEFT)
     {
         xMove = -amount;
-        mTanks->tank->turnTank(1);
+        mTanks->tank->moveTankX(-5);
     }
     if (c == SDLK_RIGHT)
     {
         xMove = amount;
+        mTanks->tank->moveTankX(5);
     }
     if (c == SDLK_UP)
     {
         yMove = -amount;
+        mTanks->tank->moveTankY(-5);
 
     }
     if (c == SDLK_DOWN)
     {
         yMove = amount;
+        mTanks->tank->moveTankY(5);
     }
     mTanks->layer->surface = mTanks->tank->getTank(mTankGraphics, mTurretGraphics);
-    mTanks->layer->setLocation(400 - (mTanks->layer->surface->w / 2), 300 - (mTanks->layer->surface->h / 2));
+    mEngine->setCamera(mTanks->layer->location.x + 16 - 400, mTanks->layer->location.y + 16 - 300);
+
+    //mTanks->layer->setLocation(400 - (mTanks->layer->surface->w / 2), 300 - (mTanks->layer->surface->h / 2));
 
 }
 
@@ -435,19 +393,22 @@ void BuildMapModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
     if (c == SDLK_LEFT)
     {
         xMove = 0;
+        mTanks->tank->moveTankX(0);
     }
     if (c == SDLK_RIGHT)
     {
         xMove = 0;
+        mTanks->tank->moveTankX(0);
     }
     if (c == SDLK_UP)
     {
         yMove = 0;
-
+        mTanks->tank->moveTankY(0);
     }
     if (c == SDLK_DOWN)
     {
         yMove = 0;
+        mTanks->tank->moveTankY(0);
     }
 }
 

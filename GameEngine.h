@@ -6,6 +6,7 @@
 #include <SDL_mixer.h>
 #include <iostream>
 #include <sstream>
+#include <string>
 #include <cmath>
 #include "AnimatedLayer.h"
 #include "EngineModule.h"
