@@ -87,11 +87,13 @@ void Tank::updateTank()
         //we will need an x and y value eventually to move the tank
         int x = 0;
         int y = 0;
+            int backAngle = (mTankBody.angle + 180) % 360;
+
+            cerr << "front: " << mTankBody.angle << " back: " << backAngle << " moveAngle: " << moveAngle << endl;
 
         //if our front is facing where we want to move, just move
         if (moveAngle != mTankBody.angle)
         {
-            int backAngle = (mTankBody.angle + 180) % 360;
 
             //if our back is facing where we want to move, just move
             if (moveAngle != backAngle)
@@ -100,7 +102,7 @@ void Tank::updateTank()
                 //calculate how far the tank would have to turn
                 //if it moved forward and if it moved backwards
                 int difFront = moveAngle - mTankBody.angle;
-                int difBack = backAngle - moveAngle;
+                int difBack = moveAngle - backAngle;
 
                 //speed is all important :)
                 int absDifFront = abs(difFront);
