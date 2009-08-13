@@ -118,26 +118,14 @@ void Tank::updateTank()
                     mLayer->location.x += x;
                     mLayer->location.y += y;
 
-                    turn = difFront / absDifBack * TURN_RATE;
+                    turn = difFront / absDifFront * TURN_RATE;
 
-                    if (turn > (mTankBody.angle - moveAngle))
+                    if (abs(turn) > abs(mTankBody.angle - moveAngle))
                     {
-
+                        turn = mTankBody.angle - moveAngle;
                     }
 
-                    if ((x > 0 && y < 0) || (x < 0 && y > 0) ||
-                        (y < 0 && mTankBody.angle < 90))
-                    {
-                        turnTank(abs(difFront / absDifFront * TURN_RATE));
-                    }
-                    else
-                    {
-                        if (difFront > 0)
-                        {
-                            difFront *= -1;
-                        }
-                        turnTank(difFront / absDifFront * TURN_RATE);
-                    }
+                    turnTank(turn);
                 }
                 else
                 {
@@ -148,20 +136,14 @@ void Tank::updateTank()
                     mLayer->location.x += x;
                     mLayer->location.y += y;
 
-                    if ((x > 0 && y < 0) || (x < 0 && y > 0) ||
-                        (y < 0 && backAngle < 90))
+                    turn = difBack / absDifBack * TURN_RATE;
+
+                    if (abs(turn) > abs(mTankBody.angle - backAngle))
                     {
-                        turnTank(abs(difBack / absDifBack * TURN_RATE));
-                    }
-                    else
-                    {
-                        if (difBack > 0)
-                        {
-                            difBack *= -1;
-                        }
-                        turnTank(difBack / absDifBack * TURN_RATE);
+                        turn = mTankBody.angle - backAngle;
                     }
 
+                    turnTank(turn);
                 }
             }
             else

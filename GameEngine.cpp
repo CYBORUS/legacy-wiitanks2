@@ -131,12 +131,9 @@ bool GameEngine::start(EngineModule* inModule)
 
 bool GameEngine::onInit()
 {
-    #ifdef __APPLE__
-
-    #else ifdef _WIN32
+    #ifdef _WIN32
         putenv("SDL_VIDEODRIVER=directx");
     #endif
-
 
     putenv("SDL_VIDEO_CENTERED=1");
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) return false;
