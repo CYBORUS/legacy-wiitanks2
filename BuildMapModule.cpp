@@ -264,10 +264,18 @@ void BuildMapModule::onFrame()
 
     ActiveTank* iterator = mTanks;
 
+    //first update this players tank so we can set the camera correctly
+    iterator->tank->updateTank();
+    iterator->layer->surface = iterator->tank->getTank(mTankGraphics, mTurretGraphics);
+    mEngine->setCamera(mTanks->layer->location.x + 16 - 400, mTanks->layer->location.y + 16 - 300);
+    iterator = iterator->next;
+
+    //now update everyone elses tanks
     while (iterator != NULL)
     {
-        mTanks->tank->updateTank();
-        iterator = mTanks->next;
+        iterator->tank->updateTank();
+        iterator->layer->surface = mTanks->tank->getTank(mTankGraphics, mTurretGraphics);
+        iterator = iterator->next;
     }
     //mEngine->buildSurfaces();
 }
@@ -379,8 +387,6 @@ void BuildMapModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
         yMove = amount;
         mTanks->tank->moveTankY(-500);
     }
-    mTanks->layer->surface = mTanks->tank->getTank(mTankGraphics, mTurretGraphics);
-    mEngine->setCamera(mTanks->layer->location.x + 16 - 400, mTanks->layer->location.y + 16 - 300);
 
     //mTanks->layer->setLocation(400 - (mTanks->layer->surface->w / 2), 300 - (mTanks->layer->surface->h / 2));
 
