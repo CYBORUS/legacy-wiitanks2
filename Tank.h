@@ -8,7 +8,7 @@
 #include "VideoLayer.h"
 
 #define PI 3.14159265
-#define TURN_RATE 3
+#define TURN_RATE 10
 
 struct Direction
 {
@@ -40,6 +40,7 @@ class Tank
         VideoLayer* mLayer;
 
         int* mMoveDirection;
+        double mTankSpeed;
 
 };
 
