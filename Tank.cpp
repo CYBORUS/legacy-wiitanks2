@@ -116,7 +116,7 @@ void Tank::updateTank()
                     x = (int) (cos((double)mTankBody.angle * PI / 180.0) * moveAmount);
                     y = (int) (sin((double)mTankBody.angle * PI / 180.0) * moveAmount) * -1;
 
-                     cerr << "moving/turning front " << x << ", " << y  << endl;
+                    //cerr << "moving/turning front " << x << ", " << y  << endl;
                     mLayer->location.x += x;
                     mLayer->location.y += y;
 
@@ -124,26 +124,28 @@ void Tank::updateTank()
 
                     if (abs(turn) > abs(mTankBody.angle - moveAngle))
                     {
-                        turn = mTankBody.angle - moveAngle;
-                    }
+                        turn = moveAngle - mTankBody.angle;
 
+                    }
+                    cerr << "turn = " << turn << endl;
                     turnTank(turn);
                 }
                 else
                 {
                     x = (int) (cos((double)backAngle * PI / 180.0) * moveAmount);
                     y = (int) (sin((double)backAngle * PI / 180.0) * moveAmount) * -1;
-                    cerr << "moving/turning back " << x << ", " << y << endl;
+                    //cerr << "moving/turning back " << x << ", " << y << endl;
 
                     mLayer->location.x += x;
                     mLayer->location.y += y;
 
                     turn = difBack / absDifBack * TURN_RATE;
 
-                    if (abs(turn) > abs(mTankBody.angle - backAngle))
+                    if (abs(turn) > abs(backAngle - moveAngle))
                     {
-                        turn = mTankBody.angle - backAngle;
+                        turn = moveAngle - backAngle;
                     }
+                    cerr << "turn = " << turn << endl;
 
                     turnTank(turn);
                 }

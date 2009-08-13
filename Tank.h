@@ -8,7 +8,7 @@
 #include "VideoLayer.h"
 
 #define PI 3.14159265
-#define TURN_RATE 2
+#define TURN_RATE 3
 
 struct Direction
 {
