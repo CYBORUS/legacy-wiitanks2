@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <string>
+#include <cmath>
 using namespace std;
 
 #define DEGREES 360

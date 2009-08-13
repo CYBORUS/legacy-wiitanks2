@@ -13,10 +13,10 @@ RotatedGraphic::RotatedGraphic(const char* inFile, int inRotations)
 
     mSurfaces[0] = VideoLayer::getImage(inFile);
 
-    for (int i = 1; i < mRotations; i++)
+    for (int i = mRotations - 1; i > 0; i--)
     {
         angle = i * DEGREES / mRotations;
-        mSurfaces[i] = rotozoomSurface(mSurfaces[0], angle, 1.0, 1);
+        mSurfaces[(i - 360) * -1] = rotozoomSurface(mSurfaces[0], angle, 1.0, 1);
     }
 }
 

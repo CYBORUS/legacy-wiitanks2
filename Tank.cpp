@@ -83,71 +83,158 @@ void Tank::updateTank()
 
     if (mMoveDirection[0] != 0 || mMoveDirection[1] != 0)
     {
-        int moveAngle = (int) ((atan2((double)mMoveDirection[1], (double)mMoveDirection[0]) * 180 / PI) + 360) % 360;
+        int moveAngle = (int) (atan2((double)mMoveDirection[1], (double)mMoveDirection[0]) * 180 / PI);
 
         //we will need an x and y value eventually to move the tank
         int x = 0;
         int y = 0;
 
+        int backAngle = (mTankBody.angle + 180) % 360;
+
+        int difFront;
+        int difBack;
+        int absDifFront;
+        int absDifBack;
+
+        int tempFront = mTankBody.angle;
+        int tempBack = backAngle;
+
+
+        //we temporarilly need these angles in the same format as atan2 returns
+        if (mTankBody.angle > 180)
+        {
+            tempFront -= 360;
+        }
+
+        if (backAngle > 180)
+        {
+            tempBack -= 360;
+        }
+
+        int absFront = abs(tempFront);
+        int absBack = abs(tempBack);
+        int absMoveAngle = abs(moveAngle);
+
+        //In order to determine the difference between the front and back of the tank
+        //and the angle we want to be moving, we have to deal with the problem of
+        //crossing the 0 point on the unit circle.  In other words,
+        //going from 1 degree to 359 degrees is NOT a difference of 358 degrees,
+        //it's a difference of 2 degrees.  The following if statements solve
+        //that problem for both the front and back ends of the tank.
+
+        //If both angles are in the same half of the circle (top or bottom)
+        //the math is the same for all cases
+        if ((tempFront > 0 && moveAngle > 0) ||
+            (tempFront < 0 && moveAngle < 0))
+        {
+            difFront = (moveAngle - tempFront);
+        }
+        else if ((difFront = absFront + absMoveAngle) <= 180)
+        {
+            //We need the side of the angle that is less than 180 degrees
+
+            //The assignment in this if statement takes care of difFront here
+            //We do need to know which way it should turn, though
+            if (moveAngle < tempFront)
+            {
+                difFront *= -1;
+            }
+
+        }
+        else
+        {
+            //We need a different angle for this case
+
+            difFront = (180 - absMoveAngle) + (180 - absFront);
+
+            //The assignment in the outer if statement takes care of difFront here
+            //We do need to know which way it should turn, though
+            if (moveAngle > tempFront)
+            {
+                difFront *= -1;
+            }
+        }
+        absDifFront = abs(difFront);
+
+        //If both angles are in the same half of the circle (top or bottom)
+        //the math is the same for all cases
+        if ((tempBack > 0 && moveAngle > 0) ||
+            (tempBack < 0 && moveAngle < 0))
+        {
+            difBack = (moveAngle - tempBack);
+        }
+        else if ((difBack = absBack + absMoveAngle) <= 180)
+        {
+            //We need the side of the angle that is less than 180 degrees
+
+            //The assignment in this if statement takes care of difFront here
+            //We do need to know which way it should turn, though
+            if (moveAngle < tempBack)
+            {
+                difBack *= -1;
+            }
+
+        }
+        else
+        {
+            //We need a different angle for this case
+            difBack = (180 - absMoveAngle) + (180 - absBack);
+
+            //The assignment in the outer if statement takes care of difFront here
+            //We do need to know which way it should turn, though
+            if (moveAngle > tempBack)
+            {
+                difBack *= -1;
+            }
+        }
+        absDifBack = abs(difBack);
+
+        //Now we need to set moveAngle to the 360 degree circle
+        moveAngle = (moveAngle + 360) % 360;
 
         //if our front is facing where we want to move, just move
         if (moveAngle != mTankBody.angle)
         {
-            int backAngle = (mTankBody.angle + 180) % 360;
-            cerr << "front: " << mTankBody.angle << " back: " << backAngle << " moveAngle: " << moveAngle << endl;
-
             //if our back is facing where we want to move, just move
             if (moveAngle != backAngle)
             {
-
-                //calculate how far the tank would have to turn
-                //if it moved forward and if it moved backwards
-                int difFront = moveAngle - mTankBody.angle;
-                int difBack = moveAngle - backAngle;
-
-                //speed is all important :)
-                int absDifFront = abs(difFront);
-                int absDifBack = abs(difBack);
-
+                //ok, we need to turn the tank toward the desired direction
                 int turn = 0;
-
-                cerr << "absDifFront: " << absDifFront << " absDifBack: " << absDifBack << endl;
 
                 if (absDifFront <= absDifBack)
                 {
                     x = (int) (cos((double)mTankBody.angle * PI / 180.0) * mTankSpeed);
-                    y = (int) (sin((double)mTankBody.angle * PI / 180.0) * mTankSpeed) * -1;
+                    y = (int) (sin((double)mTankBody.angle * PI / 180.0) * mTankSpeed);
 
-                    //cerr << "moving/turning front " << x << ", " << y  << endl;
                     mLayer->location.x += x;
                     mLayer->location.y += y;
 
                     turn = difFront / absDifFront * TURN_RATE;
 
-                    if (abs(turn) > abs(mTankBody.angle - moveAngle))
+                    //Don't turn past the desired direction
+                    if (abs(turn) > absDifFront)
                     {
-                        turn = moveAngle - mTankBody.angle;
+                        turn = absDifFront;
 
                     }
-                    //cerr << "turn = " << turn << endl;
+
                     turnTank(turn);
                 }
                 else
                 {
                     x = (int) (cos((double)backAngle * PI / 180.0) * mTankSpeed);
-                    y = (int) (sin((double)backAngle * PI / 180.0) * mTankSpeed) * -1;
-                    //cerr << "moving/turning back " << x << ", " << y << endl;
+                    y = (int) (sin((double)backAngle * PI / 180.0) * mTankSpeed);
 
                     mLayer->location.x += x;
                     mLayer->location.y += y;
 
                     turn = difBack / absDifBack * TURN_RATE;
 
-                    if (abs(turn) > abs(backAngle - moveAngle))
+                    //Don't turn past the desired direction
+                    if (abs(turn) > absDifBack)
                     {
-                        turn = moveAngle - backAngle;
+                        turn = absDifBack;
                     }
-                    //cerr << "turn = " << turn << endl;
 
                     turnTank(turn);
                 }
@@ -155,8 +242,7 @@ void Tank::updateTank()
             else
             {
                 x = (int) (cos((double)backAngle * PI / 180.0) * mTankSpeed);
-                y = (int) (sin((double)backAngle * PI / 180.0) * mTankSpeed) * -1;
-                //cerr << "moving back " << x << ", " << y  << endl;
+                y = (int) (sin((double)backAngle * PI / 180.0) * mTankSpeed);
 
                 mLayer->location.x += x;
                 mLayer->location.y += y;
@@ -165,17 +251,12 @@ void Tank::updateTank()
         else
         {
             x = (int) (cos((double)mTankBody.angle * PI / 180.0) * mTankSpeed);
-            y = (int) (sin((double)mTankBody.angle * PI / 180.0) * mTankSpeed) * -1;
-            //cerr << "moving front " << x << ", " << y  << endl;
+            y = (int) (sin((double)mTankBody.angle * PI / 180.0) * mTankSpeed);
 
             mLayer->location.x += x;
             mLayer->location.y += y;
         }
-        //cerr << "x = " << x << " y = " << y << endl;
-
     }
-
-
 }
 
 SDL_Surface* Tank::getTank(RotatedGraphic* inTankGraphics, RotatedGraphic* inTurretGraphics)

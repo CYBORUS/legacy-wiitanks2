@@ -300,8 +300,8 @@ void BuildMapModule::onCleanup()
 
 EngineModule* BuildMapModule::getNextModule()
 {
-    //return mNext;
-    return NULL;
+    return mNext;
+    //return NULL;
 }
 
 void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
@@ -318,7 +318,7 @@ void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     tempRect = mEngine->getCamera();
 
     double x = (double)((inX + tempRect->x) - turretX);
-    double y = (double)((inY + tempRect->y) - turretY) * -1.0;
+    double y = (double)((inY + tempRect->y) - turretY);
     tempRect = NULL;
     double angle = atan2(y, x) * 180 / 3.14159265;
     if (angle < 0)
@@ -379,13 +379,13 @@ void BuildMapModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
     if (c == SDLK_UP)
     {
         yMove = -amount;
-        mTanks->tank->moveTankY(500);
+        mTanks->tank->moveTankY(-500);
 
     }
     if (c == SDLK_DOWN)
     {
         yMove = amount;
-        mTanks->tank->moveTankY(-500);
+        mTanks->tank->moveTankY(500);
     }
 
     //mTanks->layer->setLocation(400 - (mTanks->layer->surface->w / 2), 300 - (mTanks->layer->surface->h / 2));
