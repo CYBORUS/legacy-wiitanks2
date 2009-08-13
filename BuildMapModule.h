@@ -46,6 +46,7 @@ class BuildMapModule : public EngineModule
         void onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         void onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode);
         void onRButtonDown(int inX, int inY);
+        void onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue);
 
         EngineModule* mNext;
         VideoLayer* mMouse;

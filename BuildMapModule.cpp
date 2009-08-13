@@ -361,6 +361,38 @@ void BuildMapModule::onRButtonDown(int inX, int inY)
 
 }
 
+void BuildMapModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)
+{
+//    if ((abs((int)inValue) <= (32767 * .05)) && ((int)inAxis == 0 || (int)inAxis == 1))
+//    {
+//        mTanks->tank->moveTankX(0);
+//        mTanks->tank->moveTankY(0);
+//    }
+
+    int a = (int)inAxis;
+
+    int v = (int)inValue;
+
+    if (abs(v) <= 2000)
+    {
+        v = 0;
+    }
+    switch(a)
+    {
+        case 0:
+        {
+            mTanks->tank->moveTankX(v);
+            break;
+        }
+        case 1:
+        {
+            mTanks->tank->moveTankY(v);
+            break;
+        }
+    }
+
+}
+
 void BuildMapModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 {
     int c = inSym; //what key is this
