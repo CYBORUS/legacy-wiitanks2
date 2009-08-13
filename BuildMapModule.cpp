@@ -292,8 +292,8 @@ void BuildMapModule::onCleanup()
 
 EngineModule* BuildMapModule::getNextModule()
 {
-    return mNext;
-    //return NULL;
+    //return mNext;
+    return NULL;
 }
 
 void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
@@ -361,23 +361,23 @@ void BuildMapModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
     if (c == SDLK_LEFT)
     {
         xMove = -amount;
-        mTanks->tank->moveTankX(-5);
+        mTanks->tank->moveTankX(-500);
     }
     if (c == SDLK_RIGHT)
     {
         xMove = amount;
-        mTanks->tank->moveTankX(5);
+        mTanks->tank->moveTankX(500);
     }
     if (c == SDLK_UP)
     {
         yMove = -amount;
-        mTanks->tank->moveTankY(-5);
+        mTanks->tank->moveTankY(500);
 
     }
     if (c == SDLK_DOWN)
     {
         yMove = amount;
-        mTanks->tank->moveTankY(5);
+        mTanks->tank->moveTankY(-500);
     }
     mTanks->layer->surface = mTanks->tank->getTank(mTankGraphics, mTurretGraphics);
     mEngine->setCamera(mTanks->layer->location.x + 16 - 400, mTanks->layer->location.y + 16 - 300);

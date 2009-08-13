@@ -81,7 +81,8 @@ void Tank::updateTank()
 
     if (mMoveDirection[0] != 0 || mMoveDirection[1] != 0)
     {
-        int moveAngle = (int) (atan2((double)mMoveDirection[0], (double)mMoveDirection[1]) + 360) % 360;
+        double moveAmount = 10.0;
+        int moveAngle = (int) ((atan2((double)mMoveDirection[1], (double)mMoveDirection[0]) * 180 / PI) + 360) % 360;
 
         //we will need an x and y value eventually to move the tank
         int x = 0;
@@ -98,40 +99,76 @@ void Tank::updateTank()
 
                 //calculate how far the tank would have to turn
                 //if it moved forward and if it moved backwards
-                int difFront = mTankBody.angle - moveAngle;
+                int difFront = moveAngle - mTankBody.angle;
                 int difBack = backAngle - moveAngle;
 
                 //speed is all important :)
                 int absDifFront = abs(difFront);
                 int absDifBack = abs(difBack);
 
+                int turn = 0;
+
 
                 if (absDifFront <= absDifBack)
                 {
-                    x = (int) sin(mTankBody.angle * PI / 180);
-                    y = (int) cos(mTankBody.angle * PI / 180);
+                    x = (int) (cos((double)mTankBody.angle * PI / 180.0) * moveAmount);
+                    y = (int) (sin((double)mTankBody.angle * PI / 180.0) * moveAmount) * -1;
 
+                     cerr << "moving/turning front " << x << ", " << y  << endl;
                     mLayer->location.x += x;
                     mLayer->location.y += y;
 
-                    turnTank(difFront / absDifFront);
+                    turn = difFront / absDifBack * TURN_RATE;
 
+                    if (turn > (mTankBody.angle - moveAngle))
+                    {
+
+                    }
+
+                    if ((x > 0 && y < 0) || (x < 0 && y > 0) ||
+                        (y < 0 && mTankBody.angle < 90))
+                    {
+                        turnTank(abs(difFront / absDifFront * TURN_RATE));
+                    }
+                    else
+                    {
+                        if (difFront > 0)
+                        {
+                            difFront *= -1;
+                        }
+                        turnTank(difFront / absDifFront * TURN_RATE);
+                    }
                 }
                 else
                 {
-                    x = (int) cos(backAngle * PI / 180);
-                    y = (int) sin(backAngle * PI / 180);
+                    x = (int) (cos((double)backAngle * PI / 180.0) * moveAmount);
+                    y = (int) (sin((double)backAngle * PI / 180.0) * moveAmount) * -1;
+                    cerr << "moving/turning back " << x << ", " << y << endl;
 
                     mLayer->location.x += x;
                     mLayer->location.y += y;
 
-                    turnTank(difBack / absDifBack);
+                    if ((x > 0 && y < 0) || (x < 0 && y > 0) ||
+                        (y < 0 && backAngle < 90))
+                    {
+                        turnTank(abs(difBack / absDifBack * TURN_RATE));
+                    }
+                    else
+                    {
+                        if (difBack > 0)
+                        {
+                            difBack *= -1;
+                        }
+                        turnTank(difBack / absDifBack * TURN_RATE);
+                    }
+
                 }
             }
             else
             {
-                x = (int) sin(backAngle * PI / 180);
-                y = (int) cos(backAngle * PI / 180);
+                x = (int) (cos((double)backAngle * PI / 180.0) * moveAmount);
+                y = (int) (sin((double)backAngle * PI / 180.0) * moveAmount) * -1;
+                cerr << "moving back " << x << ", " << y  << endl;
 
                 mLayer->location.x += x;
                 mLayer->location.y += y;
@@ -139,13 +176,14 @@ void Tank::updateTank()
         }
         else
         {
-            x = (int) sin(mTankBody.angle * PI / 180);
-            y = (int) cos(mTankBody.angle * PI / 180);
+            x = (int) (cos((double)mTankBody.angle * PI / 180.0) * moveAmount);
+            y = (int) (sin((double)mTankBody.angle * PI / 180.0) * moveAmount) * -1;
+            cerr << "moving front " << x << ", " << y  << endl;
 
             mLayer->location.x += x;
             mLayer->location.y += y;
         }
-        cerr << "x = " << x << " y = " << y << endl;
+        //cerr << "x = " << x << " y = " << y << endl;
 
     }
 
