@@ -7,8 +7,8 @@ using namespace std;
 
 
 
-int X = MAP_SIZE * 32;
-int Y = MAP_SIZE * 32;
+int X = MAP_SIZE * 25;
+int Y = MAP_SIZE * 25;
 
 
 BuildMapModule::BuildMapModule()
@@ -88,6 +88,27 @@ BuildMapModule::BuildMapModule()
         }
     }
 
+    //now write all of this to a file
+
+    ofstream out;
+
+    out.open("map/test.wt2");
+
+    out << MAP_SIZE << endl << MAP_SIZE << endl << "5" << endl;
+
+    out << "0 green.png\n1 blue.png\n2 gray.png\n3 red.png\n4 white.png\n";
+
+    for (int i = 0; i < MAP_SIZE; i++)
+    {
+        for (int j = 0; j < MAP_SIZE; j++)
+        {
+            out << setw(5) << tileMap[i][j];
+        }
+        out << endl;
+    }
+
+    out.close();
+
     if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
     {
         rmask = 0xff000000;
@@ -164,11 +185,11 @@ bool BuildMapModule::onInit()
 
     for (int i = 0; i < MAP_SIZE; i++)
     {
-        mDest.y = i * 32;
+        mDest.y = i * 25;
         for (int j = 0; j < MAP_SIZE; j++)
         {
-            mSrc.x = tileMap[i][j] * 32;
-            mDest.x = j * 32;
+            mSrc.x = tileMap[i][j] * 25;
+            mDest.x = j * 25;
 
             if (SDL_BlitSurface(mTileset->surface, &mSrc, mBackground->surface, &mDest) == -2)
             {
