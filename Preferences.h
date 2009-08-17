@@ -1,6 +1,7 @@
 #ifndef _PREFERENCES_H
 #define _PREFERENCES_H
 
+#include <cstdlib>
 #include <fstream>
 using namespace std;
 

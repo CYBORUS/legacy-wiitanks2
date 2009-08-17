@@ -74,6 +74,6 @@ void Preferences::setScreenWidth(int inWidth)
     }
 }
 
-void Preferences::setScreenHeight(in inHeight)
+void Preferences::setScreenHeight(int inHeight)
 {
 }
