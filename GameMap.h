@@ -20,13 +20,13 @@ struct Tile
 class GameMap
 {
     public:
-        GameMap(unsigned int inWidth, unsigned int inHeight);
         GameMap(const char* inFile);
         virtual ~GameMap();
 
         unsigned int getWidth();
         unsigned int getHeight();
         Tile* getTile(unsigned int inX, unsigned int inY);
+        SDL_Surface* getImage(int inIndex);
         SDL_Surface* getSurface();
 
     private:

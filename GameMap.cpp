@@ -1,14 +1,5 @@
 #include "GameMap.h"
 
-GameMap::GameMap(unsigned int inWidth, unsigned int inHeight)
-{
-    mWidth = inWidth;
-    mHeight = inHeight;
-
-    mTiles = new Tile*[mHeight];
-    for (unsigned int i = 0; i < mHeight; i++) mTiles[i] = new Tile[mWidth];
-}
-
 GameMap::GameMap(const char* inFile)
 {
     ifstream file;
@@ -57,30 +48,13 @@ GameMap::GameMap(const char* inFile)
             SDL_BlitSurface(mImages[mTiles[i][j].type], NULL, mSurface, &d);
         }
     }
-
-//    for (int i = 0; i < MAP_SIZE; i++)
-//    {
-//        mDest.y = i * 25;
-//        for (int j = 0; j < MAP_SIZE; j++)
-//        {
-//            mSrc.x = tileMap[i][j] * 25;
-//            mDest.x = j * 25;
-//
-//            if (SDL_BlitSurface(mTileset->surface, &mSrc, mBackground->surface, &mDest) == -2)
-//            {
-//                cerr << "blitting failed" << endl;
-//                exit(4);
-//            }
-//        }
-//    }
-
-
 }
 
 GameMap::~GameMap()
 {
     if (mWidth == 0 || mHeight == 0) return;
-    for (unsigned int i = 0; i < mWidth; i++) delete [] mTiles[i];
+    for (unsigned int i = 0; i < mHeight; i++) delete [] mTiles[i];
+    delete [] mTiles;
 }
 
 unsigned int GameMap::getWidth()
@@ -102,4 +76,9 @@ Tile* GameMap::getTile(unsigned int inX, unsigned int inY)
 SDL_Surface* GameMap::getSurface()
 {
     return mSurface;
+}
+
+SDL_Surface* GameMap::getImage(int inIndex)
+{
+    return mImages[inIndex];
 }
