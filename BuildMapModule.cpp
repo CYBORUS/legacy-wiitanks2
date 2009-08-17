@@ -89,25 +89,25 @@ BuildMapModule::BuildMapModule()
     }
 
     //now write all of this to a file
-
-    ofstream out;
-
-    out.open("map/test.wt2");
-
-    out << MAP_SIZE << endl << MAP_SIZE << endl << "5" << endl;
-
-    out << "0 green.png\n1 blue.png\n2 gray.png\n3 red.png\n4 white.png\n";
-
-    for (int i = 0; i < MAP_SIZE; i++)
-    {
-        for (int j = 0; j < MAP_SIZE; j++)
-        {
-            out << setw(5) << tileMap[i][j];
-        }
-        out << endl;
-    }
-
-    out.close();
+//
+//    ofstream out;
+//
+//    out.open("map/test.wt2");
+//
+//    out << MAP_SIZE << endl << MAP_SIZE << endl << "5" << endl;
+//
+//    out << "0 green.png\n1 blue.png\n2 gray.png\n3 red.png\n4 white.png\n";
+//
+//    for (int i = 0; i < MAP_SIZE; i++)
+//    {
+//        for (int j = 0; j < MAP_SIZE; j++)
+//        {
+//            out << setw(5) << tileMap[i][j];
+//        }
+//        out << endl;
+//    }
+//
+//    out.close();
 
     if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
     {

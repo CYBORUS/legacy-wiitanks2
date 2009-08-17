@@ -71,6 +71,7 @@ void Preferences::setScreenWidth(int inWidth)
 
     if (!prefs.fail())
     {
+
     }
 }
 
