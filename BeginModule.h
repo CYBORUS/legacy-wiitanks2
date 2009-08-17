@@ -4,6 +4,7 @@
 #include <iostream>
 using namespace std;
 
+#include "GameEngine.h"
 #include "EngineModule.h"
 #include "BuildMapModule.h"
 #include <SDL.h>

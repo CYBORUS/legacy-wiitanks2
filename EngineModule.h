@@ -17,7 +17,6 @@ class EngineModule
         virtual void onFrame();
         virtual void onCleanup() = 0;
         virtual EngineModule* getNextModule() = 0;
-        void setEngine(GameEngine* inEngine);
         virtual SDL_Surface* getCanvas();
 
         /// input events
@@ -49,9 +48,6 @@ class EngineModule
         virtual void onExpose();
         virtual void onExit();
         virtual void onUser(Uint8 inType, int inCode, void* inData1, void* inData2);
-
-    protected:
-        GameEngine* mEngine;
 };
 
 #endif

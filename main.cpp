@@ -4,6 +4,9 @@
 
 int main(int argc, char** argv)
 {
-    GameEngine ge;
-    return ge.start(new BeginModule()) ? 0 : 1;
+    //GameEngine ge;
+    //return ge.start(new BeginModule()) ? 0 : 1;
+    GameEngine::construct();
+    GameEngine::start(new BeginModule());
+    return 0;
 }

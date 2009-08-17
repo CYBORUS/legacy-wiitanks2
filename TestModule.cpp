@@ -92,17 +92,17 @@ bool TestModule::onInit()
     mYoshi->location.y = 100;
     mYoshi->update();
 
-    mEngine->addLayer(mTest);
-    mEngine->addLayer(mMouse);
-    mEngine->addLayer(mText);
-    mEngine->addLayer(mFPS);
-    mEngine->addLayer(mJS1);
-    mEngine->addLayer(mJS2);
-    mEngine->addLayer(mJS3);
-    mEngine->addLayer(mJS4);
-    mEngine->addLayer(mJS5);
-    mEngine->addLayer(mJS6);
-    mEngine->addLayer(mYoshi);
+    GameEngine::addLayer(mTest);
+    GameEngine::addLayer(mMouse);
+    GameEngine::addLayer(mText);
+    GameEngine::addLayer(mFPS);
+    GameEngine::addLayer(mJS1);
+    GameEngine::addLayer(mJS2);
+    GameEngine::addLayer(mJS3);
+    GameEngine::addLayer(mJS4);
+    GameEngine::addLayer(mJS5);
+    GameEngine::addLayer(mJS6);
+    GameEngine::addLayer(mYoshi);
 
     //mMusic = Mix_LoadMUS("theme.ogg");
     //Mix_PlayMusic(mMusic, 0);
@@ -200,8 +200,7 @@ void TestModule::onLButtonDown(int inX, int inY)
 //        Mix_HaltChannel(mChannel);
 //        mChannel = -1;
 //    }
-    if (mEngine == NULL) return;
-    mEngine->onExit();
+    GameEngine::onExit();
 }
 
 void TestModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)

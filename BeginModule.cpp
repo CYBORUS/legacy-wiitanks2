@@ -44,7 +44,7 @@ bool BeginModule::onInit()
     mBackground = new VideoLayer();
 
     SDL_Surface* t = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA,
-                                mEngine->mWindow.mWidth, mEngine->mWindow.mHeight,
+                                GameEngine::mWindow.mWidth, GameEngine::mWindow.mHeight,
                                 32, rmask, gmask, bmask, amask);
 
     mBackground->surface = SDL_DisplayFormat(t);
@@ -64,14 +64,14 @@ bool BeginModule::onInit()
 //    mMouse->priority = PRIORITY_MOUSE;
     SDL_ShowCursor(SDL_DISABLE);
 
-    //mEngine->addLayer(mBackground);
-    //mEngine->addLayer(mMouse);
+    //GameEngine::addLayer(mBackground);
+    //GameEngine::addLayer(mMouse);
 
-    //mEngine->buildSurfaces();
+    //GameEngine::buildSurfaces();
 
 
     if ((t = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                                mEngine->mWindow.mWidth, mEngine->mWindow.mHeight,
+                                GameEngine::mWindow.mWidth, GameEngine::mWindow.mHeight,
                                 32, rmask, gmask, bmask, amask)) == NULL)
     {
         cerr << "creation failed" << endl;
@@ -133,11 +133,11 @@ void BeginModule::onFrame()
 
         if (SDL_GetTicks() > mPauseTime)
         {
-            mEngine->onExit();
+            GameEngine::onExit();
         }
     }
 
-    //mEngine->buildSurfaces();
+    //GameEngine::buildSurfaces();
 
 }
 
@@ -163,8 +163,7 @@ void BeginModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
 
 void BeginModule::onLButtonDown(int inX, int inY)
 {
-    if (mEngine == NULL) return;
-    mEngine->onExit();
+    GameEngine::onExit();
 }
 
 SDL_Surface* BeginModule::getCanvas()

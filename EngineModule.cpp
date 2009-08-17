@@ -263,36 +263,31 @@ void EngineModule::onJoyBall(Uint8 inWhich, Uint8 inBall, Sint16 inXRel,
 
 void EngineModule::onMinimize()
 {
-    mEngine->onMinimize();
+    GameEngine::onMinimize();
 }
 
 void EngineModule::onRestore()
 {
-    mEngine->onRestore();
+    GameEngine::onRestore();
 }
 
 void EngineModule::onResize(int inWidth, int inHeight)
 {
-    mEngine->onResize(inWidth, inHeight);
+    GameEngine::onResize(inWidth, inHeight);
 }
 
 void EngineModule::onExpose()
 {
-    mEngine->onExpose();
+    GameEngine::onExpose();
 }
 
 void EngineModule::onExit()
 {
-    mEngine->onExit();
+    GameEngine::onExit();
 }
 
 void EngineModule::onUser(Uint8 inType, int inCode, void* inData1, void* inData2)
 {
-}
-
-void EngineModule::setEngine(GameEngine* inEngine)
-{
-    mEngine = inEngine;
 }
 
 void EngineModule::onFrame()

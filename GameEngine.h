@@ -31,51 +31,49 @@ class EngineModule;
 class GameEngine
 {
     public:
-        GameEngine();
-        virtual ~GameEngine();
+        static void construct();
+        static bool start(EngineModule* inModule);
+        static void addLayer(VideoLayer* inLayer);
+        static void removeLayer(VideoLayer* inLayer);
+        static void setCanvas(SDL_Surface* inCanvas);
+        static SDL_Rect* setCamera(int inX, int inY);
+        static SDL_Rect* moveCamera(int inX, int inY);
+        static SDL_Rect* getCamera();
+        static void changeSurface(SDL_Rect* inOld, SDL_Rect* inNew, VideoLayer* inLayer);
+        static void buildSurfaces();
 
-        bool start(EngineModule* inModule);
-        void addLayer(VideoLayer* inLayer);
-        void removeLayer(VideoLayer* inLayer);
-        void setCanvas(SDL_Surface* inCanvas);
-        SDL_Rect* setCamera(int inX, int inY);
-        SDL_Rect* moveCamera(int inX, int inY);
-        SDL_Rect* getCamera();
-        void changeSurface(SDL_Rect* inOld, SDL_Rect* inNew, VideoLayer* inLayer);
-        void buildSurfaces();
+        static Mix_Music* loadMusic(const char* inFile);
+        static void freeMusic(Mix_Music* inMusic);
+        static Mix_Chunk* loadSound(const char* inFile);
+        static void freeSound(Mix_Chunk* inSound);
+        static void playSound(Mix_Chunk* inSound);
 
-        Mix_Music* loadMusic(const char* inFile);
-        void freeMusic(Mix_Music* inMusic);
-        Mix_Chunk* loadSound(const char* inFile);
-        void freeSound(Mix_Chunk* inSound);
-        void playSound(Mix_Chunk* inSound);
-
-        void onMinimize();
-        void onRestore();
-        void onResize(int inWidth, int inHeight);
-        void onExpose();
-        void onExit();
+        static void onMinimize();
+        static void onRestore();
+        static void onResize(int inWidth, int inHeight);
+        static void onExpose();
+        static void onExit();
 
         static Mask mask;
 
-        ScreenLayer mWindow;
+        static ScreenLayer mWindow;
 
     private:
         /// engine loop
-        bool onInit();
-        inline void onRender();
-        void onCleanup();
-        void onMusicEnd();
+        static bool onInit();
+        static inline void onRender();
+        static void onCleanup();
+        static void onMusicEnd();
 
-        bool mAudio;
-        bool mRunning;
-        unsigned int mNextFrame;
-        unsigned int mCurrentFrame;
-        SDL_Surface* mWindowIcon;
-        SDL_Joystick* mJoystick;
-        SDL_Surface* mCanvas;
-        SDL_Surface* mCanvasTwo;
-        SDL_Rect mCamera;
+        static bool mAudio;
+        static bool mRunning;
+        static unsigned int mNextFrame;
+        static unsigned int mCurrentFrame;
+        static SDL_Surface* mWindowIcon;
+        static SDL_Joystick* mJoystick;
+        static SDL_Surface* mCanvas;
+        static SDL_Surface* mCanvasTwo;
+        static SDL_Rect mCamera;
 };
 
 #endif

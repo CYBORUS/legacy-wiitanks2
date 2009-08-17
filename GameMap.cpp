@@ -43,7 +43,7 @@ GameMap::GameMap(const char* inFile)
 GameMap::~GameMap()
 {
     if (mWidth == 0 || mHeight == 0) return;
-    for (unsigned int i = 0; i < mWidth; i++) delete [] Tile[i];
+    for (unsigned int i = 0; i < mWidth; i++) delete [] mTiles[i];
 }
 
 unsigned int GameMap::getWidth()

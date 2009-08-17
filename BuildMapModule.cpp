@@ -134,9 +134,9 @@ bool BuildMapModule::onInit()
 {
     SDL_EnableKeyRepeat(5, 5); //we want key repeating for scrolling
 
-    mShot = mEngine->loadSound("audio/hyah.wav");
+    mShot = GameEngine::loadSound("audio/hyah.wav");
 
-    //mMusic = mEngine->loadMusic("audio/portal_still_alive.mp3");
+    //mMusic = GameEngine::loadMusic("audio/portal_still_alive.mp3");
     //Mix_PlayMusic(mMusic, -1);
 
     mTileset = new VideoLayer();
@@ -215,9 +215,9 @@ bool BuildMapModule::onInit()
     mMouse->priority = PRIORITY_MOUSE;
     SDL_ShowCursor(SDL_DISABLE);
 
-    mEngine->addLayer(mTanks->layer);
-    mEngine->addLayer(mFPS);
-    mEngine->addLayer(mMouse);
+    GameEngine::addLayer(mTanks->layer);
+    GameEngine::addLayer(mFPS);
+    GameEngine::addLayer(mMouse);
 
     mNext = new TestModule();
 
@@ -251,7 +251,7 @@ void BuildMapModule::onLoop()
 //
 //    //SDL_BlitSurface(picSurface, &mSrc, mBackground->surface, NULL);
 //    //mBackground->setLocation(mSrc.x, mSrc.y);
-//    tempRect = mEngine->moveCamera(xMove, yMove);
+//    tempRect = GameEngine::moveCamera(xMove, yMove);
 //
 //    mSrc.x = tempRect->x;
 //    mSrc.y = tempRect->y;
@@ -271,7 +271,7 @@ void BuildMapModule::onFrame()
 
     if (xMove || yMove)
     {
-        mEngine->moveCamera(xMove, yMove);
+        GameEngine::moveCamera(xMove, yMove);
     }
 
     if (SDL_GetTicks() > mNextSecond)
@@ -288,7 +288,7 @@ void BuildMapModule::onFrame()
     //first update this players tank so we can set the camera correctly
     iterator->tank->updateTank();
     iterator->layer->surface = iterator->tank->getTank(mTankGraphics, mTurretGraphics);
-    mEngine->setCamera(mTanks->layer->location.x + 16 - 400, mTanks->layer->location.y + 16 - 300);
+    GameEngine::setCamera(mTanks->layer->location.x + 16 - 400, mTanks->layer->location.y + 16 - 300);
     iterator = iterator->next;
 
     //now update everyone elses tanks
@@ -298,7 +298,7 @@ void BuildMapModule::onFrame()
         iterator->layer->surface = mTanks->tank->getTank(mTankGraphics, mTurretGraphics);
         iterator = iterator->next;
     }
-    //mEngine->buildSurfaces();
+    //GameEngine::buildSurfaces();
 }
 
 void BuildMapModule::onCleanup()
@@ -306,7 +306,7 @@ void BuildMapModule::onCleanup()
     SDL_FreeSurface(mBackground->surface);
     SDL_FreeSurface(mMouse->surface);
 
-    mEngine->freeSound(mShot);
+    GameEngine::freeSound(mShot);
 
     SDL_FreeSurface(picSurface);
 
@@ -336,7 +336,7 @@ void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     mMouse->setLocation(inX, inY);
 
 
-    tempRect = mEngine->getCamera();
+    tempRect = GameEngine::getCamera();
 
     double x = (double)((inX + tempRect->x) - turretX);
     double y = (double)((inY + tempRect->y) - turretY);
@@ -358,27 +358,26 @@ void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
 
 void BuildMapModule::onLButtonDown(int inX, int inY)
 {
-    mEngine->playSound(mShot);
+    GameEngine::playSound(mShot);
     if (mBullet != NULL)
     {
-        mEngine->removeLayer(mBullet->getLayer());
+        GameEngine::removeLayer(mBullet->getLayer());
         SDL_FreeSurface(mBullet->getLayer()->surface);
         delete mBullet;
     }
 
-    tempRect = mEngine->getCamera();
+    tempRect = GameEngine::getCamera();
 
     double turretX = (double)mTanks->layer->location.x;
     double turretY = (double)mTanks->layer->location.y;
     mBullet = new Bullet((double)((inX + tempRect->x) - turretX), (double)((inY + tempRect->y) - turretY), turretX + 0.0, turretY + 0.0, 10.0);
-    mEngine->addLayer(mBullet->getLayer());
+    GameEngine::addLayer(mBullet->getLayer());
 
 }
 
 void BuildMapModule::onRButtonDown(int inX, int inY)
 {
-    if (mEngine == NULL) return;
-    mEngine->onExit();
+    GameEngine::onExit();
 
 }
 
