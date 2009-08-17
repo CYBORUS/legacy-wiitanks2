@@ -11,7 +11,6 @@
 #include <cmath>
 #include "AnimatedLayer.h"
 #include "EngineModule.h"
-#include "ScreenLayer.h"
 #include "VideoLayer.h"
 #include "TextLayer.h"
 #include "Preferences.h"
@@ -56,8 +55,6 @@ class GameEngine
 
         static Mask mask;
 
-        static ScreenLayer mWindow;
-
     private:
         /// engine loop
         static bool onInit();
@@ -74,6 +71,7 @@ class GameEngine
         static SDL_Surface* mCanvas;
         static SDL_Surface* mCanvasTwo;
         static SDL_Rect mCamera;
+        static VideoLayer mWindow;
 };
 
 #endif

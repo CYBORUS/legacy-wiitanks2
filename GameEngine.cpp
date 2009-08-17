@@ -2,7 +2,7 @@
 using namespace std;
 
 Mask GameEngine::mask;
-ScreenLayer GameEngine::mWindow;
+VideoLayer GameEngine::mWindow;
 bool GameEngine::mAudio = true;
 bool GameEngine::mRunning = false;
 unsigned int GameEngine::mNextFrame;
@@ -168,7 +168,10 @@ bool GameEngine::onInit()
     //end of screen resolution code
 
 
-    if (!mWindow.setVideoMode()) return false;
+    //if (!mWindow.setVideoMode()) return false;
+    mWindow.surface = SDL_SetVideoMode(Preferences::getScreenWidth(),
+        Preferences::getScreenHeight(), 0, SDL_SWSURFACE | SDL_ASYNCBLIT);
+    if (mWindow.surface == NULL) return false;
 
     mCamera.w = mWindow.surface->w;
     mCamera.h = mWindow.surface->h;
