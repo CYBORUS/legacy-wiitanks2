@@ -16,6 +16,10 @@ class Preferences
         static void setScreenWidth(int inWidth);
         static void setScreenHeight(int inHeight);
 
+        //This allows a quick get without having to make a function call
+        static const int &cWidth;
+        static const int &cHeight;
+
     private:
         static int mWidth;
         static int mHeight;

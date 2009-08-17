@@ -8,6 +8,10 @@ int Preferences::mWidth = 800;
 int Preferences::mHeight = 600;
 ofstream Preferences::prefs;
 
+const int &Preferences::cWidth = mWidth;
+const int &Preferences::cHeight = mHeight;
+
+
 /*
 *   setup()
 *
@@ -67,11 +71,15 @@ int Preferences::getScreenHeight()
 
 void Preferences::setScreenWidth(int inWidth)
 {
-    prefs.open("settings.dat");
+    prefs.open("settings.dat", fstream::out | fstream::in);
 
     if (!prefs.fail())
     {
 
+    }
+    else
+    {
+        prefs.clear(); //clear out the flags
     }
 }
 
