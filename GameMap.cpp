@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include "GameMap.h"
 
-GameMap::GameMap(unsigned int inWidth, unsigned int inHeight)
+GameMap::GameMap(unsigned int inWidth, unsigned int inHeight, ifstream inMap)
 {
     mWidth = inWidth;
     mHeight = inHeight;

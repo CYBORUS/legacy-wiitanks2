@@ -1,6 +1,9 @@
 #ifndef _GAMEMAP_H
 #define	_GAMEMAP_H
 
+#include <fstream>
+using namespace std;
+
 struct Tile
 {
     unsigned int type;
@@ -10,7 +13,7 @@ struct Tile
 class GameMap
 {
     public:
-        GameMap(unsigned int inWidth, unsigned int inHeight);
+        GameMap(unsigned int inWidth, unsigned int inHeight, ifstream inMap);
         virtual ~GameMap();
 
         unsigned int getWidth();
