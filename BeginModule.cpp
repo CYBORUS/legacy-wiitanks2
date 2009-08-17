@@ -44,7 +44,7 @@ bool BeginModule::onInit()
     mBackground = new VideoLayer();
 
     SDL_Surface* t = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA,
-                                GameEngine::mWindow.mWidth, GameEngine::mWindow.mHeight,
+                                SDL_GetVideoSurface()->w, SDL_GetVideoSurface()->h,
                                 32, rmask, gmask, bmask, amask);
 
     mBackground->surface = SDL_DisplayFormat(t);
@@ -71,7 +71,7 @@ bool BeginModule::onInit()
 
 
     if ((t = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                                GameEngine::mWindow.mWidth, GameEngine::mWindow.mHeight,
+                                SDL_GetVideoSurface()->w, SDL_GetVideoSurface()->h,
                                 32, rmask, gmask, bmask, amask)) == NULL)
     {
         cerr << "creation failed" << endl;
