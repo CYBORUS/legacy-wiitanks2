@@ -132,7 +132,7 @@ BuildMapModule::~BuildMapModule()
 
 bool BuildMapModule::onInit()
 {
-    SDL_EnableKeyRepeat(5, 5); //we want key repeating for scrolling
+    //SDL_EnableKeyRepeat(5, 5); //we want key repeating for scrolling
 
     mShot = GameEngine::loadSound("audio/hyah.wav");
 

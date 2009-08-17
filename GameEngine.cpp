@@ -169,8 +169,8 @@ bool GameEngine::onInit()
 
 
     //if (!mWindow.setVideoMode()) return false;
-    mWindow.surface = SDL_SetVideoMode(Preferences::getScreenWidth(),
-        Preferences::getScreenHeight(), 0, SDL_SWSURFACE | SDL_ASYNCBLIT);
+    mWindow.surface = SDL_SetVideoMode(Preferences::cWidth,
+        Preferences::cHeight, 0, SDL_SWSURFACE | SDL_ASYNCBLIT);
     if (mWindow.surface == NULL) return false;
 
     mCamera.w = mWindow.surface->w;
