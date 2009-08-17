@@ -2,6 +2,7 @@
 #define _SCREENLAYER_H
 
 #include "VideoLayer.h"
+#include "Preferences.h"
 
 class ScreenLayer : public VideoLayer
 {

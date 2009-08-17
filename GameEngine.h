@@ -14,7 +14,7 @@
 #include "ScreenLayer.h"
 #include "VideoLayer.h"
 #include "TextLayer.h"
-#include "GameSettings.h"
+#include "Preferences.h"
 
 #define ENGINE_FPS 30
 #define NEXT_FRAME 25

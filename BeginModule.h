@@ -7,6 +7,7 @@ using namespace std;
 #include "GameEngine.h"
 #include "EngineModule.h"
 #include "BuildMapModule.h"
+#include "Preferences.h"
 #include <SDL.h>
 
 class BeginModule : public EngineModule

@@ -2,8 +2,8 @@
 
 ScreenLayer::ScreenLayer() : VideoLayer()
 {
-    mWidth = 800;
-    mHeight = 600;
+    mWidth = Preferences::getScreenWidth();
+    mHeight = Preferences::getScreenHeight();
 }
 
 ScreenLayer::~ScreenLayer()
