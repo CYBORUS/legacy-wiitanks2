@@ -50,64 +50,7 @@ BuildMapModule::BuildMapModule()
     xMove = 0;
     yMove = 0;
 
-    //create a random dummy map, in actual game we would create
-    // a real map
-
-    //first make it all green
-    for (int i = 0; i < MAP_SIZE; i++)
-    {
-        for (int j = 0; j < MAP_SIZE; j++)
-        {
-            tileMap[i][j] = 0;
-        }
-    }
-
-    //then set different colored vertical lines down periodically
-    int color = 2;
-    for (int i = 0; i < MAP_SIZE; i++)
-    {
-        for (int j = 10; j < MAP_SIZE; j += 10)
-        {
-            tileMap[i][j] = color;
-                color = (color + 1) % 5;
-            if (color < 2)
-            {
-                color = 2;
-            }
-        }
-        color = 2;
-
-    }
-
-    //then set blue horizontal lines through it periodically
-    for (int i = 10; i < MAP_SIZE; i += 10)
-    {
-        for (int j = 0; j < MAP_SIZE; j++)
-        {
-            tileMap[i][j] = 1;
-        }
-    }
-
-    //now write all of this to a file
-//
-//    ofstream out;
-//
-//    out.open("map/test.wt2");
-//
-//    out << MAP_SIZE << endl << MAP_SIZE << endl << "5" << endl;
-//
-//    out << "0 green.png\n1 blue.png\n2 gray.png\n3 red.png\n4 white.png\n";
-//
-//    for (int i = 0; i < MAP_SIZE; i++)
-//    {
-//        for (int j = 0; j < MAP_SIZE; j++)
-//        {
-//            out << setw(5) << tileMap[i][j];
-//        }
-//        out << endl;
-//    }
-//
-//    out.close();
+    mMap = new GameMap("map/test.wt2");
 
     if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
     {
@@ -174,31 +117,9 @@ bool BuildMapModule::onInit()
     // Module should be used to display the map
     mBackground = new VideoLayer();
 
-    tempSurface = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_DOUBLEBUF,
-                                X, Y,
-                                32, rmask, gmask, bmask, amask);
-
-    mBackground->surface = SDL_DisplayFormat(tempSurface);
+    mBackground->surface = mMap->getSurface();
     mBackground->setLocation(0, 0);
     mBackground->priority = PRIORITY_BACKGROUND;
-    SDL_FreeSurface(tempSurface);
-
-    for (int i = 0; i < MAP_SIZE; i++)
-    {
-        mDest.y = i * 25;
-        for (int j = 0; j < MAP_SIZE; j++)
-        {
-            mSrc.x = tileMap[i][j] * 25;
-            mDest.x = j * 25;
-
-            if (SDL_BlitSurface(mTileset->surface, &mSrc, mBackground->surface, &mDest) == -2)
-            {
-                cerr << "blitting failed" << endl;
-                exit(4);
-            }
-        }
-    }
-
 
     mSrc.x = 0;
     mSrc.y = 0;

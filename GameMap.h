@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <SDL.h>
+#include "GameEngine.h"
 #include "VideoLayer.h"
 using namespace std;
 
@@ -26,12 +27,14 @@ class GameMap
         unsigned int getWidth();
         unsigned int getHeight();
         Tile* getTile(unsigned int inX, unsigned int inY);
+        SDL_Surface* getSurface();
 
     private:
         unsigned int mWidth;
         unsigned int mHeight;
         unsigned int mNumImages;
         SDL_Surface** mImages;
+        SDL_Surface* mSurface;
 
         Tile** mTiles;
 };

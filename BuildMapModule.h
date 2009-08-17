@@ -14,6 +14,7 @@ using namespace std;
 #include "TestModule.h"
 #include "Bullet.h"
 #include "Tank.h"
+#include "GameMap.h"
 
 #define MAP_SIZE 50
 #define NUM_STEPS 360
@@ -68,6 +69,7 @@ class BuildMapModule : public EngineModule
         SDL_Surface* picSurface;
         SDL_Surface* tempSurface;
         int tileMap[MAP_SIZE][MAP_SIZE]; //Define the map
+        GameMap* mMap;
         double mAngle;
         Mix_Chunk* mShot;
         Mix_Music* mMusic;
