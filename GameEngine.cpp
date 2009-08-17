@@ -3,14 +3,14 @@ using namespace std;
 
 Mask GameEngine::mask;
 ScreenLayer GameEngine::mWindow;
-bool GameEngine::mAudio;
-bool GameEngine::mRunning;
+bool GameEngine::mAudio = true;
+bool GameEngine::mRunning = false;
 unsigned int GameEngine::mNextFrame;
 unsigned int GameEngine::mCurrentFrame;
-SDL_Surface* GameEngine::mWindowIcon;
-SDL_Joystick* GameEngine::mJoystick;
-SDL_Surface* GameEngine::mCanvas;
-SDL_Surface* GameEngine::mCanvasTwo;
+SDL_Surface* GameEngine::mWindowIcon = NULL;
+SDL_Joystick* GameEngine::mJoystick = NULL;
+SDL_Surface* GameEngine::mCanvas = NULL;
+SDL_Surface* GameEngine::mCanvasTwo = NULL;
 SDL_Rect GameEngine::mCamera;
 
 void GameEngine::addLayer(VideoLayer* inLayer)
@@ -59,12 +59,6 @@ void GameEngine::removeLayer(VideoLayer* inLayer)
 
 bool GameEngine::start(EngineModule* inModule)
 {
-    // pseudo construct the object
-    mWindowIcon = NULL;
-    mJoystick = NULL;
-    mCanvas = NULL;
-    mCanvasTwo = NULL;
-    mAudio = true;
     mCamera.x = 0;
     mCamera.y = 0;
 

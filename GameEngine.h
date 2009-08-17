@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
+#include <cstdlib>
 #include <iostream>
 #include <sstream>
 #include <string>
