@@ -46,6 +46,7 @@ class GameEngine
         static Mix_Chunk* loadSound(const char* inFile);
         static void freeSound(Mix_Chunk* inSound);
         static void playSound(Mix_Chunk* inSound);
+        static void musicDone();
 
         static void onMinimize();
         static void onRestore();

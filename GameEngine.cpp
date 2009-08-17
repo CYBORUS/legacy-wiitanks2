@@ -219,6 +219,10 @@ bool GameEngine::onInit()
         cerr << "Mix_OpenAudio: " << Mix_GetError() << endl;
         cerr << "Unable to open audio!\n";
     }
+    else if (mAudio)
+    {
+        Mix_HookMusicFinished(GameEngine::musicDone);
+    }
 
     return true;
 }
@@ -474,4 +478,8 @@ void GameEngine::playSound(Mix_Chunk* inSound)
 {
     if (!mAudio) return;
     Mix_PlayChannel(-1, inSound, 0);
+}
+
+void GameEngine::musicDone()
+{
 }
