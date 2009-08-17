@@ -31,7 +31,6 @@ class EngineModule;
 class GameEngine
 {
     public:
-        static void construct();
         static bool start(EngineModule* inModule);
         static void addLayer(VideoLayer* inLayer);
         static void removeLayer(VideoLayer* inLayer);

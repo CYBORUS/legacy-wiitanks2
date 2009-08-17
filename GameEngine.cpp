@@ -13,18 +13,6 @@ SDL_Surface* GameEngine::mCanvas;
 SDL_Surface* GameEngine::mCanvasTwo;
 SDL_Rect GameEngine::mCamera;
 
-void GameEngine::construct()
-{
-    mWindowIcon = NULL;
-    mJoystick = NULL;
-    mCanvas = NULL;
-    mCanvasTwo = NULL;
-    mAudio = true;
-    mCamera.x = 0;
-    mCamera.y = 0;
-
-}
-
 void GameEngine::addLayer(VideoLayer* inLayer)
 {
     if (inLayer == NULL) return;
@@ -71,6 +59,15 @@ void GameEngine::removeLayer(VideoLayer* inLayer)
 
 bool GameEngine::start(EngineModule* inModule)
 {
+    // pseudo construct the object
+    mWindowIcon = NULL;
+    mJoystick = NULL;
+    mCanvas = NULL;
+    mCanvasTwo = NULL;
+    mAudio = true;
+    mCamera.x = 0;
+    mCamera.y = 0;
+
     //settings = new GameSettings();
     EngineModule* em = inModule;
     EngineModule* d = NULL;
