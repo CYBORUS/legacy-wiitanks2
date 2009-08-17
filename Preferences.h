@@ -10,19 +10,21 @@ class Preferences
     public:
         static void setup();
 
-        static int getScreenWidth();
-        static int getScreenHeight();
-
         static void setScreenWidth(int inWidth);
         static void setScreenHeight(int inHeight);
+
+        static void saveSettings();
 
         //This allows a quick get without having to make a function call
         static const int &cWidth;
         static const int &cHeight;
+        static const bool &cFullscreen;
 
     private:
         static int mWidth;
         static int mHeight;
+
+        static bool mFullscreen;
 
         static ofstream prefs;
 

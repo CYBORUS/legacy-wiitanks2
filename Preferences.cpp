@@ -6,10 +6,12 @@ using namespace std;
 //setup all our static variables
 int Preferences::mWidth = 800;
 int Preferences::mHeight = 600;
+bool Preferences::mFullscreen = false;
 ofstream Preferences::prefs;
 
 const int &Preferences::cWidth = mWidth;
 const int &Preferences::cHeight = mHeight;
+const bool &Preferences::cFullscreen = mFullscreen;
 
 
 /*
@@ -29,60 +31,95 @@ void Preferences::setup()
     if (settings.fail())
     {
         cerr << "Error opening settings\n";
-        ofstream defSet;
+        saveSettings();
 
-        defSet.open("settings.dat");
+        settings.open("settings.dat");
 
-        if (defSet.fail())
-        {
-            cerr << "Error creating settings file" << endl;
-        }
-        else
-        {
-            defSet << mWidth << endl << mHeight << endl;
-        }
+
+    }
+
+    getline(settings, next);
+
+
+    while (((next[0] == '#') || (next.find_first_of("Width") == string::npos)) && !settings.eof())
+    {
+        getline(settings, next);
+    }
+
+    if (!settings.eof())
+    {
+        mWidth = atoi(next.substr(next.find_first_of("0123456789")).c_str());
     }
     else
     {
-
-        getline(settings, next);
-
-        mWidth = atoi(next.substr(next.find_first_of("0123456789")).c_str());
-
-        getline(settings, next);
-
-
-        mHeight = atoi(next.substr(next.find_first_of("0123456789")).c_str());
-
-
-        settings.close();
+        saveSettings();
+        settings.clear();
     }
+
+    prefs.seekp(0);
+
+    getline(settings, next);
+
+    while (((next[0] == '#') || (next.find_first_of("Height") == string::npos)) && !settings.eof())
+    {
+        getline(settings, next);
+    }
+
+    if (!settings.eof())
+    {
+        mHeight = atoi(next.substr(next.find_first_of("0123456789")).c_str());
+    }
+    else
+    {
+        saveSettings();
+        settings.clear();
+    }
+
+    prefs.seekp(0);
+
+    getline(settings, next);
+
+    while (((next[0] == '#') || (next.find_first_of("Fullscreen") == string::npos)) && !settings.eof())
+    {
+        getline(settings, next);
+    }
+
+    if (!settings.eof())
+    {
+        mFullscreen = (bool)atoi(next.substr(next.find_first_of("0123456789")).c_str());
+    }
+    else
+    {
+        saveSettings();
+        settings.clear();
+    }
+
+    settings.close();
+
 }
 
-int Preferences::getScreenWidth()
+void Preferences::saveSettings()
 {
-    return mWidth;
-}
+    prefs.open("settings.dat", fstream::trunc);
 
-int Preferences::getScreenHeight()
-{
-    return mHeight;
+    if (!prefs.fail())
+    {
+        prefs << "Width: " << mWidth << endl << "Height: " << mHeight << endl << "Fullscreen: " << mFullscreen << endl;
+    }
+    else
+    {
+        cerr << "Error creating settings file" << endl;
+        exit(5);
+    }
+    prefs.close();
 }
 
 void Preferences::setScreenWidth(int inWidth)
 {
-    prefs.open("settings.dat", fstream::out | fstream::in);
-
-    if (!prefs.fail())
-    {
-
-    }
-    else
-    {
-        prefs.clear(); //clear out the flags
-    }
+    mWidth = inWidth;
 }
 
 void Preferences::setScreenHeight(int inHeight)
 {
+    mHeight = inHeight;
 }
