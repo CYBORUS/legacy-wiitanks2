@@ -1,7 +1,6 @@
-#include <cstdlib>
 #include "GameMap.h"
 
-GameMap::GameMap(unsigned int inWidth, unsigned int inHeight, ifstream inMap)
+GameMap::GameMap(unsigned int inWidth, unsigned int inHeight)
 {
     mWidth = inWidth;
     mHeight = inHeight;
@@ -10,8 +9,41 @@ GameMap::GameMap(unsigned int inWidth, unsigned int inHeight, ifstream inMap)
     for (unsigned int i = 0; i < mWidth; i++) mTiles[i] = new Tile[mHeight];
 }
 
+GameMap::GameMap(const char* inFile)
+{
+    ifstream file;
+    file.open(inFile);
+
+    file >> mWidth >> mHeight >> mNumImages;
+
+    mTiles = new Tile*[mWidth];
+    for (unsigned int i = 0; i < mWidth; i++) mTiles[i] = new Tile[mHeight];
+    mImages = new SDL_Surface*[mNumImages];
+
+    for (unsigned int i = 0; i < mNumImages; i++)
+    {
+        int index;
+        string imageFile;
+        file >> index >> imageFile;
+        mImages[index] = VideoLayer::getImage(imageFile.c_str());
+    }
+
+    for (unsigned int i = 0; i < mHeight; i++)
+    {
+        for (unsigned int j = 0; j < mWidth; j++)
+        {
+            file >> mTiles[j][i].type;
+            mTiles[j][i].barrier = false;
+        }
+    }
+
+    file.close();
+}
+
 GameMap::~GameMap()
 {
+    if (mWidth == 0 || mHeight == 0) return;
+    for (unsigned int i = 0; i < mWidth; i++) delete [] Tile[i];
 }
 
 unsigned int GameMap::getWidth()

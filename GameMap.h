@@ -1,8 +1,14 @@
 #ifndef _GAMEMAP_H
 #define	_GAMEMAP_H
 
+#include <cstdlib>
 #include <fstream>
+#include <string>
+#include <SDL.h>
+#include "VideoLayer.h"
 using namespace std;
+
+#define TILE_SIZE 25
 
 struct Tile
 {
@@ -13,7 +19,8 @@ struct Tile
 class GameMap
 {
     public:
-        GameMap(unsigned int inWidth, unsigned int inHeight, ifstream inMap);
+        GameMap(unsigned int inWidth, unsigned int inHeight);
+        GameMap(const char* inFile);
         virtual ~GameMap();
 
         unsigned int getWidth();
@@ -23,6 +30,9 @@ class GameMap
     private:
         unsigned int mWidth;
         unsigned int mHeight;
+        unsigned int mNumImages;
+        SDL_Surface** mImages;
+
         Tile** mTiles;
 };
 
