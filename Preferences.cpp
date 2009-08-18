@@ -88,12 +88,21 @@ void Preferences::setup()
 
     settings.close();
 
-    rewriteSettings();
+    //rewriteSettings();
 
     //saveSettings();
 
 }
 
+
+/*
+*   rewriteSettings()
+*
+*   Rewrites the settings file with the default comments
+*   using the current game settings.
+*   This should only be called if the settings file is missing
+*   or somehow been messed up
+*/
 void Preferences::rewriteSettings()
 {
     cerr << "rewriting" << endl;
@@ -105,14 +114,14 @@ void Preferences::rewriteSettings()
     {
         int i = 0;
         mNewSettings << "# Video\n";
-        for (i; i < 3; i++)
+        for (; i < 3; i++)
         {
             setSetting(mSettings[i], true);
         }
 
         mNewSettings << "\n\n# Audio\n";
 
-        for (i; i < NUM_SETTINGS; i++)
+        for (; i < NUM_SETTINGS; i++)
         {
             setSetting(mSettings[i], true);
         }
@@ -131,6 +140,13 @@ void Preferences::rewriteSettings()
 }
 
 
+/*
+*   saveSettings()
+*
+*   Saves all the current settings to the settings file
+*   without removing any extra comments that the player
+*   may have added to the file.
+*/
 void Preferences::saveSettings()
 {
     ifstream settings;
@@ -298,6 +314,25 @@ inline bool Preferences::setSetting(string inSetting, bool inWrite)
 }
 
 
+void Preferences::setAudioRate(int inRate)
+{
+    mAudioRate = inRate;
+}
+
+void Preferences::setAudioFormat(Uint16 inFormat)
+{
+    mAudioFormat = inFormat;
+}
+
+void Preferences::setAudioChannels(int inChannels)
+{
+    mAudioChannels = inChannels;
+}
+
+void Preferences::setAudioBuffers(int inBuffers)
+{
+    mAudioBuffers = inBuffers;
+}
 
 void Preferences::setScreenWidth(int inWidth)
 {

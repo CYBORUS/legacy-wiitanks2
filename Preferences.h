@@ -18,6 +18,10 @@ class Preferences
 
         static void setScreenWidth(int inWidth);
         static void setScreenHeight(int inHeight);
+        static void setAudioRate(int inRate);
+        static void setAudioFormat(Uint16 inFormat);
+        static void setAudioChannels(int inChannels);
+        static void setAudioBuffers(int inBuffers);
 
         static void saveSettings();
         static void rewriteSettings();
