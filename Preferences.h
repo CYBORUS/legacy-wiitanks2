@@ -27,6 +27,11 @@ class Preferences
         static const int &cHeight;
         static const bool &cFullscreen;
 
+        static const int &cAudioRate;
+        static const Uint16 &cAudioFormat;
+        static const int &cAudioChannels;
+        static const int &cAudioBuffers;
+
     private:
         static inline bool setSetting(string inSetting, bool inWrite);
         static int mWidth;

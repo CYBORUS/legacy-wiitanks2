@@ -22,6 +22,12 @@ const int &Preferences::cWidth = mWidth;
 const int &Preferences::cHeight = mHeight;
 const bool &Preferences::cFullscreen = mFullscreen;
 
+const int &Preferences::cAudioRate = mAudioRate;
+const Uint16 &Preferences::cAudioFormat = mAudioFormat;
+const int &Preferences::cAudioChannels = mAudioChannels;
+const int &Preferences::cAudioBuffers = mAudioBuffers;
+
+
 
 /*
 *   setup()
