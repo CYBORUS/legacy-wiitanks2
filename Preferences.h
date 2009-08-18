@@ -3,7 +3,13 @@
 
 #include <cstdlib>
 #include <fstream>
+#include <sstream>
 using namespace std;
+
+#include <SDL.h>
+#include <SDL_mixer.h>
+
+#define NUM_SETTINGS 7
 
 class Preferences
 {
@@ -14,6 +20,7 @@ class Preferences
         static void setScreenHeight(int inHeight);
 
         static void saveSettings();
+        static void rewriteSettings();
 
         //This allows a quick get without having to make a function call
         static const int &cWidth;
@@ -21,12 +28,21 @@ class Preferences
         static const bool &cFullscreen;
 
     private:
+        static inline bool setSetting(string inSetting, bool inWrite);
         static int mWidth;
         static int mHeight;
 
-        static bool mFullscreen;
+        static int mAudioRate;
+        static Uint16 mAudioFormat;
+        static int mAudioChannels;
+        static int mAudioBuffers;
 
-        static ofstream prefs;
+        static ofstream mPrefs;
+        static stringstream mNewSettings;
+
+        static string* mSettings;
+
+        static bool mFullscreen;
 
 };
 

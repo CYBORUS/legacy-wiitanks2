@@ -258,7 +258,7 @@ void TestModule::onJoyButtonUp(Uint8 inWhich, Uint8 inButton)
 void TestModule::onJoyHat(Uint8 inWhich, Uint8 inHat, Uint8 inValue)
 {
     stringstream s;
-    int a = (int) inHat;
+    //int a = (int) inHat;
     int v = (int) inValue;
 
     s << "hat " << v;

@@ -168,9 +168,15 @@ bool GameEngine::onInit()
     }
 
     //end of screen resolution code
+    Uint32 flags = SDL_SWSURFACE | SDL_ASYNCBLIT;
+
+    if (Preferences::cFullscreen)
+    {
+        flags |= SDL_FULLSCREEN;
+    }
 
     mWindow.surface = SDL_SetVideoMode(Preferences::cWidth,
-        Preferences::cHeight, 0, SDL_SWSURFACE | SDL_ASYNCBLIT);
+        Preferences::cHeight, 0, flags);
     if (mWindow.surface == NULL) return false;
 
     mCamera.w = mWindow.surface->w;
