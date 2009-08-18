@@ -7,32 +7,16 @@ BeginModule::BeginModule()
 {
     mMouse = NULL;
     mBackground = NULL;
-    mNext = NULL;
-    picSurface = NULL;
-    tempSurface = NULL;
-    AlphaValue = 0;
-    incDec = 1;
+    mPic = NULL;
+    mTempSurface = NULL;
+    mAlphaValue = 0;
+    mIncDec = 1;
     mPauseTime = 0;
 
 
 
-    dest.x = 0;
-    dest.y = 0;
-
-    if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-    {
-        rmask = 0xff000000;
-        gmask = 0x00ff0000;
-        bmask = 0x0000ff00;
-        amask = 0x000000ff;
-    }
-    else
-    {
-        rmask = 0x000000ff;
-        gmask = 0x0000ff00;
-        bmask = 0x00ff0000;
-        amask = 0xff000000;
-    }
+    mDest.x = 0;
+    mDest.y = 0;
 }
 
 BeginModule::~BeginModule()
@@ -43,92 +27,72 @@ bool BeginModule::onInit()
 {
     mBackground = new VideoLayer();
 
-    SDL_Surface* t = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA,
-                                SDL_GetVideoSurface()->w, SDL_GetVideoSurface()->h,
-                                32, rmask, gmask, bmask, amask);
+    SDL_Surface* t = GameEngine::newSurface(SDL_GetVideoSurface()->w,
+        SDL_GetVideoSurface()->h);
 
-    mBackground->surface = SDL_DisplayFormat(t);
+    mBackground->surface = GameEngine::newSurface(SDL_GetVideoSurface()->w,
+        SDL_GetVideoSurface()->h);
 
-    picSurface = VideoLayer::getImage("images/presenting.jpg");
-    SDL_BlitSurface(picSurface, NULL, t, &dest);
-    tempSurface = SDL_DisplayFormat(t);
+    mPic = VideoLayer::getImage("images/presenting.jpg");
+    SDL_BlitSurface(mPic, NULL, t, &mDest);
+    mTempSurface = SDL_DisplayFormat(t);
     SDL_FreeSurface(t);
 
     SDL_SetAlpha(mBackground->surface, SDL_SRCALPHA, 255);
-    SDL_BlitSurface(tempSurface, NULL, mBackground->surface, &dest);
+    SDL_BlitSurface(mTempSurface, NULL, mBackground->surface, &mDest);
     mBackground->priority = PRIORITY_BACKGROUND;
 
-
-//    mMouse = new VideoLayer();
-//    mMouse->surface = VideoLayer::getImage("images/normal.png");
-//    mMouse->priority = PRIORITY_MOUSE;
     SDL_ShowCursor(SDL_DISABLE);
 
-    //GameEngine::addLayer(mBackground);
-    //GameEngine::addLayer(mMouse);
-
-    //GameEngine::buildSurfaces();
-
-
-    if ((t = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                                SDL_GetVideoSurface()->w, SDL_GetVideoSurface()->h,
-                                32, rmask, gmask, bmask, amask)) == NULL)
+    if ((mTempSurface = GameEngine::newSurface(SDL_GetVideoSurface()->w,
+        SDL_GetVideoSurface()->h)) == NULL)
     {
         cerr << "creation failed" << endl;
         exit(1);
     }
 
-    tempSurface = SDL_DisplayFormat(t);
-    SDL_FreeSurface(t);
-
-    mNext = new BuildMapModule();
     return true;
-}
-
-void BeginModule::onLoop()
-{
-
 }
 
 void BeginModule::onFrame()
 {
 
-    //SDL_FillRect( tempSurface, 0, SDL_MapRGBA(tempSurface->format, 0, 0, 0, 0) );
+    //SDL_FillRect( mTempSurface, 0, SDL_MapRGBA(mTempSurface->format, 0, 0, 0, 0) );
 
-    SDL_BlitSurface(picSurface, NULL, tempSurface, &dest);
+    SDL_BlitSurface(mPic, NULL, mTempSurface, &mDest);
 
-    SDL_SetAlpha(tempSurface, SDL_SRCALPHA | SDL_RLEACCEL, AlphaValue);
-    SDL_FillRect(mBackground->surface, 0, SDL_MapRGBA(tempSurface->format, 0, 0, 0, 0));
+    SDL_SetAlpha(mTempSurface, SDL_SRCALPHA | SDL_RLEACCEL, mAlphaValue);
+    SDL_FillRect(mBackground->surface, 0, SDL_MapRGBA(mTempSurface->format, 0, 0, 0, 0));
 
 
-    SDL_BlitSurface(tempSurface, NULL, mBackground->surface, NULL);
-    SDL_FillRect(tempSurface, 0, SDL_MapRGBA(tempSurface->format, 0, 0, 0, 0));
-    //SDL_FreeSurface(tempSurface);
+    SDL_BlitSurface(mTempSurface, NULL, mBackground->surface, NULL);
+    SDL_FillRect(mTempSurface, 0, SDL_MapRGBA(mTempSurface->format, 0, 0, 0, 0));
+    //SDL_FreeSurface(mTempSurface);
 
-    AlphaValue += incDec * 5;
+    mAlphaValue += mIncDec * 5;
 
-    if(AlphaValue >= 255)
+    if(mAlphaValue >= 255)
     {
         if (mPauseTime <= 0)
         {
-            AlphaValue = 255;
+            mAlphaValue = 255;
             mPauseTime = SDL_GetTicks() + (1000 * PAUSE_TIME);
-            incDec = 0;
+            mIncDec = 0;
         }
 
         if (SDL_GetTicks() > mPauseTime)
         {
             mPauseTime = 0;
-            incDec = -1;
+            mIncDec = -1;
         }
     }
-    else if (AlphaValue <= 0)
+    else if (mAlphaValue <= 0)
     {
         if (mPauseTime <= 0)
         {
-            AlphaValue = 0;
+            mAlphaValue = 0;
             mPauseTime = SDL_GetTicks() + 1000;
-            incDec = 0;
+            mIncDec = 0;
         }
 
         if (SDL_GetTicks() > mPauseTime)
@@ -136,14 +100,11 @@ void BeginModule::onFrame()
             GameEngine::onExit();
         }
     }
-
-    //GameEngine::buildSurfaces();
-
 }
 
 EngineModule* BeginModule::getNextModule()
 {
-    return mNext;
+    return new BuildMapModule();
 }
 
 void BeginModule::onCleanup()
@@ -151,14 +112,6 @@ void BeginModule::onCleanup()
 
     delete mBackground;
     delete mMouse;
-}
-
-
-void BeginModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
-    bool inLeft, bool inRight, bool inMiddle)
-{
-//    if (mMouse == NULL) return;
-//    mMouse->setLocation(inX, inY);
 }
 
 void BeginModule::onLButtonDown(int inX, int inY)

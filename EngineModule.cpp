@@ -292,7 +292,10 @@ void EngineModule::onUser(Uint8 inType, int inCode, void* inData1, void* inData2
 
 void EngineModule::onFrame()
 {
+}
 
+void EngineModule::onLoop()
+{
 }
 
 SDL_Surface* EngineModule::getCanvas()
