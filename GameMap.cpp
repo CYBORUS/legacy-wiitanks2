@@ -1,4 +1,6 @@
+#include <iostream>
 #include "GameMap.h"
+using namespace std;
 
 GameMap::GameMap(const char* inFile)
 {
@@ -19,8 +21,10 @@ GameMap::GameMap(const char* inFile)
         string imageFile;
         file >> index >> bt >> bb >> imageFile;
         mImages[index] = VideoLayer::getImage(imageFile.c_str());
-        blockTank[index] = bt != 0;
-        blockBullet[index] = bb != 0;
+        blockTank[index] = (bt != 0);
+        blockBullet[index] = (bb != 0);
+
+        //if (blockTank[index]) cerr << "blockTank\n";
     }
 
     for (int i = 0; i < mHeight; i++)
@@ -30,6 +34,7 @@ GameMap::GameMap(const char* inFile)
             file >> mTiles[i][j].type;
             mTiles[i][j].blockTank = blockTank[mTiles[i][j].type];
             mTiles[i][j].blockBullet = blockBullet[mTiles[i][j].type];
+            //if (mTiles[i][j].blockTank) cerr << "blockTank in tile\n";
         }
     }
 

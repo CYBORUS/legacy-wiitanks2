@@ -184,7 +184,7 @@ void BuildMapModule::onFrame()
     ActiveTank* iterator = mTanks;
 
     //first update this players tank so we can set the camera correctly
-    iterator->tank->updateTank();
+    iterator->tank->updateTank(mMap);
     iterator->layer->surface = iterator->tank->getTank(mTankGraphics, mTurretGraphics);
     GameEngine::setCamera(mTanks->layer->location.x + 16 - 400, mTanks->layer->location.y + 16 - 300);
     iterator = iterator->next;
@@ -192,7 +192,7 @@ void BuildMapModule::onFrame()
     //now update everyone elses tanks
     while (iterator != NULL)
     {
-        iterator->tank->updateTank();
+        iterator->tank->updateTank(mMap);
         iterator->layer->surface = mTanks->tank->getTank(mTankGraphics, mTurretGraphics);
         iterator = iterator->next;
     }

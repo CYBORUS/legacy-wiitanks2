@@ -6,6 +6,7 @@
 #include <cmath>
 #include "RotatedGraphic.h"
 #include "VideoLayer.h"
+#include "GameMap.h"
 
 #define PI 3.14159265
 #define TURN_RATE 10
@@ -28,7 +29,7 @@ class Tank
         void moveTankX(int inDirection);
         void moveTankY(int inDirection);
 
-        void updateTank();
+        void updateTank(GameMap* inMap);
 
         SDL_Surface* getTank(RotatedGraphic* inTankGraphics, RotatedGraphic* inTurretGraphics);
 
