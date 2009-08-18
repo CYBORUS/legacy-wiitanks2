@@ -17,8 +17,6 @@ BuildMapModule::BuildMapModule()
     mTileset = NULL;
     mBackground = NULL;
     mNext = NULL;
-    picSurface = NULL;
-    tempSurface = NULL;
     srand(time(NULL));
     mAngle = 0;
     mBullet = NULL;
@@ -41,32 +39,10 @@ BuildMapModule::BuildMapModule()
     mSrc.w = 32;
     mSrc.h = 32;
 
-    tempRect = new SDL_Rect();
-    tempRect->x = 0;
-    tempRect->y = 0;
-    tempRect->w = 32;
-    tempRect->h = 32;
-
-    xMove = 0;
-    yMove = 0;
+    mMoveX = 0;
+    mMoveY = 0;
 
     mMap = new GameMap("map/test.wt2");
-
-    if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-    {
-        rmask = 0xff000000;
-        gmask = 0x00ff0000;
-        bmask = 0x0000ff00;
-        amask = 0x000000ff;
-    }
-    else
-    {
-        rmask = 0x000000ff;
-        gmask = 0x0000ff00;
-        bmask = 0x00ff0000;
-        amask = 0xff000000;
-    }
-
 }
 
 BuildMapModule::~BuildMapModule()
@@ -149,8 +125,8 @@ bool BuildMapModule::onInit()
 void BuildMapModule::onLoop()
 {
     mFrames++;
-//    mSrc.x += xMove;
-//    mSrc.y += yMove;
+//    mSrc.x += mMoveX;
+//    mSrc.y += mMoveY;
 //
 //    if (mSrc.x > 0)
 //    {
@@ -172,12 +148,12 @@ void BuildMapModule::onLoop()
 //
 //    //SDL_BlitSurface(picSurface, &mSrc, mBackground->surface, NULL);
 //    //mBackground->setLocation(mSrc.x, mSrc.y);
-//    tempRect = GameEngine::moveCamera(xMove, yMove);
+//    SDL_Rect* r = GameEngine::moveCamera(mMoveX, mMoveY);
 //
-//    mSrc.x = tempRect->x;
-//    mSrc.y = tempRect->y;
+//    mSrc.x = r->x;
+//    mSrc.y = r->y;
 //
-//    tempRect = NULL;
+//    SDL_Rect* r = NULL;
 //
 //
 //    SDL_Delay(5);
@@ -190,13 +166,14 @@ void BuildMapModule::onFrame()
         mBullet->onUpdate();
     }
 
-    if (xMove || yMove)
+    if (mMoveX || mMoveY)
     {
-        GameEngine::moveCamera(xMove, yMove);
+        GameEngine::moveCamera(mMoveX, mMoveY);
     }
 
     if (SDL_GetTicks() > mNextSecond)
     {
+        static stringstream s;
         s << mFrames << " FPS";
         mFPS->setText(s.str().c_str());
         mNextSecond = SDL_GetTicks() + 1000;
@@ -229,8 +206,6 @@ void BuildMapModule::onCleanup()
 
     GameEngine::freeSound(mShot);
 
-    SDL_FreeSurface(picSurface);
-
     for (int i = 0; i < NUM_STEPS; i++)
     {
         SDL_FreeSurface(temp[i].surface);
@@ -257,11 +232,11 @@ void BuildMapModule::onMouseMove(int inX, int inY, int inRelX, int inRelY,
     mMouse->setLocation(inX, inY);
 
 
-    tempRect = GameEngine::getCamera();
+    SDL_Rect* r = GameEngine::getCamera();
 
-    double x = (double)((inX + tempRect->x) - turretX);
-    double y = (double)((inY + tempRect->y) - turretY);
-    tempRect = NULL;
+    double x = (double)((inX + r->x) - turretX);
+    double y = (double)((inY + r->y) - turretY);
+    r = NULL;
     double angle = atan2(y, x) * 180 / 3.14159265;
     if (angle < 0)
     {
@@ -287,11 +262,11 @@ void BuildMapModule::onLButtonDown(int inX, int inY)
         delete mBullet;
     }
 
-    tempRect = GameEngine::getCamera();
+    SDL_Rect* r = GameEngine::getCamera();
 
     double turretX = (double)mTanks->layer->location.x;
     double turretY = (double)mTanks->layer->location.y;
-    mBullet = new Bullet((double)((inX + tempRect->x) - turretX), (double)((inY + tempRect->y) - turretY), turretX + 0.0, turretY + 0.0, 10.0);
+    mBullet = new Bullet((double)((inX + r->x) - turretX), (double)((inY + r->y) - turretY), turretX + 0.0, turretY + 0.0, 10.0);
     GameEngine::addLayer(mBullet->getLayer());
 
 }
@@ -341,23 +316,23 @@ void BuildMapModule::onKeyDown(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
     if (c == SDLK_LEFT)
     {
-        xMove = -amount;
+        mMoveX = -amount;
         mTanks->tank->moveTankX(-500);
     }
     if (c == SDLK_RIGHT)
     {
-        xMove = amount;
+        mMoveX = amount;
         mTanks->tank->moveTankX(500);
     }
     if (c == SDLK_UP)
     {
-        yMove = -amount;
+        mMoveY = -amount;
         mTanks->tank->moveTankY(-500);
 
     }
     if (c == SDLK_DOWN)
     {
-        yMove = amount;
+        mMoveY = amount;
         mTanks->tank->moveTankY(500);
     }
 
@@ -371,22 +346,22 @@ void BuildMapModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
 
     if (c == SDLK_LEFT)
     {
-        xMove = 0;
+        mMoveX = 0;
         mTanks->tank->moveTankX(0);
     }
     if (c == SDLK_RIGHT)
     {
-        xMove = 0;
+        mMoveX = 0;
         mTanks->tank->moveTankX(0);
     }
     if (c == SDLK_UP)
     {
-        yMove = 0;
+        mMoveY = 0;
         mTanks->tank->moveTankY(0);
     }
     if (c == SDLK_DOWN)
     {
-        yMove = 0;
+        mMoveY = 0;
         mTanks->tank->moveTankY(0);
     }
 }

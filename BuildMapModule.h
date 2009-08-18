@@ -5,8 +5,6 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-using namespace std;
-
 #include <cmath>
 #include <SDL.h>
 #include <SDL_rotozoom.h>
@@ -15,9 +13,11 @@ using namespace std;
 #include "Bullet.h"
 #include "Tank.h"
 #include "GameMap.h"
+using namespace std;
 
 #define MAP_SIZE 50
 #define NUM_STEPS 360
+
 
 
 struct ActiveTank
@@ -41,7 +41,6 @@ class BuildMapModule : public EngineModule
         SDL_Surface* getCanvas();
         EngineModule* getNextModule();
 
-
     private:
         void onMouseMove(int inX, int inY, int inRelX, int inRelY, bool inLeft,
             bool inRight, bool inMiddle);
@@ -61,34 +60,21 @@ class BuildMapModule : public EngineModule
 
         Bullet* mBullet;
 
-
         VideoLayer* temp;
         SDL_Rect mDest;
         SDL_Rect mSrc;
-        SDL_Rect* tempRect;
-        SDL_Surface* picSurface;
-        SDL_Surface* tempSurface;
-        int tileMap[MAP_SIZE][MAP_SIZE]; //Define the map
         GameMap* mMap;
         double mAngle;
         Mix_Chunk* mShot;
         Mix_Music* mMusic;
-
-        stringstream s;
 
         unsigned int mNextSecond;
         TextLayer* mFPS;
         int mFrames;
 
         //to control scroll movement
-        int xMove;
-        int yMove;
-
-        //RGB mask values
-        Uint32 rmask;
-        Uint32 gmask;
-        Uint32 bmask;
-        Uint32 amask;
+        int mMoveX;
+        int mMoveY;
 };
 
 
