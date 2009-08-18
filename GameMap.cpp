@@ -8,40 +8,39 @@ GameMap::GameMap(const char* inFile)
     file >> mWidth >> mHeight >> mNumImages;
 
     mTiles = new Tile*[mHeight];
-    for (unsigned int i = 0; i < mHeight; i++) mTiles[i] = new Tile[mWidth];
+    for (int i = 0; i < mHeight; i++) mTiles[i] = new Tile[mWidth];
     mImages = new SDL_Surface*[mNumImages];
+    bool* blockTank = new bool[mNumImages];
+    bool* blockBullet = new bool[mNumImages];
 
-    for (unsigned int i = 0; i < mNumImages; i++)
+    for (int i = 0; i < mNumImages; i++)
     {
-        int index;
+        int index, bt, bb;
         string imageFile;
-        file >> index >> imageFile;
+        file >> index >> bt >> bb >> imageFile;
         mImages[index] = VideoLayer::getImage(imageFile.c_str());
+        blockTank[index] = bt != 0;
+        blockBullet[index] = bb != 0;
     }
 
-    for (unsigned int i = 0; i < mHeight; i++)
+    for (int i = 0; i < mHeight; i++)
     {
-        for (unsigned int j = 0; j < mWidth; j++)
+        for (int j = 0; j < mWidth; j++)
         {
             file >> mTiles[i][j].type;
-            mTiles[i][j].barrier = false;
+            mTiles[i][j].blockTank = blockTank[mTiles[i][j].type];
+            mTiles[i][j].blockBullet = blockBullet[mTiles[i][j].type];
         }
     }
 
     file.close();
 
-    SDL_Surface* t;
-    t = SDL_CreateRGBSurface(SDL_SWSURFACE, mWidth * TILE_SIZE,
-        mHeight * TILE_SIZE, 32, GameEngine::mask.red,
-        GameEngine::mask.green, GameEngine::mask.blue,
-        GameEngine::mask.alpha);
-    mSurface = SDL_DisplayFormat(t);
-    SDL_FreeSurface(t);
+    mSurface = GameEngine::newSurface(mWidth * TILE_SIZE, mHeight * TILE_SIZE);
 
     SDL_Rect d;
-    for (unsigned int i = 0; i < mHeight; i++)
+    for (int i = 0; i < mHeight; i++)
     {
-        for (unsigned int j = 0; j < mWidth; j++)
+        for (int j = 0; j < mWidth; j++)
         {
             d.x = i * TILE_SIZE - 4;
             d.y = j * TILE_SIZE - 25;
@@ -53,21 +52,21 @@ GameMap::GameMap(const char* inFile)
 GameMap::~GameMap()
 {
     if (mWidth == 0 || mHeight == 0) return;
-    for (unsigned int i = 0; i < mHeight; i++) delete [] mTiles[i];
+    for (int i = 0; i < mHeight; i++) delete [] mTiles[i];
     delete [] mTiles;
 }
 
-unsigned int GameMap::getWidth()
+int GameMap::getWidth()
 {
     return mWidth;
 }
 
-unsigned int GameMap::getHeight()
+int GameMap::getHeight()
 {
     return mHeight;
 }
 
-Tile* GameMap::getTile(unsigned int inX, unsigned int inY)
+Tile* GameMap::getTile(int inX, int inY)
 {
     if (inX >= mWidth || inY >= mHeight) return NULL;
     return &mTiles[inX][inY];

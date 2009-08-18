@@ -13,8 +13,9 @@ using namespace std;
 
 struct Tile
 {
-    unsigned int type;
-    bool barrier;
+    int type;
+    bool blockTank;
+    bool blockBullet;
 };
 
 class GameMap
@@ -23,16 +24,16 @@ class GameMap
         GameMap(const char* inFile);
         virtual ~GameMap();
 
-        unsigned int getWidth();
-        unsigned int getHeight();
-        Tile* getTile(unsigned int inX, unsigned int inY);
+        int getWidth();
+        int getHeight();
+        Tile* getTile(int inX, int inY);
         SDL_Surface* getImage(int inIndex);
         SDL_Surface* getSurface();
 
     private:
-        unsigned int mWidth;
-        unsigned int mHeight;
-        unsigned int mNumImages;
+        int mWidth;
+        int mHeight;
+        int mNumImages;
         SDL_Surface** mImages;
         SDL_Surface* mSurface;
 

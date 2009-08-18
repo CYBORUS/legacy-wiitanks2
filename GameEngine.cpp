@@ -483,3 +483,17 @@ void GameEngine::playSound(Mix_Chunk* inSound)
 void GameEngine::musicDone()
 {
 }
+
+SDL_Surface* GameEngine::newSurface(int inWidth, int inHeight)
+{
+    Uint32 flags = SDL_SWSURFACE;
+    int bits = 32;
+
+    SDL_Surface* t;
+    SDL_Surface* outSurface;
+    t = SDL_CreateRGBSurface(flags, inWidth, inHeight, bits, mask.red,
+        mask.green, mask.blue, mask.alpha);
+    outSurface = SDL_DisplayFormat(t);
+    SDL_FreeSurface(t);
+    return outSurface;
+}

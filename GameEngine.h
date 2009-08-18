@@ -38,7 +38,8 @@ class GameEngine
         static SDL_Rect* setCamera(int inX, int inY);
         static SDL_Rect* moveCamera(int inX, int inY);
         static SDL_Rect* getCamera();
-        static void changeSurface(SDL_Rect* inOld, SDL_Rect* inNew, VideoLayer* inLayer);
+        static void changeSurface(SDL_Rect* inOld, SDL_Rect* inNew,
+            VideoLayer* inLayer);
         static void buildSurfaces();
 
         static Mix_Music* loadMusic(const char* inFile);
@@ -53,6 +54,8 @@ class GameEngine
         static void onResize(int inWidth, int inHeight);
         static void onExpose();
         static void onExit();
+
+        static SDL_Surface* newSurface(int inWidth, int inHeight);
 
         static Mask mask;
 
