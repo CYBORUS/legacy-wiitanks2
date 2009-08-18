@@ -135,8 +135,10 @@ bool GameEngine::onInit()
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) return false;
     if (TTF_Init() == -1) return false;
 
-    freopen("CON", "w", stdout);
-    freopen("CON", "w", stderr);
+    #ifdef _WIN32
+        freopen("CON", "w", stdout);
+        freopen("CON", "w", stderr);
+    #endif
 
     // This block is test code to help know what resolutions are supported
     // Should be placed somewhere else once we have a setup screen working
@@ -148,27 +150,25 @@ bool GameEngine::onInit()
     /* Check if there are any modes available */
     if (modes == (SDL_Rect**)0)
     {
-        printf("No modes available!\n");
+        cerr << "No modes available!\n";
         exit(-1);
     }
 
     /* Check if our resolution is restricted */
     if (modes == (SDL_Rect**)-1)
     {
-        printf("All resolutions available.\n");
+        cerr << "All resolutions available.\n";
     }
     else
     {
         /* Print valid modes */
-        printf("Available Modes\n");
+        cerr << "-- Available Modes --\n";
         for (int i=0; modes[i]; ++i)
-        printf("  %d x %d\n", modes[i]->w, modes[i]->h);
+            cerr << "  " << modes[i]->w << " x " << modes[i]->h << endl;
     }
 
     //end of screen resolution code
 
-
-    //if (!mWindow.setVideoMode()) return false;
     mWindow.surface = SDL_SetVideoMode(Preferences::cWidth,
         Preferences::cHeight, 0, SDL_SWSURFACE | SDL_ASYNCBLIT);
     if (mWindow.surface == NULL) return false;
@@ -178,17 +178,17 @@ bool GameEngine::onInit()
 
     if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
     {
-        GameEngine::mask.red   = 0xff000000;
-        GameEngine::mask.green = 0x00ff0000;
-        GameEngine::mask.blue  = 0x0000ff00;
-        GameEngine::mask.alpha = 0x000000ff;
+        mask.red   = 0xff000000;
+        mask.green = 0x00ff0000;
+        mask.blue  = 0x0000ff00;
+        mask.alpha = 0x000000ff;
     }
     else
     {
-        GameEngine::mask.red   = 0x000000ff;
-        GameEngine::mask.green = 0x0000ff00;
-        GameEngine::mask.blue  = 0x00ff0000;
-        GameEngine::mask.alpha = 0xff000000;
+        mask.red   = 0x000000ff;
+        mask.green = 0x0000ff00;
+        mask.blue  = 0x00ff0000;
+        mask.alpha = 0xff000000;
     }
 
     mWindow.next = NULL;
@@ -204,13 +204,12 @@ bool GameEngine::onInit()
             << endl;
     }
 
-    mWindowIcon = VideoLayer::getImage("nexus.png");
-    SDL_WM_SetIcon(mWindowIcon, NULL);
+    //SDL_WM_SetIcon(icon, NULL);
     SDL_WM_SetCaption("Zero2D","");
 
-    int audioRate = 22050;
+    int audioRate = MIX_DEFAULT_FREQUENCY;
     Uint16 audioFormat = MIX_DEFAULT_FORMAT;
-    int audioChannels = 2;
+    int audioChannels = MIX_DEFAULT_CHANNELS;
     int audioBuffers = 256;
 
     if (mAudio && Mix_OpenAudio(audioRate, audioFormat, audioChannels, audioBuffers))
@@ -354,7 +353,6 @@ inline void GameEngine::buildSurfaces()
             &iterator->location);
         iterator = iterator->next;
     }
-
 }
 
 void GameEngine::changeSurface(SDL_Rect* inOld, SDL_Rect* inNew, VideoLayer* inLayer)
@@ -486,7 +484,7 @@ void GameEngine::musicDone()
 
 SDL_Surface* GameEngine::newSurface(int inWidth, int inHeight)
 {
-    Uint32 flags = SDL_SWSURFACE;
+    Uint32 flags = SDL_SWSURFACE | SDL_ASYNCBLIT;
     int bits = 32;
 
     SDL_Surface* t;
