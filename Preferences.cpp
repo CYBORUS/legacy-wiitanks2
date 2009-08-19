@@ -87,11 +87,6 @@ void Preferences::setup()
     }
 
     settings.close();
-
-    //rewriteSettings();
-
-    //saveSettings();
-
 }
 
 
