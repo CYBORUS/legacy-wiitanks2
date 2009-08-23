@@ -12,9 +12,17 @@ struct Proximity
 class ProximityMap
 {
     public:
+        ProximityMap(int inWidth, int inHeight, int inProximitySize);
         ProximityMap(GameMap* inMap, int inProximitySize);
         virtual ~ProximityMap();
+
+        void insertEntity(int inGMapX, int inGMapY);
+
     private:
+        void build();
+
+        bool mValid;
+        Proximity** mPMap;
         int mProximitySize;
         int mGMapWidth;
         int mGMapHeight;
