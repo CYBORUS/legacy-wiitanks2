@@ -61,6 +61,7 @@ void ProximityMap::build()
         for (int j = 0; j < mPMapWidth; j++)
         {
             mPMap[i][j].numEntities = 0;
+            mPMap[i][j].list = NULL;
         }
     }
 }
