@@ -17,7 +17,7 @@ class CollisionEngine
     public:
         static void setup(GameMap* inMap);
 
-        static bool tankMove();
+        static bool tankMove(VideoLayer* inLayer, int inIntendedX, int inIntendedY);
         static bool bulletMove(Coor* currentPos, Coor* currentVector, VideoLayer* inLayer);
 
     private:

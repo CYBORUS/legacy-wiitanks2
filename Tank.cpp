@@ -84,8 +84,8 @@ void Tank::updateTank(GameMap* inMap)
     int moveAngle = (int) (atan2((double)mMoveDirection[1], (double)mMoveDirection[0]) * 180 / PI);
 
     //we will need an x and y value eventually to move the tank
-    int x = 0;
-    int y = 0;
+    int intendedX = 0;
+    int intendedY = 0;
 
     int backAngle = (mTankBody.angle + 180) % 360;
 
@@ -201,11 +201,8 @@ void Tank::updateTank(GameMap* inMap)
 
             if (absDifFront <= absDifBack)
             {
-                x = (int) (cos((double)mTankBody.angle * PI / 180.0) * mTankSpeed);
-                y = (int) (sin((double)mTankBody.angle * PI / 180.0) * mTankSpeed);
-
-                mLayer->location.x += x;
-                mLayer->location.y += y;
+                intendedX = (int) (cos((double)mTankBody.angle * PI / 180.0) * mTankSpeed);
+                intendedY = (int) (sin((double)mTankBody.angle * PI / 180.0) * mTankSpeed);
 
                 turn = difFront / absDifFront * TURN_RATE;
 
@@ -217,14 +214,13 @@ void Tank::updateTank(GameMap* inMap)
                 }
 
                 turnTank(turn);
+
+                CollisionEngine::tankMove(mLayer, intendedX, intendedY);
             }
             else
             {
-                x = (int) (cos((double)backAngle * PI / 180.0) * mTankSpeed);
-                y = (int) (sin((double)backAngle * PI / 180.0) * mTankSpeed);
-
-                mLayer->location.x += x;
-                mLayer->location.y += y;
+                intendedX = (int) (cos((double)backAngle * PI / 180.0) * mTankSpeed);
+                intendedY = (int) (sin((double)backAngle * PI / 180.0) * mTankSpeed);
 
                 turn = difBack / absDifBack * TURN_RATE;
 
@@ -235,12 +231,14 @@ void Tank::updateTank(GameMap* inMap)
                 }
 
                 turnTank(turn);
+
+                CollisionEngine::tankMove(mLayer, intendedX, intendedY);
             }
         }
         else
         {
-            x = (int) (cos((double)backAngle * PI / 180.0) * mTankSpeed);
-            y = (int) (sin((double)backAngle * PI / 180.0) * mTankSpeed);
+            intendedX = (int) (cos((double)backAngle * PI / 180.0) * mTankSpeed);
+            intendedY = (int) (sin((double)backAngle * PI / 180.0) * mTankSpeed);
 
             mLayer->location.x += x;
             mLayer->location.y += y;
@@ -248,69 +246,69 @@ void Tank::updateTank(GameMap* inMap)
     }
     else
     {
-        x = (int) (cos((double)mTankBody.angle * PI / 180.0) * mTankSpeed);
-        y = (int) (sin((double)mTankBody.angle * PI / 180.0) * mTankSpeed);
+        intendedX = (int) (cos((double)mTankBody.angle * PI / 180.0) * mTankSpeed);
+        intendedY = (int) (sin((double)mTankBody.angle * PI / 180.0) * mTankSpeed);
 
         mLayer->location.x += x;
         mLayer->location.y += y;
     }
 
-    int leftX = mLayer->location.x / TILE_SIZE;
-    int rightX = (mLayer->location.x + mLayer->location.w) / TILE_SIZE;
-    int topY = mLayer->location.y / TILE_SIZE;
-    int bottomY = (mLayer->location.y + mLayer->location.h) / TILE_SIZE;
-
-    if (inMap->getTile(rightX, topY)->blockTank)
-    {
-        if (mMoveDirection[0] > 0)
-        {
-            mLayer->location.x = rightX * TILE_SIZE - mLayer->location.w;
-        }
-
-        if (mMoveDirection[1] < 0)
-        {
-            mLayer->location.y = topY * TILE_SIZE;
-        }
-    }
-
-    if (inMap->getTile(rightX, bottomY)->blockTank)
-    {
-        if (mMoveDirection[0] > 0)
-        {
-            mLayer->location.x = rightX * TILE_SIZE - mLayer->location.w;
-        }
-
-        if (mMoveDirection[1] > 0)
-        {
-            mLayer->location.y = bottomY * TILE_SIZE - mLayer->location.h;
-        }
-    }
-
-    if (inMap->getTile(leftX, topY)->blockTank)
-    {
-        if (mMoveDirection[0] < 0)
-        {
-            mLayer->location.x = (leftX + 1) * TILE_SIZE;
-        }
-
-        if (mMoveDirection[1] < 0)
-        {
-            mLayer->location.y = (topY + 1) * TILE_SIZE;
-        }
-    }
-
-    if (inMap->getTile(leftX, bottomY)->blockTank)
-    {
-        if (mMoveDirection[0] < 0)
-        {
-            mLayer->location.x = (leftX + 1) * TILE_SIZE;
-        }
-
-        if (mMoveDirection[1] > 0)
-        {
-            mLayer->location.y = bottomY * TILE_SIZE - mLayer->location.h;
-        }
-    }
+//    int leftX = mLayer->location.x / TILE_SIZE;
+//    int rightX = (mLayer->location.x + mLayer->location.w) / TILE_SIZE;
+//    int topY = mLayer->location.y / TILE_SIZE;
+//    int bottomY = (mLayer->location.y + mLayer->location.h) / TILE_SIZE;
+//
+//    if (inMap->getTile(rightX, topY)->blockTank)
+//    {
+//        if (mMoveDirection[0] > 0)
+//        {
+//            mLayer->location.x = rightX * TILE_SIZE - mLayer->location.w;
+//        }
+//
+//        if (mMoveDirection[1] < 0)
+//        {
+//            mLayer->location.y = topY * TILE_SIZE;
+//        }
+//    }
+//
+//    if (inMap->getTile(rightX, bottomY)->blockTank)
+//    {
+//        if (mMoveDirection[0] > 0)
+//        {
+//            mLayer->location.x = rightX * TILE_SIZE - mLayer->location.w;
+//        }
+//
+//        if (mMoveDirection[1] > 0)
+//        {
+//            mLayer->location.y = bottomY * TILE_SIZE - mLayer->location.h;
+//        }
+//    }
+//
+//    if (inMap->getTile(leftX, topY)->blockTank)
+//    {
+//        if (mMoveDirection[0] < 0)
+//        {
+//            mLayer->location.x = (leftX + 1) * TILE_SIZE;
+//        }
+//
+//        if (mMoveDirection[1] < 0)
+//        {
+//            mLayer->location.y = (topY + 1) * TILE_SIZE;
+//        }
+//    }
+//
+//    if (inMap->getTile(leftX, bottomY)->blockTank)
+//    {
+//        if (mMoveDirection[0] < 0)
+//        {
+//            mLayer->location.x = (leftX + 1) * TILE_SIZE;
+//        }
+//
+//        if (mMoveDirection[1] > 0)
+//        {
+//            mLayer->location.y = bottomY * TILE_SIZE - mLayer->location.h;
+//        }
+//    }
 }
 
 SDL_Surface* Tank::getTank(RotatedGraphic* inTankGraphics, RotatedGraphic* inTurretGraphics)

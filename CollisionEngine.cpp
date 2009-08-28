@@ -8,7 +8,7 @@ void CollisionEngine::setup(GameMap* inMap)
     mProxMap = new ProximityMap(inMap, PROXIMITY_SIZE);
 }
 
-bool CollisionEngine::tankMove()
+bool CollisionEngine::tankMove(VideoLayer* inLayer, int inIntendedX, int inIntendedY)
 {
 
     return false;
