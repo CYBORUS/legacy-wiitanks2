@@ -6,6 +6,7 @@ using namespace std;
 //setup all our static variables
 int Preferences::mWidth = 800;
 int Preferences::mHeight = 600;
+int Preferences::mColorDepth = 32;
 bool Preferences::mFullscreen = false;
 
 ofstream Preferences::mPrefs;
@@ -20,6 +21,7 @@ string* Preferences::mSettings;
 
 const int &Preferences::cWidth = mWidth;
 const int &Preferences::cHeight = mHeight;
+const int &Preferences::cColorDepth = mColorDepth;
 const bool &Preferences::cFullscreen = mFullscreen;
 
 const int &Preferences::cAudioRate = mAudioRate;
@@ -43,11 +45,12 @@ void Preferences::setup()
 
     mSettings[0] = "width";
     mSettings[1] = "height";
-    mSettings[2] = "fullscreen";
-    mSettings[3] = "rate";
-    mSettings[4] = "format";
-    mSettings[5] = "channels";
-    mSettings[6] = "buffers";
+    mSettings[2] = "color depth";
+    mSettings[3] = "fullscreen";
+    mSettings[4] = "rate";
+    mSettings[5] = "format";
+    mSettings[6] = "channels";
+    mSettings[7] = "buffers";
 
     ifstream settings;
     settings.open("settings.dat");
@@ -109,7 +112,7 @@ void Preferences::rewriteSettings()
     {
         int i = 0;
         mNewSettings << "# Video\n";
-        for (; i < 3; i++)
+        for (; i < 4; i++)
         {
             setSetting(mSettings[i], true);
         }
@@ -241,6 +244,19 @@ inline bool Preferences::setSetting(string inSetting, bool inWrite)
                     found = true;
                     if (inWrite)
                     {
+                        mNewSettings << mSettings[i] << ": " << mColorDepth << endl;
+                    }
+                    else
+                    {
+                        mColorDepth = (bool)atoi(inSetting.substr(inSetting.find_first_of("0123456789")).c_str());
+                    }
+                    break;
+                }
+                case 3:
+                {
+                    found = true;
+                    if (inWrite)
+                    {
                         mNewSettings << mSettings[i] << ": " << mFullscreen << endl;
                     }
                     else
@@ -249,7 +265,7 @@ inline bool Preferences::setSetting(string inSetting, bool inWrite)
                     }
                     break;
                 }
-                case 3:
+                case 4:
                 {
                     found = true;
                     if (inWrite)
@@ -262,7 +278,7 @@ inline bool Preferences::setSetting(string inSetting, bool inWrite)
                     }
                     break;
                 }
-                case 4:
+                case 5:
                 {
                     found = true;
                     if (inWrite)
@@ -275,7 +291,7 @@ inline bool Preferences::setSetting(string inSetting, bool inWrite)
                     }
                     break;
                 }
-                case 5:
+                case 6:
                 {
                     found = true;
                     if (inWrite)
@@ -288,7 +304,7 @@ inline bool Preferences::setSetting(string inSetting, bool inWrite)
                     }
                     break;
                 }
-                case 6:
+                case 7:
                 {
                     found = true;
                     if (inWrite)
@@ -337,4 +353,14 @@ void Preferences::setScreenWidth(int inWidth)
 void Preferences::setScreenHeight(int inHeight)
 {
     mHeight = inHeight;
+}
+
+void Preferences::setColorDepth(int inDepth)
+{
+    mColorDepth = inDepth;
+}
+
+void Preferences::setFullscreen(bool inFullscreen)
+{
+    mFullscreen = inFullscreen;
 }

@@ -43,6 +43,8 @@ BuildMapModule::BuildMapModule()
     mMoveY = 0;
 
     mMap = new GameMap("map/test.wt2");
+
+    CollisionEngine::setup(mMap);
 }
 
 BuildMapModule::~BuildMapModule()

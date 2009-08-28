@@ -9,7 +9,7 @@ using namespace std;
 #include <SDL.h>
 #include <SDL_mixer.h>
 
-#define NUM_SETTINGS 7
+#define NUM_SETTINGS 8
 
 class Preferences
 {
@@ -18,6 +18,8 @@ class Preferences
 
         static void setScreenWidth(int inWidth);
         static void setScreenHeight(int inHeight);
+        static void setColorDepth(int inDepth);
+        static void setFullscreen(bool inFullscreen);
         static void setAudioRate(int inRate);
         static void setAudioFormat(Uint16 inFormat);
         static void setAudioChannels(int inChannels);
@@ -29,6 +31,7 @@ class Preferences
         //This allows a quick get without having to make a function call
         static const int &cWidth;
         static const int &cHeight;
+        static const int &cColorDepth;
         static const bool &cFullscreen;
 
         static const int &cAudioRate;
@@ -40,6 +43,8 @@ class Preferences
         static inline bool setSetting(string inSetting, bool inWrite);
         static int mWidth;
         static int mHeight;
+        static int mColorDepth;
+        static bool mFullscreen;
 
         static int mAudioRate;
         static Uint16 mAudioFormat;
@@ -51,7 +56,6 @@ class Preferences
 
         static string* mSettings;
 
-        static bool mFullscreen;
 
 };
 

@@ -1,13 +1,19 @@
+#ifndef _BULLET_H
+#define _BULLET_H
+
 #include <cmath>
 using namespace std;
-
-#include "VideoLayer.h"
 
 struct Coor
 {
     double x;
     double y;
 };
+
+#include "VideoLayer.h"
+#include "CollisionEngine.h"
+
+
 
 class Bullet
 {
@@ -27,3 +33,5 @@ class Bullet
 
         VideoLayer* mBullet;
 };
+
+#endif

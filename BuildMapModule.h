@@ -13,6 +13,7 @@
 #include "Bullet.h"
 #include "Tank.h"
 #include "GameMap.h"
+#include "CollisionEngine.h"
 using namespace std;
 
 #define MAP_SIZE 50
