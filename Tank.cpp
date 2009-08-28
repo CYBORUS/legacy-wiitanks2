@@ -240,8 +240,7 @@ void Tank::updateTank(GameMap* inMap)
             intendedX = (int) (cos((double)backAngle * PI / 180.0) * mTankSpeed);
             intendedY = (int) (sin((double)backAngle * PI / 180.0) * mTankSpeed);
 
-            mLayer->location.x += x;
-            mLayer->location.y += y;
+            CollisionEngine::tankMove(mLayer, intendedX, intendedY);
         }
     }
     else
@@ -249,8 +248,7 @@ void Tank::updateTank(GameMap* inMap)
         intendedX = (int) (cos((double)mTankBody.angle * PI / 180.0) * mTankSpeed);
         intendedY = (int) (sin((double)mTankBody.angle * PI / 180.0) * mTankSpeed);
 
-        mLayer->location.x += x;
-        mLayer->location.y += y;
+        CollisionEngine::tankMove(mLayer, intendedX, intendedY);
     }
 
 //    int leftX = mLayer->location.x / TILE_SIZE;

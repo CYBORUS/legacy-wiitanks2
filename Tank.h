@@ -7,6 +7,7 @@
 #include "RotatedGraphic.h"
 #include "VideoLayer.h"
 #include "GameMap.h"
+#include "CollisionEngine.h"
 
 #define PI 3.14159265
 #define TURN_RATE 10
