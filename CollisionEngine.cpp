@@ -26,9 +26,9 @@ bool CollisionEngine::bulletMove(Coor* currentPos, Coor* currentVector, VideoLay
     destPos.y = currentPos->y + currentVector->y;
 
     int topLeftBefore = currentPos->x / TILE_SIZE;
-    int topRightBefore = (currentPos->x + inLayer->surface.w) / TILE_SIZE;
-    int bottomLeftBefore = (currentPos->y + inLayer->surface.h) / TILE_SIZE;
-    int bottomRightBefore = (currentPos->
+    int topRightBefore = (currentPos->x + inLayer->surface->w) / TILE_SIZE;
+    int bottomLeftBefore = (currentPos->y + inLayer->surface->h) / TILE_SIZE;
+    //int bottomRightBefore = (currentPos->
 
 
     if ((currentPos->x / TILE_SIZE) != (destPos.x / TILE_SIZE) || startTile.y != endTile.y)
