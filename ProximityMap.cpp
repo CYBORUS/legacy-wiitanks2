@@ -72,9 +72,11 @@ void ProximityMap::insertEntity(Entity* inEntity, int inGMapX, int inGMapY)
 
     int highX = inGMapX / (mProximitySize - 1);
     int lowX = (inGMapX - 1) / (mProximitySize - 1);
+    if (lowX < 0) lowX = 0;
 
     int highY = inGMapY / (mProximitySize - 1);
     int lowY = (inGMapY - 1) / (mProximitySize - 1);
+    if (lowY < 0) lowY = 0;
 
     putEntity(inEntity, lowX, lowY);
     if (lowX < highX)
