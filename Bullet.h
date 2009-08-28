@@ -2,6 +2,9 @@
 #define _BULLET_H
 
 #include <cmath>
+#include "VideoLayer.h"
+#include "CollisionEngine.h"
+#include "Entity.h"
 using namespace std;
 
 struct Coor
@@ -10,12 +13,7 @@ struct Coor
     double y;
 };
 
-#include "VideoLayer.h"
-#include "CollisionEngine.h"
-
-
-
-class Bullet
+class Bullet : public Entity
 {
     public:
         Bullet(double inVX, double inVY, double inPX, double inPY, double inMagnitude);

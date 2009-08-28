@@ -2,11 +2,18 @@
 #define	_PROXIMITYMAP_H
 
 #include "GameMap.h"
+#include "Entity.h"
+
+struct EntityLink
+{
+    Entity* entity;
+    EntityLink* next;
+};
 
 struct Proximity
 {
     int numEntities;
-    // pointer to linked list
+    EntityLink* list;
 };
 
 class ProximityMap
@@ -16,10 +23,11 @@ class ProximityMap
         ProximityMap(GameMap* inMap, int inProximitySize);
         virtual ~ProximityMap();
 
-        void insertEntity(int inGMapX, int inGMapY);
+        void insertEntity(Entity* inEntity, int inGMapX, int inGMapY);
 
     private:
         void build();
+        void putEntity(Entity* inEntity, int inPMapX, int inPMapY);
 
         bool mValid;
         Proximity** mPMap;

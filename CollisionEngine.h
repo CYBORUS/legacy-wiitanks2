@@ -11,6 +11,7 @@ using namespace std;
 
 #define PROXIMITY_SIZE 2
 
+struct Coor;
 
 class CollisionEngine
 {

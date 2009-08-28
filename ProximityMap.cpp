@@ -65,7 +65,7 @@ void ProximityMap::build()
     }
 }
 
-void ProximityMap::insertEntity(int inGMapX, int inGMapY)
+void ProximityMap::insertEntity(Entity* inEntity, int inGMapX, int inGMapY)
 {
     if (!mValid) return;
 
@@ -74,4 +74,28 @@ void ProximityMap::insertEntity(int inGMapX, int inGMapY)
 
     int highY = inGMapY / (mProximitySize - 1);
     int lowY = (inGMapY - 1) / (mProximitySize - 1);
+
+    putEntity(inEntity, lowX, lowY);
+    if (lowX < highX)
+    {
+        putEntity(inEntity, highX, lowY);
+        if (lowY < highY)
+        {
+            putEntity(inEntity, lowX, highY);
+            putEntity(inEntity, highX, highY);
+        }
+    }
+    else if (lowY < highY)
+    {
+        putEntity(inEntity, lowX, highY);
+    }
+}
+
+void ProximityMap::putEntity(Entity* inEntity, int inPMapX, int inPMapY)
+{
+    EntityLink* el = new EntityLink;
+    el->entity = inEntity;
+    el->next = mPMap[inPMapX][inPMapY].list;
+    mPMap[inPMapX][inPMapY].numEntities++;
+    mPMap[inPMapX][inPMapY].list = el;
 }
