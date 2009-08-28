@@ -24,10 +24,10 @@ VideoLayer* Bullet::getLayer()
 
 void Bullet::onUpdate()
 {
-    //mPos.x += mVector.x;
-    //mPos.y += mVector.y;
+    mPos.x += mVector.x;
+    mPos.y += mVector.y;
 
-    //mBullet->setLocation((int)mPos.x, (int)mPos.y);
+    mBullet->setLocation((int)mPos.x, (int)mPos.y);
 
-    CollisionEngine::bulletMove(&mPos, &mVector, mBullet);
+    //CollisionEngine::bulletMove(&mPos, &mVector, mBullet);
 }

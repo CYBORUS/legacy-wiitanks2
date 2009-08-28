@@ -36,71 +36,71 @@ bool CollisionEngine::tankMove(VideoLayer* inLayer, int inIntendedX, int inInten
 //    {
 //        tankMoved = false;
 
-        if (getTopLeft(newX, newY, inLayer)->blockTank)
-        {
-            //tankMoved = true;
-
-            //if just moving the x coord on this corner causes it to block
-            if (getTopLeft(newX, inLayer->location.y, inLayer)->blockTank)
-            {
-                newX += 25 - (newX % TILE_SIZE);
-            }
-
-            //if just moving the y coord on this corner causes it to block
-            if (getTopLeft(inLayer->location.x, newY, inLayer)->blockTank)
-            {
-                newY += 25 - (newY % TILE_SIZE);
-            }
-
-        }
-        else if (getTopRight(newX, newY, inLayer)->blockTank)
-        {
-            //tankMoved = true;
-
-            //if just moving the x coord on this corner causes it to block
-            if (getTopRight(newX, inLayer->location.y, inLayer)->blockTank)
-            {
-                newX -= ((newX + inLayer->location.w) % TILE_SIZE);
-            }
-
-            //if just moving the y coord on this corner causes it to block
-            if (getTopRight(inLayer->location.x, newY, inLayer)->blockTank)
-            {
-                newY += 25 - (newY % TILE_SIZE);
-            }
-        }
-        else if (getBottomLeft(newX, newY, inLayer)->blockTank)
-        {
-            //tankMoved = true;
-
-            //if just moving the x coord on this corner causes it to block
-            if (getBottomLeft(newX, inLayer->location.y, inLayer)->blockTank)
-            {
-                newX += 25 - (newX % TILE_SIZE);
-            }
-
-            //if just moving the y coord on this corner causes it to block
-            if (getBottomLeft(inLayer->location.x, newY, inLayer)->blockTank)
-            {
-                newY -= ((newY + inLayer->location.h) % TILE_SIZE);
-            }
-        }
-        else if (getBottomRight(newX, newY, inLayer)->blockTank)
-        {
-            tankMoved = true;
-
-            //if just moving the x coord on this corner causes it to block
-            if (getBottomRight(newX, inLayer->location.y, inLayer)->blockTank)
-            {
-                newX -= ((newX + inLayer->location.w) % TILE_SIZE);
-            }
-
-            //if just moving the y coord on this corner causes it to block
-            if (getBottomRight(inLayer->location.x, newY, inLayer)->blockTank)
-            {
-                newY -= ((newY + inLayer->location.h) % TILE_SIZE);
-            }
-        }
+//        if (getTopLeft(newX, newY, inLayer)->blockTank)
+//        {
+//            //tankMoved = true;
+//
+//            //if just moving the x coord on this corner causes it to block
+//            if (getTopLeft(newX, inLayer->location.y, inLayer)->blockTank)
+//            {
+//                newX += 25 - (newX % TILE_SIZE);
+//            }
+//
+//            //if just moving the y coord on this corner causes it to block
+//            if (getTopLeft(inLayer->location.x, newY, inLayer)->blockTank)
+//            {
+//                newY += 25 - (newY % TILE_SIZE);
+//            }
+//
+//        }
+//        else if (getTopRight(newX, newY, inLayer)->blockTank)
+//        {
+//            //tankMoved = true;
+//
+//            //if just moving the x coord on this corner causes it to block
+//            if (getTopRight(newX, inLayer->location.y, inLayer)->blockTank)
+//            {
+//                newX -= ((newX + inLayer->location.w) % TILE_SIZE);
+//            }
+//
+//            //if just moving the y coord on this corner causes it to block
+//            if (getTopRight(inLayer->location.x, newY, inLayer)->blockTank)
+//            {
+//                newY += 25 - (newY % TILE_SIZE);
+//            }
+//        }
+//        else if (getBottomLeft(newX, newY, inLayer)->blockTank)
+//        {
+//            //tankMoved = true;
+//
+//            //if just moving the x coord on this corner causes it to block
+//            if (getBottomLeft(newX, inLayer->location.y, inLayer)->blockTank)
+//            {
+//                newX += 25 - (newX % TILE_SIZE);
+//            }
+//
+//            //if just moving the y coord on this corner causes it to block
+//            if (getBottomLeft(inLayer->location.x, newY, inLayer)->blockTank)
+//            {
+//                newY -= ((newY + inLayer->location.h) % TILE_SIZE);
+//            }
+//        }
+//        else if (getBottomRight(newX, newY, inLayer)->blockTank)
+//        {
+//            tankMoved = true;
+//
+//            //if just moving the x coord on this corner causes it to block
+//            if (getBottomRight(newX, inLayer->location.y, inLayer)->blockTank)
+//            {
+//                newX -= ((newX + inLayer->location.w) % TILE_SIZE);
+//            }
+//
+//            //if just moving the y coord on this corner causes it to block
+//            if (getBottomRight(inLayer->location.x, newY, inLayer)->blockTank)
+//            {
+//                newY -= ((newY + inLayer->location.h) % TILE_SIZE);
+//            }
+//        }
     //}
 
     inLayer->setLocation(newX, newY);
