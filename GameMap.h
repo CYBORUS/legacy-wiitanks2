@@ -1,8 +1,6 @@
 #ifndef _GAMEMAP_H
 #define	_GAMEMAP_H
 
-#define TILE_SIZE 25
-
 #include <cstdlib>
 #include <fstream>
 #include <string>
@@ -10,6 +8,9 @@
 #include "GameEngine.h"
 #include "VideoLayer.h"
 using namespace std;
+
+#define TILE_SIZE 25
+
 
 
 struct Tile

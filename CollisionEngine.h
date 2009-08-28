@@ -22,7 +22,13 @@ class CollisionEngine
         static bool bulletMove(Coor* currentPos, Coor* currentVector, VideoLayer* inLayer);
 
     private:
+        static inline Tile* getTopLeft(int inX, int inY, VideoLayer* inLayer);
+        static inline Tile* getTopRight(int inX, int inY, VideoLayer* inLayer);
+        static inline Tile* getBottomRight(int inX, int inY, VideoLayer* inLayer);
+        static inline Tile* getBottomLeft(int inX, int inY, VideoLayer* inLayer);
+
         static ProximityMap* mProxMap;
+        static GameMap* mMap;
 };
 
 #endif
