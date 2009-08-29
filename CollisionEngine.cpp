@@ -53,7 +53,8 @@ bool CollisionEngine::tankMove(VideoLayer* inLayer, int inIntendedX, int inInten
             }
 
         }
-        else if (getTopRight(newX, newY, inLayer)->blockTank)
+
+        if (getTopRight(newX, newY, inLayer)->blockTank)
         {
             //tankMoved = true;
 
@@ -69,7 +70,8 @@ bool CollisionEngine::tankMove(VideoLayer* inLayer, int inIntendedX, int inInten
                 newY += 25 - (newY % TILE_SIZE);
             }
         }
-        else if (getBottomLeft(newX, newY, inLayer)->blockTank)
+
+        if (getBottomLeft(newX, newY, inLayer)->blockTank)
         {
             //tankMoved = true;
 
@@ -85,7 +87,8 @@ bool CollisionEngine::tankMove(VideoLayer* inLayer, int inIntendedX, int inInten
                 newY -= ((newY + inLayer->location.h) % TILE_SIZE);
             }
         }
-        else if (getBottomRight(newX, newY, inLayer)->blockTank)
+
+        if (getBottomRight(newX, newY, inLayer)->blockTank)
         {
             tankMoved = true;
 
