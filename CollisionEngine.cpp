@@ -18,6 +18,7 @@ bool CollisionEngine::tankMove(VideoLayer* inLayer, int inIntendedX, int inInten
 
     //We need to make sure that the shifting size of the tank hasn't accidentally put the original
     //corner positions inside a blocked area
+
     //We don't need to test the top left corner because the changing size of the tank
     //will never change that corners position
     if (getTopRight(inLayer->location.x, inLayer->location.y, inLayer)->blockTank)
@@ -38,7 +39,9 @@ bool CollisionEngine::tankMove(VideoLayer* inLayer, int inIntendedX, int inInten
         inLayer->location.y -= (inLayer->location.y % TILE_SIZE);
     }
 
-    //Now we're ready to see if the desired movement of the tank puts it inside a blocked tile\
+
+
+    //Now we're ready to see if the desired movement of the tank puts it inside a blocked tile
     if (getTopLeft(newX, newY, inLayer)->blockTank)
     {
         //if just moving the x coord on this corner causes it to block
@@ -50,7 +53,6 @@ bool CollisionEngine::tankMove(VideoLayer* inLayer, int inIntendedX, int inInten
         //if just moving the y coord on this corner causes it to block
         if (getTopLeft(inLayer->location.x, newY, inLayer)->blockTank)
         {
-            cerr << "shifting y top left" << endl;
             newY += 25 - (newY % TILE_SIZE);
         }
 
