@@ -28,7 +28,11 @@ bool CollisionEngine::tankMove(VideoLayer* inLayer, int inIntendedX, int inInten
     int newX = inIntendedX + inLayer->location.x;
     int newY = inIntendedY + inLayer->location.y;
 
-    bool tankMoved = true;
+    //bool tankMoved = true;
+
+    cerr << "curX: " << inLayer->location.x << " curY: " << inLayer->location.y << endl;
+    cerr << "inX: " << inIntendedX << " inY: " << inIntendedY << endl;
+    cerr << "newX: " << newX << " newY: " << newY << endl;
 
     //Tile* tile = mMap->getTile(tileX, tileY);
 
@@ -49,6 +53,7 @@ bool CollisionEngine::tankMove(VideoLayer* inLayer, int inIntendedX, int inInten
             //if just moving the y coord on this corner causes it to block
             if (getTopLeft(inLayer->location.x, newY, inLayer)->blockTank)
             {
+                cerr << "shifting y top left" << endl;
                 newY += 25 - (newY % TILE_SIZE);
             }
 
@@ -61,12 +66,13 @@ bool CollisionEngine::tankMove(VideoLayer* inLayer, int inIntendedX, int inInten
             //if just moving the x coord on this corner causes it to block
             if (getTopRight(newX, inLayer->location.y, inLayer)->blockTank)
             {
-                newX -= ((newX + inLayer->location.w) % TILE_SIZE);
+                newX -= ((newX + inLayer->surface->w) % TILE_SIZE);
             }
 
             //if just moving the y coord on this corner causes it to block
             if (getTopRight(inLayer->location.x, newY, inLayer)->blockTank)
             {
+                cerr << "shifting y top right" << endl;
                 newY += 25 - (newY % TILE_SIZE);
             }
         }
@@ -84,13 +90,14 @@ bool CollisionEngine::tankMove(VideoLayer* inLayer, int inIntendedX, int inInten
             //if just moving the y coord on this corner causes it to block
             if (getBottomLeft(inLayer->location.x, newY, inLayer)->blockTank)
             {
+                cerr << "shifting y bottom left" << endl;
                 newY -= ((newY + inLayer->location.h) % TILE_SIZE);
             }
         }
 
         if (getBottomRight(newX, newY, inLayer)->blockTank)
         {
-            tankMoved = true;
+            //tankMoved = true;
 
             //if just moving the x coord on this corner causes it to block
             if (getBottomRight(newX, inLayer->location.y, inLayer)->blockTank)
@@ -101,10 +108,13 @@ bool CollisionEngine::tankMove(VideoLayer* inLayer, int inIntendedX, int inInten
             //if just moving the y coord on this corner causes it to block
             if (getBottomRight(inLayer->location.x, newY, inLayer)->blockTank)
             {
+                cerr << "shifting y bottom right" << endl;
                 newY -= ((newY + inLayer->location.h) % TILE_SIZE);
             }
         }
     //}
+
+    cerr << "newX after: " << newX << " newY after: " << newY << endl;
 
     inLayer->setLocation(newX, newY);
     return false;
@@ -145,15 +155,15 @@ inline Tile* CollisionEngine::getTopLeft(int inX, int inY, VideoLayer* inLayer)
 
 inline Tile* CollisionEngine::getTopRight(int inX, int inY, VideoLayer* inLayer)
 {
-    return mMap->getTile((inX + inLayer->surface->w) / TILE_SIZE, inY / TILE_SIZE);
+    return mMap->getTile((inX + inLayer->surface->w - 1) / TILE_SIZE, inY / TILE_SIZE);
 }
 
 inline Tile* CollisionEngine::getBottomLeft(int inX, int inY, VideoLayer* inLayer)
 {
-    return mMap->getTile(inX / TILE_SIZE, (inY + inLayer->surface->h) / TILE_SIZE);
+    return mMap->getTile(inX / TILE_SIZE, (inY + inLayer->surface->h - 1) / TILE_SIZE);
 }
 
 inline Tile* CollisionEngine::getBottomRight(int inX, int inY, VideoLayer* inLayer)
 {
-    return mMap->getTile((inX + inLayer->surface->w) / TILE_SIZE, (inY + inLayer->surface->h) / TILE_SIZE);
+    return mMap->getTile((inX + inLayer->surface->w - 1) / TILE_SIZE, (inY + inLayer->surface->h - 1) / TILE_SIZE);
 }
