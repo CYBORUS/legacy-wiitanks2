@@ -16,6 +16,7 @@ class EngineModule
         virtual void onLoop();
         virtual void onFrame();
         virtual void onCleanup() = 0;
+        virtual bool isRunning();
         virtual EngineModule* getNextModule() = 0;
         virtual Surface getCanvas();
 
@@ -48,6 +49,9 @@ class EngineModule
         virtual void onExpose();
         virtual void onExit();
         virtual void onUser(Uint8 inType, int inCode, void* inData1, void* inData2);
+
+    protected:
+        bool mRunning;
 };
 
 #endif

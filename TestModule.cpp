@@ -20,6 +20,8 @@ TestModule::~TestModule()
 
 bool TestModule::onInit()
 {
+    mRunning = true;
+
     mTest = new VideoLayer();
     mTest->surface = VideoLayer::getImage("images/temple_fog.jpg");
     mTest->priority = PRIORITY_BACKGROUND;
@@ -200,7 +202,7 @@ void TestModule::onLButtonDown(int inX, int inY)
 //        Mix_HaltChannel(mChannel);
 //        mChannel = -1;
 //    }
-    GameEngine::onExit();
+    mRunning = false;
 }
 
 void TestModule::onJoyAxis(Uint8 inWhich, Uint8 inAxis, Sint16 inValue)

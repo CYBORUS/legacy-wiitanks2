@@ -53,6 +53,7 @@ BuildMapModule::~BuildMapModule()
 
 bool BuildMapModule::onInit()
 {
+    mRunning = true;
     //SDL_EnableKeyRepeat(5, 5); //we want key repeating for scrolling
 
     mShot = GameEngine::loadSound("audio/hyah.wav");
@@ -275,7 +276,7 @@ void BuildMapModule::onLButtonDown(int inX, int inY)
 
 void BuildMapModule::onRButtonDown(int inX, int inY)
 {
-    GameEngine::onExit();
+    mRunning = false;
 
 }
 

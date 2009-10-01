@@ -4,7 +4,6 @@ using namespace std;
 Mask GameEngine::mask;
 VideoLayer GameEngine::mWindow;
 bool GameEngine::mAudio = true;
-bool GameEngine::mRunning = false;
 unsigned int GameEngine::mNextFrame;
 unsigned int GameEngine::mCurrentFrame;
 Surface GameEngine::mWindowIcon = NULL;
@@ -74,12 +73,10 @@ bool GameEngine::start(EngineModule* inModule)
 
     while (em != NULL)
     {
-        mRunning = true;
 
         if (!em->onInit())
         {
             em = NULL;
-            mRunning = false;
             break;
         }
 
@@ -90,7 +87,7 @@ bool GameEngine::start(EngineModule* inModule)
         buildSurfaces(); //do an initial build of all the surfaces
         //SDL_Flip(mWindow.surface);
 
-        while (mRunning)
+        while (em->isRunning())
         {
             while (SDL_PollEvent(&event)) em->onEvent(&event);
             em->onLoop();
@@ -272,27 +269,6 @@ void GameEngine::onCleanup()
 
     TTF_Quit();
     SDL_Quit();
-}
-
-void GameEngine::onExit()
-{
-    mRunning = false;
-}
-
-void GameEngine::onMinimize()
-{
-}
-
-void GameEngine::onRestore()
-{
-}
-
-void GameEngine::onResize(int inWidth, int inHeight)
-{
-}
-
-void GameEngine::onExpose()
-{
 }
 
 void GameEngine::setCanvas(Surface inCanvas)

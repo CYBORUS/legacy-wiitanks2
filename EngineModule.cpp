@@ -263,27 +263,23 @@ void EngineModule::onJoyBall(Uint8 inWhich, Uint8 inBall, Sint16 inXRel,
 
 void EngineModule::onMinimize()
 {
-    GameEngine::onMinimize();
 }
 
 void EngineModule::onRestore()
 {
-    GameEngine::onRestore();
 }
 
 void EngineModule::onResize(int inWidth, int inHeight)
 {
-    GameEngine::onResize(inWidth, inHeight);
 }
 
 void EngineModule::onExpose()
 {
-    GameEngine::onExpose();
 }
 
 void EngineModule::onExit()
 {
-    GameEngine::onExit();
+    mRunning = false;
 }
 
 void EngineModule::onUser(Uint8 inType, int inCode, void* inData1, void* inData2)
@@ -305,4 +301,9 @@ Surface EngineModule::getCanvas()
     Surface u = SDL_DisplayFormat(t);
     SDL_FreeSurface(t);
     return u;
+}
+
+bool EngineModule::isRunning()
+{
+    return mRunning;
 }

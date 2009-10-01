@@ -25,6 +25,7 @@ BeginModule::~BeginModule()
 
 bool BeginModule::onInit()
 {
+    mRunning = true;
     mBackground = new VideoLayer();
 
     Surface t = GameEngine::newSurface(SDL_GetVideoSurface()->w,
@@ -97,7 +98,7 @@ void BeginModule::onFrame()
 
         if (SDL_GetTicks() > mPauseTime)
         {
-            GameEngine::onExit();
+            mRunning = false;
         }
     }
 }
@@ -116,7 +117,7 @@ void BeginModule::onCleanup()
 
 void BeginModule::onLButtonDown(int inX, int inY)
 {
-    GameEngine::onExit();
+    mRunning = false;
 }
 
 Surface BeginModule::getCanvas()

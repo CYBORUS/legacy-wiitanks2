@@ -15,7 +15,6 @@
 #include "TextLayer.h"
 #include "Preferences.h"
 
-#define ENGINE_FPS 30
 #define NEXT_FRAME 25
 
 struct Mask
@@ -49,12 +48,6 @@ class GameEngine
         static void playSound(Mix_Chunk* inSound);
         static void musicDone();
 
-        static void onMinimize();
-        static void onRestore();
-        static void onResize(int inWidth, int inHeight);
-        static void onExpose();
-        static void onExit();
-
         static Surface newSurface(int inWidth, int inHeight);
 
         static Mask mask;
@@ -67,7 +60,6 @@ class GameEngine
         static void onMusicEnd();
 
         static bool mAudio;
-        static bool mRunning;
         static unsigned int mNextFrame;
         static unsigned int mCurrentFrame;
         static Surface mWindowIcon;
