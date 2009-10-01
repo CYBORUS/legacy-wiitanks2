@@ -1,7 +1,7 @@
 #ifndef _THREAD_H
 #define	_THREAD_H
 
-#include <SDL.h>
+#include "SDL_Tools.h"
 
 /**
  * The Thread class is made to simplify the thread creation process and to mimic

@@ -6,7 +6,7 @@
 #include <sstream>
 using namespace std;
 
-#include <SDL.h>
+#include "SDL_Tools.h"
 #include <SDL_mixer.h>
 
 #define NUM_SETTINGS 8

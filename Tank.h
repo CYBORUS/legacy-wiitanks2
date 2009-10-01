@@ -1,7 +1,7 @@
 #ifndef _TANK_H
 #define _TANK_H
 
-#include <SDL.h>
+#include "SDL_Tools.h"
 #include <SDL_image.h>
 #include <cmath>
 #include "RotatedGraphic.h"
@@ -33,13 +33,13 @@ class Tank : public Entity
 
         void updateTank(GameMap* inMap);
 
-        SDL_Surface* getTank(RotatedGraphic* inTankGraphics, RotatedGraphic* inTurretGraphics);
+        Surface getTank(RotatedGraphic* inTankGraphics, RotatedGraphic* inTurretGraphics);
 
 
     private:
         Direction mTankBody;
         Direction mTurret;
-        SDL_Surface* mCurrentTank;
+        Surface mCurrentTank;
         VideoLayer* mLayer;
 
         int* mMoveDirection;

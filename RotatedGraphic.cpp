@@ -8,7 +8,7 @@ using namespace std;
 RotatedGraphic::RotatedGraphic(const char* inFile, int inRotations)
 {
     mRotations = inRotations;
-    mSurfaces = new SDL_Surface*[mRotations];
+    mSurfaces = new Surface[mRotations];
     double angle;
 
     mSurfaces[0] = VideoLayer::getImage(inFile);
@@ -27,7 +27,7 @@ RotatedGraphic::~RotatedGraphic()
     delete [] mSurfaces;
 }
 
-SDL_Surface* RotatedGraphic::getSurface(int inIndex)
+Surface RotatedGraphic::getSurface(int inIndex)
 {
     if (inIndex < 0 || inIndex >= mRotations)
     {

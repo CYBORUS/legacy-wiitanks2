@@ -298,11 +298,11 @@ void EngineModule::onLoop()
 {
 }
 
-SDL_Surface* EngineModule::getCanvas()
+Surface EngineModule::getCanvas()
 {
-    SDL_Surface* t = SDL_CreateRGBSurface(SDL_HWSURFACE, 1000, 1000, 32, GameEngine::mask.red,
+    Surface t = SDL_CreateRGBSurface(SDL_HWSURFACE, 1000, 1000, 32, GameEngine::mask.red,
         GameEngine::mask.green, GameEngine::mask.blue, GameEngine::mask.alpha);
-    SDL_Surface* u = SDL_DisplayFormat(t);
+    Surface u = SDL_DisplayFormat(t);
     SDL_FreeSurface(t);
     return u;
 }

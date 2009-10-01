@@ -6,7 +6,7 @@
 #include <fstream>
 #include <iomanip>
 #include <cmath>
-#include <SDL.h>
+#include "SDL_Tools.h"
 #include <SDL_rotozoom.h>
 #include "EngineModule.h"
 #include "TestModule.h"
@@ -39,7 +39,7 @@ class BuildMapModule : public EngineModule
         void onLoop();
         void onFrame();
         void onCleanup();
-        SDL_Surface* getCanvas();
+        Surface getCanvas();
         EngineModule* getNextModule();
 
     private:

@@ -27,7 +27,7 @@ bool BeginModule::onInit()
 {
     mBackground = new VideoLayer();
 
-    SDL_Surface* t = GameEngine::newSurface(SDL_GetVideoSurface()->w,
+    Surface t = GameEngine::newSurface(SDL_GetVideoSurface()->w,
         SDL_GetVideoSurface()->h);
 
     mBackground->surface = GameEngine::newSurface(SDL_GetVideoSurface()->w,
@@ -119,7 +119,7 @@ void BeginModule::onLButtonDown(int inX, int inY)
     GameEngine::onExit();
 }
 
-SDL_Surface* BeginModule::getCanvas()
+Surface BeginModule::getCanvas()
 {
     return mBackground->surface;
 }

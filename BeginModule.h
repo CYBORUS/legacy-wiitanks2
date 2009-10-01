@@ -8,7 +8,7 @@ using namespace std;
 #include "EngineModule.h"
 #include "BuildMapModule.h"
 #include "Preferences.h"
-#include <SDL.h>
+#include "SDL_Tools.h"
 
 class BeginModule : public EngineModule
 {
@@ -21,7 +21,7 @@ class BeginModule : public EngineModule
         void onFrame();
         void onCleanup();
         EngineModule* getNextModule();
-        SDL_Surface* getCanvas();
+        Surface getCanvas();
 
     private:
         void onLButtonDown(int inX, int inY);
@@ -29,8 +29,8 @@ class BeginModule : public EngineModule
         VideoLayer* mMouse;
         VideoLayer* mBackground;
         SDL_Rect mDest;
-        SDL_Surface* mPic;
-        SDL_Surface* mTempSurface;
+        Surface mPic;
+        Surface mTempSurface;
         int mAlphaValue;
         int mIncDec; //whether alphaValue should be incremented or decremented
         unsigned int mPauseTime;

@@ -309,11 +309,11 @@ void Tank::updateTank(GameMap* inMap)
 //    }
 }
 
-SDL_Surface* Tank::getTank(RotatedGraphic* inTankGraphics, RotatedGraphic* inTurretGraphics)
+Surface Tank::getTank(RotatedGraphic* inTankGraphics, RotatedGraphic* inTurretGraphics)
 {
     SDL_FreeSurface(mCurrentTank);
 
-    SDL_Surface* tempTurretSurface;
+    Surface tempTurretSurface;
     SDL_Rect location;
 
     mCurrentTank = SDL_DisplayFormatAlpha(inTankGraphics[mTankBody.graphic].getSurface(mTankBody.angle));

@@ -8,7 +8,7 @@
 #define PRIORITY_TEXT       9500
 #define PRIORITY_MOUSE      10000
 
-#include <SDL.h>
+#include "SDL_Tools.h"
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 
@@ -29,12 +29,12 @@ class VideoLayer
         void setLocation(int inX, int inY);
 
         int priority;
-        SDL_Surface* surface;
+        Surface surface;
         VideoLayer* next;
         SDL_Rect location;
         SDL_Rect* clip;
 
-        static SDL_Surface* getImage(const char* inFile);
+        static Surface getImage(const char* inFile);
 };
 
 #endif

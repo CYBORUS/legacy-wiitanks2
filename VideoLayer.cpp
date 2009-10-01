@@ -18,10 +18,10 @@ VideoLayer::~VideoLayer()
 {
 }
 
-SDL_Surface* VideoLayer::getImage(const char* inFile)
+Surface VideoLayer::getImage(const char* inFile)
 {
-    SDL_Surface* t = NULL;
-    SDL_Surface* outSurface = NULL;
+    Surface t = NULL;
+    Surface outSurface = NULL;
 
     if((t = IMG_Load(inFile)) == NULL)
     {
@@ -41,20 +41,20 @@ void VideoLayer::setLocation(int inX, int inY)
     location.y = inY;
 }
 
-//void VideoLayer::overlay(SDL_Surface* inTarget, SDL_Surface* inSurface)
+//void VideoLayer::overlay(Surface inTarget, Surface inSurface)
 //{
 //    if (inTarget == NULL || inSurface == NULL) return;
 //    SDL_BlitSurface(inSurface, NULL, inTarget, NULL);
 //}
 //
-//void VideoLayer::overlay(SDL_Surface* inTarget, SDL_Surface* inSurface,
+//void VideoLayer::overlay(Surface inTarget, Surface inSurface,
 //    SDL_Rect* inLocation)
 //{
 //    if (inTarget == NULL || inSurface == NULL) return;
 //    SDL_BlitSurface(inSurface, NULL, inTarget, inLocation);
 //}
 //
-//void VideoLayer::overlay(SDL_Surface* inTarget, SDL_Surface* inSurface,
+//void VideoLayer::overlay(Surface inTarget, Surface inSurface,
 //    int inX, int inY)
 //{
 //    if (inTarget == NULL || inSurface == NULL) return;

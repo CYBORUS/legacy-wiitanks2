@@ -1,7 +1,7 @@
 #ifndef _GAMEENGINE_H
 #define	_GAMEENGINE_H
 
-#include <SDL.h>
+#include "SDL_Tools.h"
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 #include <cstdlib>
@@ -34,7 +34,7 @@ class GameEngine
         static bool start(EngineModule* inModule);
         static void addLayer(VideoLayer* inLayer);
         static void removeLayer(VideoLayer* inLayer);
-        static void setCanvas(SDL_Surface* inCanvas);
+        static void setCanvas(Surface inCanvas);
         static SDL_Rect* setCamera(int inX, int inY);
         static SDL_Rect* moveCamera(int inX, int inY);
         static SDL_Rect* getCamera();
@@ -55,7 +55,7 @@ class GameEngine
         static void onExpose();
         static void onExit();
 
-        static SDL_Surface* newSurface(int inWidth, int inHeight);
+        static Surface newSurface(int inWidth, int inHeight);
 
         static Mask mask;
 
@@ -70,10 +70,10 @@ class GameEngine
         static bool mRunning;
         static unsigned int mNextFrame;
         static unsigned int mCurrentFrame;
-        static SDL_Surface* mWindowIcon;
+        static Surface mWindowIcon;
         static SDL_Joystick* mJoystick;
-        static SDL_Surface* mCanvas;
-        static SDL_Surface* mCanvasTwo;
+        static Surface mCanvas;
+        static Surface mCanvasTwo;
         static SDL_Rect mCamera;
         static VideoLayer mWindow;
 };

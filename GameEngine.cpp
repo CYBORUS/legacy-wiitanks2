@@ -7,10 +7,10 @@ bool GameEngine::mAudio = true;
 bool GameEngine::mRunning = false;
 unsigned int GameEngine::mNextFrame;
 unsigned int GameEngine::mCurrentFrame;
-SDL_Surface* GameEngine::mWindowIcon = NULL;
+Surface GameEngine::mWindowIcon = NULL;
 SDL_Joystick* GameEngine::mJoystick = NULL;
-SDL_Surface* GameEngine::mCanvas = NULL;
-SDL_Surface* GameEngine::mCanvasTwo = NULL;
+Surface GameEngine::mCanvas = NULL;
+Surface GameEngine::mCanvasTwo = NULL;
 SDL_Rect GameEngine::mCamera;
 
 void GameEngine::addLayer(VideoLayer* inLayer)
@@ -295,7 +295,7 @@ void GameEngine::onExpose()
 {
 }
 
-void GameEngine::setCanvas(SDL_Surface* inCanvas)
+void GameEngine::setCanvas(Surface inCanvas)
 {
     mCanvas = inCanvas;
 }
@@ -488,13 +488,13 @@ void GameEngine::musicDone()
 {
 }
 
-SDL_Surface* GameEngine::newSurface(int inWidth, int inHeight)
+Surface GameEngine::newSurface(int inWidth, int inHeight)
 {
     Uint32 flags = SDL_SWSURFACE | SDL_ASYNCBLIT;
     int bits = 32;
 
-    SDL_Surface* t;
-    SDL_Surface* outSurface;
+    Surface t;
+    Surface outSurface;
     t = SDL_CreateRGBSurface(flags, inWidth, inHeight, bits, mask.red,
         mask.green, mask.blue, mask.alpha);
     outSurface = SDL_DisplayFormat(t);

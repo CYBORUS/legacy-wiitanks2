@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <string>
-#include <SDL.h>
+#include "SDL_Tools.h"
 #include "GameEngine.h"
 #include "VideoLayer.h"
 using namespace std;
@@ -29,15 +29,15 @@ class GameMap
         int getWidth();
         int getHeight();
         Tile* getTile(int inX, int inY);
-        SDL_Surface* getImage(int inIndex);
-        SDL_Surface* getSurface();
+        Surface getImage(int inIndex);
+        Surface getSurface();
 
     private:
         int mWidth;
         int mHeight;
         int mNumImages;
-        SDL_Surface** mImages;
-        SDL_Surface* mSurface;
+        Surface* mImages;
+        Surface mSurface;
 
         Tile** mTiles;
 };

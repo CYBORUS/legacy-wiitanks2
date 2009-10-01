@@ -368,7 +368,7 @@ void BuildMapModule::onKeyUp(SDLKey inSym, SDLMod inMod, Uint16 inUnicode)
     }
 }
 
-SDL_Surface* BuildMapModule::getCanvas()
+Surface BuildMapModule::getCanvas()
 {
     return mBackground->surface;
 }

@@ -11,7 +11,7 @@ GameMap::GameMap(const char* inFile)
 
     mTiles = new Tile*[mHeight];
     for (int i = 0; i < mHeight; i++) mTiles[i] = new Tile[mWidth];
-    mImages = new SDL_Surface*[mNumImages];
+    mImages = new Surface[mNumImages];
     bool* blockTank = new bool[mNumImages];
     bool* blockBullet = new bool[mNumImages];
 
@@ -77,12 +77,12 @@ Tile* GameMap::getTile(int inX, int inY)
     return &mTiles[inX][inY];
 }
 
-SDL_Surface* GameMap::getSurface()
+Surface GameMap::getSurface()
 {
     return mSurface;
 }
 
-SDL_Surface* GameMap::getImage(int inIndex)
+Surface GameMap::getImage(int inIndex)
 {
     return mImages[inIndex];
 }

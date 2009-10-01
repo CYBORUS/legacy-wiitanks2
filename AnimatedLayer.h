@@ -18,7 +18,7 @@ class AnimatedLayer : public VideoLayer
         int mFrameSize;
         int mFrameOffset;
         int mFrameCount;
-        SDL_Surface* mSheet;
+        Surface mSheet;
 };
 
 #endif

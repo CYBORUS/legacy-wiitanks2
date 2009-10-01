@@ -17,7 +17,7 @@ class EngineModule
         virtual void onFrame();
         virtual void onCleanup() = 0;
         virtual EngineModule* getNextModule() = 0;
-        virtual SDL_Surface* getCanvas();
+        virtual Surface getCanvas();
 
         /// input events
         virtual void onEvent(SDL_Event* inEvent);

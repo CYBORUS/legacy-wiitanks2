@@ -1,7 +1,7 @@
 #ifndef _ROTATEDGRAPHIC_H
 #define _ROTATEDGRAPHIC_H
 
-#include <SDL.h>
+#include "SDL_Tools.h"
 #include <string>
 using namespace std;
 
@@ -13,12 +13,12 @@ class RotatedGraphic
         RotatedGraphic(const char* inFile, int inRotations);
         virtual ~RotatedGraphic();
 
-        SDL_Surface* getSurface(int inIndex);
+        Surface getSurface(int inIndex);
 
     private:
         string mName;
         int mRotations;
-        SDL_Surface** mSurfaces;
+        Surface* mSurfaces;
 };
 
 #endif

@@ -1,12 +1,12 @@
 #ifndef _LAYER_H
 #define	_LAYER_H
 
-#include <SDL.h>
+#include "SDL_Tools.h"
 
 struct Layer
 {
     int priority;
-    SDL_Surface* surface;
+    Surface surface;
     Layer* next;
 };
 
